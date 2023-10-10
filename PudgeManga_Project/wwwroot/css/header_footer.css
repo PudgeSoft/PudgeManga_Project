@@ -1,0 +1,43 @@
+[data-bs-theme=dark] {
+    --bs-body-bg: #262020 !important;
+}
+
+#logo {
+    background: #DF1AFF;
+    background: linear-gradient(to right, #DF1AFF 0%, #FFDA1A 100%);
+    background-clip: content-box;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: 'Cherry Bomb One', cursive;
+}
+
+.btn-dark {
+    --bs-btn-bg: #1E1E1E !important;
+    --bs-btn-border-radius: 0.7rem !important;
+}
+
+main {
+    background-image: url("background_wallpaper.png");
+    background-position: center;
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+.footer_social {
+    width: 35px;
+    height: 35px;
+    filter: invert(0.7);
+}
+
+.content_block {
+    border-radius: 30px;
+    background-color: #262020;
+}
+
+.card {
+    padding: 0 1em;
+}
+
+.card-body {
+    text-align: center;
+}
