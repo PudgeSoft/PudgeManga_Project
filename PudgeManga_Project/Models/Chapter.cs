@@ -1,6 +1,6 @@
 ﻿namespace PudgeManga_Project.Models
 {
-    public class Chapters
+    public class Chapter
     {
         public int ChapterId { get; set; }
         public int MangaID { get; set; }

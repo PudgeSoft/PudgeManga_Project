@@ -1,6 +1,6 @@
 ﻿namespace PudgeManga_Project.Models
 {
-    public class Comments
+    public class Comment
     {
         public int CommentId { get; set; }
         public int UserId { get; set; }
