@@ -29,5 +29,5 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: Artifact
-        path: PudgeManga_Project/PudgeManga_Project.csproj
+        path: PudgeManga_Project
         if-no-files-found: error
