@@ -42,7 +42,7 @@ jobs:
 
     environment:
       name: PRE-PROD
-      url: ${{ steps.deploywebapp.outputs.webapp-url }}
+      url: ${{demopudgesoft.azurewebsites.net}}
 
     steps:
     - name: Download a Build Artifact
