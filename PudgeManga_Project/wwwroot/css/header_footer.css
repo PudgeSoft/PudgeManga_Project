@@ -17,7 +17,7 @@
 }
 
 main {
-    background-image: url("background_wallpaper.png");
+    background-color: #181717;
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
@@ -41,3 +41,4 @@ main {
 .card-body {
     text-align: center;
 }
+

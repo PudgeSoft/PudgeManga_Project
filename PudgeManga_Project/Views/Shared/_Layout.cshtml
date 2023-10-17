@@ -15,48 +15,40 @@
 
 </head>
 <body>
-    <header class="p-3">
+    <header class="p-3 navbar-expand-lg">
         <div class="container-fluid">
             <div class="d-flex flex-wrap align-items-center justify-content-between ">
-
+                <div class="d-lg-none d-flex"></div>
                 <a href="/"
                    class="d-flex align-items-center mb-2 mb-lg-0 link-body-emphasis text-decoration-none col-lg-2">
-                    <h4 class="fw-bold fs-4" id="logo">PUDGE SOFT</h4>
+                    <h4 class="fw-bold fs-3" id="logo">PUDGE SOFT</h4>
                 </a> <!--logo (pudge soft)-->
 
 
                 <ul class="nav col-12 col-lg-auto mb-2 align-items-center justify-content-between mb-md-0 col-lg-8 order-3 order-lg-2">
 
-                    <li>
-                        <div class="dropdown">
-                            <button class="btn btn-dark dropdown-toggle text-white-50" type="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                Манга
-                            </button>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">?</a></li>
-                                <li><a class="dropdown-item" href="#">?</a></li>
-                            </ul>
-                        </div>
-                    </li> <!--manga button-->
-
-                    <li><a class="nav-link px-2 text-white-50">Пошук</a></li>
-                    <li><a class="nav-link px-2 text-white-50" asp-area="" asp-controller="Forum" asp-action="Index" >Форум</a></li>
-                    <li><a class="nav-link px-2 text-white-50" asp-area="" asp-controller="Calendar" asp-action="Index" >Календар</a></li>
-                    <li><a class="nav-link px-2 text-white-50" asp-area="" asp-controller="Reviews" asp-action="Index">Рецензії</a></li>
-                    <li><a class="nav-link px-2 text-white-50" asp-area="" asp-controller="About_us" asp-action="Index">Про нас</a></li>
-                    <li><a class="nav-link px-2 text-white-50">FAQ</a></li>
+                    <button class="navbar-toggler order-1" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <ul class=" collapse navbar-collapse navbar-nav me-auto mb-2 mb-lg-0 justify-content-around order-3" id="navbarSupportedContent">
+                        <li><a class="nav-link px-2 text-white-50">Пошук</a></li>
+                        <li><a class="nav-link px-2 text-white-50" asp-area="" asp-controller="Forum" asp-action="Index">Форум</a></li>
+                        <li><a class="nav-link px-2 text-white-50" asp-area="" asp-controller="Calendar" asp-action="Index">Календар</a></li>
+                        <li><a class="nav-link px-2 text-white-50" asp-area="" asp-controller="Reviews" asp-action="Index">Рецензії</a></li>
+                        <li><a class="nav-link px-2 text-white-50" asp-area="" asp-controller="About_us" asp-action="Index">Про нас</a></li>
+                        <li><a class="nav-link px-2 text-white-50">FAQ</a></li>
+                    </ul>
                     <!--all categories-->
 
-                    <li>
+                    <li class="order-2">
                         <div class="dropdown">
                             <button class="btn btn-dark dropdown-toggle text-white-50" type="button"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 Аніме
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">?</a></li>
-                                <li><a class="dropdown-item" href="#">?</a></li>
+                                <li><a class="dropdown-item" href="#">Аніме?</a></li>
+                                <li><a class="dropdown-item" href="#">Манга?</a></li>
                             </ul>
                         </div>
                     </li><!--anime button-->
