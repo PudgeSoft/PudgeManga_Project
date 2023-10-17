@@ -48,8 +48,8 @@ jobs:
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3
       with:
-        name: website
-        path: website
+        name: Artifact
+        path: Artifact
 
     - name: Login via Azure CLI
       uses: azure/login@v1
@@ -62,7 +62,7 @@ jobs:
       with:
         app-name: ${{ env.app-name }}
         slot-name: staging
-        package: website
+        package: Artifact
 
     - name: az cli logout
       run: az logout
