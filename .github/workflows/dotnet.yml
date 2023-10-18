@@ -42,14 +42,14 @@ jobs:
 
     environment:
       name: PRE-PROD
-      url: https://demopudgesoft.azurewebsites.net/
+      url: ${{ steps.deploywebapp.outputs.webapp-url }}
 
     steps:
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3
       with:
         name: Artifact
-        path: Artifact
+        path: PudgeManga_Project
 
     - name: Login via Azure CLI
       uses: azure/login@v1
@@ -62,7 +62,7 @@ jobs:
       with:
         app-name: ${{ env.app-name }}
         slot-name: staging
-        package: Artifact
+        package: PudgeManga_Project
 
     - name: az cli logout
       run: az logout
