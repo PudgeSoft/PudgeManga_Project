@@ -42,7 +42,7 @@ jobs:
 
     environment:
       name: PRE-PROD
-      url: ${{demopudgesoft.azurewebsites.net}}
+      url: https://demopudgesoft.azurewebsites.net/
 
     steps:
     - name: Download a Build Artifact
