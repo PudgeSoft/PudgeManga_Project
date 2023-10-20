@@ -16,7 +16,7 @@ namespace PudgeManga_Project.Models.Repositories
             var manga = await context.Mangas.FirstOrDefaultAsync(b=> b.MangaId == id);
             if(manga != null)
             {
-                context.Mangas.Remove(manga);
+                context.Remove(manga);
             }
         }
 
@@ -27,7 +27,7 @@ namespace PudgeManga_Project.Models.Repositories
 
         public async Task<Manga> GetById(int id)
         {
-            throw new NotImplementedException();
+            return await context.Mangas.FindAsync(id);
         }
 
         public async Task<Manga> Insert(Manga entity)

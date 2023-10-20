@@ -7,43 +7,43 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.Models.Repositories;
 
 namespace PudgeManga_Project.Controllers
 {
     public class MangaController : Controller
     {
         private readonly ApplicationDBContext _context;
-
-        public MangaController(ApplicationDBContext context)
+        private readonly IRepository<Manga, int> mangaRepository;
+        public MangaController(IRepository<Manga, int> mangaRepository)
         {
-            _context = context;
+            this.mangaRepository = mangaRepository;
         }
 
         // GET: Manga
         public async Task<IActionResult> Index()
         {
-              return _context.Mangas != null ? 
-                          View(await _context.Mangas.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDBContext.Mangas'  is null.");
+            //var mangas = await mangaRepository.GetAll();
+            return View();
         }
 
         // GET: Manga/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Mangas == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Details(int? id)
+        //{
+        //    if (id == null || _context.Mangas == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var manga = await _context.Mangas
-                .FirstOrDefaultAsync(m => m.MangaId == id);
-            if (manga == null)
-            {
-                return NotFound();
-            }
+        //    var manga = await _context.Mangas
+        //        .FirstOrDefaultAsync(m => m.MangaId == id);
+        //    if (manga == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(manga);
-        }
+        //    return View(manga);
+        //}
 
         // GET: Manga/Create
         public IActionResult Create()
@@ -56,15 +56,15 @@ namespace PudgeManga_Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("MangaId,Title,Author,Description,CoverUrl,GenreId")] Manga manga)
+        public async Task<IActionResult> Create([Bind(include:"MangaId,Title,Author,Description,CoverUrl,GenreId")] Manga manga)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(manga);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(manga);
+            //if (ModelState.IsValid)
+            //{
+                await mangaRepository.Insert(manga);
+                await mangaRepository.Save();
+                return RedirectToAction("Create", "Manga");
+            //}
+            //return View(manga);
         }
 
         // GET: Manga/Edit/5
