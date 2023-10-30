@@ -29,15 +29,9 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null || _context.Mangas == null)
-            {
-                return NotFound();
-            }
-
-            var manga = await _context.Mangas
-                .FirstOrDefaultAsync(m => m.MangaId == id);
+            var manga = await _mangaRepository.GetById(id);
             if (manga == null)
             {
                 return NotFound();
