@@ -70,14 +70,9 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null || _context.Mangas == null)
-            {
-                return NotFound();
-            }
-
-            var manga = await _context.Mangas.FindAsync(id);
+            var manga = await _mangaRepository.GetById(id);
             if (manga == null)
             {
                 return NotFound();
@@ -90,34 +85,29 @@ namespace PudgeManga_Project.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("MangaId,Title,Author,Description,CoverUrl,GenreId")] Manga manga)
+        public async Task<IActionResult> Edit(int id, EditMangaViewModel editMangaViewModel)
         {
-            if (id != manga.MangaId)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                ModelState.AddModelError("", "Failed to edit club");
+                return View("Edit", editMangaViewModel);
             }
+            if (ModelState.IsValid) {
+                var manga = new Manga
+                {
+                    MangaId = id,
+                    Title = editMangaViewModel.Title,
+                    Author = editMangaViewModel.Author,
+                    Description = editMangaViewModel.Description,
+                    CoverUrl = editMangaViewModel.CoverUrl,
+                    GenreId = editMangaViewModel.GenreId,
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(manga);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!MangaExists(manga.MangaId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                };
+                _mangaRepository.UpdateAsync(manga);
             }
-            return View(manga);
+            
+            return RedirectToAction("Index");
+           
         }
 
         // GET: Mangas/Delete/5

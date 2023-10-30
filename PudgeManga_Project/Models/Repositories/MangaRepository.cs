@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
+using PudgeManga_Project.ViewModels;
 
 namespace PudgeManga_Project.Models.Repositories
 {
@@ -40,7 +41,15 @@ namespace PudgeManga_Project.Models.Repositories
             await context.SaveChangesAsync();
             return entity;
         }
-
+        public async Task UpdateAsync(Manga entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            context.Mangas.Update(entity);
+            await context.SaveChangesAsync();
+        }
         public async Task Save()
         {
             await context.SaveChangesAsync();
