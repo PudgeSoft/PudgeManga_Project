@@ -8,66 +8,75 @@ using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.Models.Repositories;
+using PudgeManga_Project.ViewModels;
 
 namespace PudgeManga_Project.Controllers
 {
     public class MangaController : Controller
     {
         private readonly ApplicationDBContext _context;
-        private readonly IRepository<Manga, int> mangaRepository;
+        private readonly IRepository<Manga, int> _mangaRepository;
         public MangaController(IRepository<Manga, int> mangaRepository)
         {
-            this.mangaRepository = mangaRepository;
+            _mangaRepository = mangaRepository;
         }
 
-        // GET: Manga
+        // GET: Mangas
         public async Task<IActionResult> Index()
         {
-            //var mangas = await mangaRepository.GetAll();
-            return View();
+              return _context.Mangas != null ? 
+                          View(await _context.Mangas.ToListAsync()) :
+                          Problem("Entity set 'ApplicationDBContext.Mangas'  is null.");
         }
 
-        // GET: Manga/Details/5
-        //public async Task<IActionResult> Details(int? id)
-        //{
-        //    if (id == null || _context.Mangas == null)
-        //    {
-        //        return NotFound();
-        //    }
+        // GET: Mangas/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Mangas == null)
+            {
+                return NotFound();
+            }
 
-        //    var manga = await _context.Mangas
-        //        .FirstOrDefaultAsync(m => m.MangaId == id);
-        //    if (manga == null)
-        //    {
-        //        return NotFound();
-        //    }
+            var manga = await _context.Mangas
+                .FirstOrDefaultAsync(m => m.MangaId == id);
+            if (manga == null)
+            {
+                return NotFound();
+            }
 
-        //    return View(manga);
-        //}
+            return View(manga);
+        }
 
-        // GET: Manga/Create
+        // GET: Mangas/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Manga/Create
+        // POST: Mangas/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind(include:"MangaId,Title,Author,Description,CoverUrl,GenreId")] Manga manga)
+        public async Task<IActionResult> Create(CreateMangaViewModel mangaViewModel)
         {
-            //if (ModelState.IsValid)
-            //{
-                await mangaRepository.Insert(manga);
-                await mangaRepository.Save();
-                return RedirectToAction("Create", "Manga");
-            //}
-            //return View(manga);
+            if (ModelState.IsValid)
+            {
+                var manga = new Manga
+                {
+                    Title = mangaViewModel.Title,
+                    Author = mangaViewModel.Author,
+                    Description = mangaViewModel.Description,
+                    CoverUrl = mangaViewModel.CoverUrl,
+                    GenreId = mangaViewModel.GenreId,
+                };
+                _mangaRepository.Add(manga);
+                return RedirectToAction("Create");
+            }
+            return View(mangaViewModel);
         }
 
-        // GET: Manga/Edit/5
+        // GET: Mangas/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Mangas == null)
@@ -83,7 +92,7 @@ namespace PudgeManga_Project.Controllers
             return View(manga);
         }
 
-        // POST: Manga/Edit/5
+        // POST: Mangas/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -118,7 +127,7 @@ namespace PudgeManga_Project.Controllers
             return View(manga);
         }
 
-        // GET: Manga/Delete/5
+        // GET: Mangas/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Mangas == null)
@@ -136,7 +145,7 @@ namespace PudgeManga_Project.Controllers
             return View(manga);
         }
 
-        // POST: Manga/Delete/5
+        // POST: Mangas/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
