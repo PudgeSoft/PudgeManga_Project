@@ -12,13 +12,10 @@ namespace PudgeManga_Project.Models.Repositories
             this.context = context;
         }
 
-        public async Task Delete(int id)
+        public async Task Delete(Manga manga)
         {
-            var manga = await context.Mangas.FirstOrDefaultAsync(b=> b.MangaId == id);
-            if(manga != null)
-            {
-                context.Remove(manga);
-            }
+            context.Remove(manga);
+            await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Manga>> GetAll()

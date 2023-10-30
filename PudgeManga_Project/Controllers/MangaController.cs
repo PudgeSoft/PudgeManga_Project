@@ -111,20 +111,13 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null || _context.Mangas == null)
-            {
-                return NotFound();
-            }
-
-            var manga = await _context.Mangas
-                .FirstOrDefaultAsync(m => m.MangaId == id);
+            var manga = await _mangaRepository.GetById(id);
             if (manga == null)
             {
                 return NotFound();
             }
-
             return View(manga);
         }
 
@@ -133,23 +126,14 @@ namespace PudgeManga_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Mangas == null)
+            var manga = await _mangaRepository.GetById(id);
+            if (manga == null)
             {
-                return Problem("Entity set 'ApplicationDBContext.Mangas'  is null.");
+                return View("Delete error");
             }
-            var manga = await _context.Mangas.FindAsync(id);
-            if (manga != null)
-            {
-                _context.Mangas.Remove(manga);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool MangaExists(int id)
-        {
-          return (_context.Mangas?.Any(e => e.MangaId == id)).GetValueOrDefault();
+            _mangaRepository.Delete(manga);
+            _mangaRepository.Save();
+            return RedirectToAction("Index");
         }
     }
 }
