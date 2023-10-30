@@ -36,13 +36,13 @@ jobs:
         path: PudgeManga_Project
         if-no-files-found: error
 
-  deploy_staging:
+#Deploy for Pre-Production(develov) version
+  deploy_pre_prod:
     needs: build
     runs-on: ubuntu-latest
 
     environment:
       name: PRE-PROD
-      url: ${{ steps.deploywebapp.outputs.webapp-url }}
 
     steps:
     - name: Download a Build Artifact
@@ -51,18 +51,53 @@ jobs:
         name: Artifact
         path: PudgeManga_Project
 
-    - name: Login via Azure CLI
+    - name: Login via Azure CLI for Pre-Prod Account
+      uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS_PREPROD }}
+
+    - name: Deploy web app to Pre-Prod Account
+      id: deploywebapp_pre_prod
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.app-name }}
+        package: PudgeManga_Project
+
+    - name: az cli logout for Pre-Prod Account
+      run: az logout
+
+#Deploy for production version
+  deploy_prod:
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: Production
+
+    steps:
+    - name: Download a Build Artifact for Prod Account
+      uses: actions/download-artifact@v3
+      with:
+        name: Artifact
+        path: PudgeManga_Project
+
+    - name: Login via Azure CLI for Prod Account
       uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-    - name: Deploy web app
-      id: deploywebapp
+    - name: Deploy web app to Prod Account
+      id: deploywebapp_prod
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.app-name }}
-       # slot-name: staging
         package: PudgeManga_Project
 
-    - name: az cli logout
+    - name: az cli logout for Prod Account 
       run: az logout
+
+
+
+
+
+      
