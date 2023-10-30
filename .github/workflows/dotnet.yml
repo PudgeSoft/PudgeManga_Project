@@ -2,13 +2,10 @@ name: .NET
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ main, Develop ]
 
 env:
   app-name: "DemoPudgeSoft"
-  rg-name: "DemoPudgeSoft_group"
 
 jobs:
   build:
@@ -44,6 +41,8 @@ jobs:
     environment:
       name: PRE-PROD
 
+    if: github.ref == 'refs/heads/Develop'
+
     steps:
     - name: Download a Build Artifact
       uses: actions/download-artifact@v3
@@ -61,6 +60,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.app-name }}
+        rg-name: ${{ secrets.RG_NAME_PREPROD }}
         package: PudgeManga_Project
 
     - name: az cli logout for Pre-Prod Account
@@ -73,6 +73,8 @@ jobs:
 
     environment:
       name: Production
+
+    if: github.ref == 'refs/heads/main'
 
     steps:
     - name: Download a Build Artifact for Prod Account
@@ -91,13 +93,8 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.app-name }}
+        rg-name: ${{ secrets.RG_NAME_PROD }}
         package: PudgeManga_Project
 
     - name: az cli logout for Prod Account 
       run: az logout
-
-
-
-
-
-      
