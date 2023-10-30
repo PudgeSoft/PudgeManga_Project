@@ -22,7 +22,7 @@ namespace PudgeManga_Project.Models.Repositories
 
         public async Task<IEnumerable<Manga>> GetAll()
         {
-            return await context.Mangas.Include(b => b.Author).ToListAsync();
+            return await context.Mangas.ToListAsync();
         }
 
         public async Task<Manga> GetById(int id)

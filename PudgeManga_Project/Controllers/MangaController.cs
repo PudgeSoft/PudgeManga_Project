@@ -24,9 +24,8 @@ namespace PudgeManga_Project.Controllers
         // GET: Mangas
         public async Task<IActionResult> Index()
         {
-              return _context.Mangas != null ? 
-                          View(await _context.Mangas.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDBContext.Mangas'  is null.");
+            var model = await _mangaRepository.GetAll();
+            return View(model);
         }
 
         // GET: Mangas/Details/5
