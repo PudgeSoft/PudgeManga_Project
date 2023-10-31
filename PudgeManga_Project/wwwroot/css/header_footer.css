@@ -1,44 +1,76 @@
 [data-bs-theme=dark] {
-    --bs-body-bg: #262020 !important;
+    --bs-body-bg: #161313!important;
+}
+header{
+    background-color: #9b0101!important;
 }
 
 #logo {
     background: #DF1AFF;
-    background: linear-gradient(to right, #DF1AFF 0%, #FFDA1A 100%);
+    background: linear-gradient(to right, #f700ff 0%, #f8bf03 100%);
+    
     background-clip: content-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     font-family: 'Cherry Bomb One', cursive;
 }
-
-.btn-dark {
-    --bs-btn-bg: #1E1E1E !important;
-    --bs-btn-border-radius: 0.7rem !important;
+.btn-dark{
+    --bs-btn-bg: #1E1E1E!important;
+    --bs-btn-border-radius: 0.7rem!important;
+}
+.navbar-collapse .btn-dark{
+    --bs-btn-bg: #262020!important;
+}
+.navbar-collapse .nav-link{
+    border-bottom: 3px solid rgba(0, 0, 0, 0)!important;
+}
+.navbar-collapse .nav-link:hover{
+    border-bottom: 3px solid black!important;
 }
 
-main {
-    background-image: url("../../src/img/background_wallpaper.png");
+
+
+body {
+    font-family: 'Roboto Condensed', sans-serif !important;
+    background-image: url("../src/img/background_wallpaper.png");
     background-position: center;
     background-attachment: fixed;
     background-size: cover;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
+main{
+    flex: 1;
+}
+/*
+main{
+    background-color: #00000091;
+}*/
 
-.footer_social {
+
+
+footer{
+    background-color: #262020!important;
+}
+.toggler-icon {
+    width: 1.5em;
+    height: 1.5em;
+    background-image: url("../../src/img/burger.png");
+    background-size: cover;
+    transition: ease-in-out 0.2s;
+}
+    .toggler-icon:hover {
+        background-image: url(../../src/img/burger-hover.png);
+    }
+
+
+
+.footer_social{
     width: 35px;
     height: 35px;
     filter: invert(0.7);
 }
-
-.content_block {
-    border-radius: 30px;
-    background-color: #262020;
+footer .text-body-secondary:hover{
+    color: rgb(222 226 230 / 95%)!important;
 }
-
-.card {
-    padding: 0 1em;
-}
-
-.card-body {
-    text-align: center;
-}
-
