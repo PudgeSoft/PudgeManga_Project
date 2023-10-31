@@ -1,4 +1,9 @@
-﻿<!DOCTYPE html>
+﻿@model PudgeManga_Project.Models.Manga
+
+@{
+    ViewData["Title"] = "Index";
+}
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="dark"> <!--dark theme, print 'light' for light theme-->
 
 <head>
@@ -41,7 +46,9 @@
                         <div class="card border-0" style="width: 16rem;">
                             <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
+                                <a class="nav-link p-0 text-body-secondary" asp-controller="Manga" asp-action="MangaDetails" asp-route-id="@Model?.MangaId">
                                 <h6 class="card-title">Назва манги</h6>
+                                </a>
                             </div>
                         </div>
                         <div class="card border-0" style="width: 16rem;">

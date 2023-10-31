@@ -28,6 +28,7 @@ namespace PudgeManga_Project.Controllers
             return View(model);
         }
 
+
         // GET: Mangas/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -39,6 +40,20 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
+        // GET: Mangas/MangaDetail/5
+        [HttpGet]
+        //[Route("MangaDetail/{id}")]
+        public async Task<IActionResult> MangaDetails(int id)
+        {
+            var manga = await _mangaRepository.GetById(id);
+            if (manga == null)
+            {
+                return NotFound();
+            }
+
+            return View(manga);
+        }
+
 
         // GET: Mangas/Create
         public IActionResult Create()
