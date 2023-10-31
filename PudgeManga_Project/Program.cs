@@ -1,10 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
+using PudgeManga_Project.Models;
+using PudgeManga_Project.Models.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+// register dependency injection with AddScoped method for manga model
+builder.Services.AddScoped<IRepository<Manga, int>, MangaRepository>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
