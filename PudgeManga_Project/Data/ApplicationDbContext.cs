@@ -8,7 +8,7 @@ namespace PudgeManga_Project.Data
     {
         public ApplicationDBContext(DbContextOptions<ApplicationDBContext> options) : base(options)
         {
-            Database.EnsureCreated();
+
         }
 
         public DbSet<Manga> Mangas => Set<Manga>();
