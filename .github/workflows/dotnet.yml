@@ -3,9 +3,8 @@ name: .NET
 on:
   push:
     branches: [ main, Develop ]
-
-env:
-  app-name: "DemoPudgeSoft"
+  pull_request:
+    branches: [ main, Develop ]
 
 jobs:
   build:
@@ -59,7 +58,7 @@ jobs:
       id: deploywebapp_pre_prod
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.app-name }}
+        app-name: pre-prod-pudgesoft
         rg-name: ${{ secrets.RG_NAME_PREPROD }}
         package: PudgeManga_Project
 
@@ -92,7 +91,7 @@ jobs:
       id: deploywebapp_prod
       uses: azure/webapps-deploy@v2
       with:
-        app-name: ${{ env.app-name }}
+        app-name: DemoPudgeSoft
         rg-name: ${{ secrets.RG_NAME_PROD }}
         package: PudgeManga_Project
 
