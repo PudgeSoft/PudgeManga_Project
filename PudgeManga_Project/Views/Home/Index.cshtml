@@ -1,4 +1,4 @@
-﻿@model PudgeManga_Project.Models.Manga
+﻿@model IEnumerable<PudgeManga_Project.Models.Manga>
 
 @{
     ViewData["Title"] = "Index";
@@ -55,14 +55,20 @@
                         </button>
                     </div><!--content header, name of category and button to look for more-->
                     <!--5 cards on big display, 4 on medium and 3 on small-->
+
                     <div class="content_block_body d-flex justify-content-between pb-2 flex-column flex-sm-row">
-                        <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
+                        @foreach (var item in Model)
+                        {
+                            <div class="card border-0" style="width: 16rem;">
+                                <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <a class="nav-link p-0 text-body-secondary" asp-controller="Manga" asp-action="MangaDetails" asp-route-id="@item.MangaId">
+                                        <h6 class="card-title">@item.Title</h6>
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card border-0" style="width: 16rem;">
+                        }
+                       @* <div class="card border-0" style="width: 16rem;">
                             <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
                             <div class="card-body">
                                 <h6 class="card-title">Назва манги</h6>
@@ -85,7 +91,7 @@
                             <div class="card-body">
                                 <h6 class="card-title">Назва манги</h6>
                             </div>
-                        </div>
+                        </div>*@
                     </div>
 
 

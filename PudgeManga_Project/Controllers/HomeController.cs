@@ -1,21 +1,25 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PudgeManga_Project.Data;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.Models.Repositories;
 using System.Diagnostics;
 
 namespace PudgeManga_Project.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly ApplicationDBContext _context;
+        private readonly IRepository<Manga, int> _mangaRepository;
+        public HomeController(IRepository<Manga, int> mangaRepository)
         {
-            _logger = logger;
+            _mangaRepository = mangaRepository;
         }
 
-        public IActionResult Index()
+        // GET: Mangas
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var model = await _mangaRepository.GetAll();
+            return View(model);
         }
 
 
