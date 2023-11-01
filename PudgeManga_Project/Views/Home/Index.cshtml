@@ -59,39 +59,19 @@
                     <div class="content_block_body d-flex justify-content-between pb-2 flex-column flex-sm-row">
                         @foreach (var item in Model)
                         {
+
                             <div class="card border-0" style="width: 16rem;">
-                                <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <a class="nav-link p-0 text-body-secondary" asp-controller="Manga" asp-action="MangaDetails" asp-route-id="@item.MangaId">
+                                <a class="nav-link p-0 text-body-secondary" asp-controller="Manga" asp-action="MangaDetails" asp-route-id="@item.MangaId">
+                                    <img src="@item.CoverUrl" class="card-img-top" alt="...">
+                                    <div class="card-body">
+
                                         <h6 class="card-title">@item.Title</h6>
-                                    </a>
-                                </div>
+
+                                    </div>
+                                </a>
                             </div>
+
                         }
-                       @* <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0 d-none d-md-block" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0 d-none d-lg-block" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>*@
                     </div>
 
 
