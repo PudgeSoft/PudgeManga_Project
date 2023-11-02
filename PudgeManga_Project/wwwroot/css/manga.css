@@ -1,0 +1,33 @@
+main .container {
+    background-color: #161313!important;
+    border-radius: 5px;
+}
+
+.stars img {
+    display: block;
+    max-width: 80%;
+    max-height: 60%;
+    width: auto;
+    height: auto;
+    padding-right: 20px;
+}
+.stars{
+    max-width: 100%;
+}
+.manga-title img {
+    width: auto;
+    height: auto;
+    max-width: 70%;
+}
+.bottom-text-block{
+    background-color:#5c5858 ;
+}
+.top-nav{
+    background-color: #312b2b;
+}
+.top-nav .text-body-secondary:hover{
+    color: rgb(222 226 230 / 95%)!important;
+}
+.other-info{
+    width: 100%;
+}
