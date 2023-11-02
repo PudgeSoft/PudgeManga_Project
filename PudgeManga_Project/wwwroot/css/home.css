@@ -1,14 +1,25 @@
-.content_block{
+.content_block {
     border-radius: 5px;
     background-color: #161313;
 }
-.card{
-    padding: 0 1em;
-    
+.content_block_body {
+    gap: 1em;
 }
-.card img{
+
+.card {
+    
+    width:auto;
+    flex: 1 1 12em;
+}
+
+.card img {
+    max-width:12em;
     border-radius: 0px;
 }
-.card-body{
+.card-img-top{
+    aspect-ratio: 9/13;
+}
+
+.card-body {
     text-align: left;
 }
