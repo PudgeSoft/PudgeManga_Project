@@ -51,6 +51,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'pre-prod-pudgesoft'
-          slot-name: 'Production'
+          slot-name: 'PRE-PROD'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8BD275AE9D7B485AB1F27BD771E131D0 }}
           package: .
