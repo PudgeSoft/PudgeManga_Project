@@ -48,6 +48,35 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
+        public async Task<IActionResult> Chapters(int id)
+        {
+            var manga = await _mangaRepository.GetById(id);
+            if (manga == null)
+            {
+                return NotFound();
+            }
 
+            return View(manga);
+        }
+        public async Task<IActionResult> Comments(int id)
+        {
+            var manga = await _mangaRepository.GetById(id);
+            if (manga == null)
+            {
+                return NotFound();
+            }
+
+            return View(manga);
+        }
+        public async Task<IActionResult> Description(int id)
+        {
+            var manga = await _mangaRepository.GetById(id);
+            if (manga == null)
+            {
+                return NotFound();
+            }
+
+            return View(manga);
+        }
     }
 }

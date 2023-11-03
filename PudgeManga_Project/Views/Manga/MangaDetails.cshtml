@@ -70,10 +70,17 @@
 						</div>
 					</div>
 					<div class="bottom-text-block mt-4">
-						<div class="top-nav d-flex justify-content-around p-2 flex-wrap">
-							<div class="text-body-secondary nav-link fs-5">Опис</div>
-							<div class="text-body-secondary nav-link fs-5">Глави</div>
-							<div class="text-body-secondary nav-link fs-5">Коментарі</div>
+                        <div class="top-nav d-flex justify-content-around p-2 flex-wrap">
+
+                            <a class="nav-link" asp-controller="Manga" asp-action="Description" asp-route-id="@Model.MangaId">
+                                <div class="text-body-secondary nav-link fs-5">Опис</div>
+                            </a>
+							<a class="nav-link" asp-controller="Manga" asp-action="Chapters" asp-route-id="@Model.MangaId">
+								<div class="text-body-secondary nav-link fs-5">Глави</div>
+							</a>
+							<a class="nav-link" asp-controller="Manga" asp-action="Comments" asp-route-id="@Model.MangaId">
+								<div class="text-body-secondary nav-link fs-5">Коментарі</div>
+							</a>
 						</div>
 						<div class="p-5">
 							<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam sit, consequatur nemo aperiam facilis excepturi ea incidunt reiciendis, porro soluta eligendi repellendus? Magni eos optio odit consequuntur repellat numquam accusamus aperiam architecto. Ab reiciendis minima soluta sequi magni officiis beatae exercitationem, temporibus eveniet est similique placeat quis! Rem eius voluptatum maiores rerum debitis itaque enim quam porro. Quam tempore vitae laudantium non nisi ea sapiente aspernatur obcaecati! Doloribus eos, aut explicabo sed facere autem, reprehenderit sunt facilis quae ratione dolor officiis beatae, magni distinctio eius veniam dolore quis? Ducimus, facilis provident neque nihil ratione amet voluptatem minima officiis tempore dolorem nobis ad earum assumenda itaque pariatur? Ad sunt quibusdam nisi laboriosam at, inventore consequuntur recusandae repudiandae ab nesciunt vitae est sed iusto quo? Eum quo ea saepe quaerat, recusandae sunt molestiae labore dolores reiciendis enim blanditiis vero sit mollitia velit officiis, excepturi atque commodi repudiandae illo doloremque consequuntur cupiditate modi?</p>
