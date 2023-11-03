@@ -2,20 +2,15 @@
 using PudgeManga_Project.Data;
 using PudgeManga_Project.ViewModels;
 
+
 namespace PudgeManga_Project.Models.Repositories
 {
-    public class MangaRepository : IRepository<Manga, int>
+    public class MangaRepository:IMangaRepository<Manga,int>
     {
         private readonly ApplicationDBContext context;
         public MangaRepository(ApplicationDBContext context)
         {
             this.context = context;
-        }
-
-        public async Task Delete(Manga manga)
-        {
-            context.Remove(manga);
-            await context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Manga>> GetAll()
@@ -32,24 +27,6 @@ namespace PudgeManga_Project.Models.Repositories
                 .FirstOrDefaultAsync(i => i.MangaId == id);
         }
 
-        public async Task<Manga> Add(Manga entity)
-        {
-            await context.Mangas.AddAsync(entity);
-            await context.SaveChangesAsync();
-            return entity;
-        }
-        public async Task UpdateAsync(Manga entity)
-        {
-            if (entity == null)
-            {
-                throw new ArgumentNullException(nameof(entity));
-            }
-            context.Mangas.Update(entity);
-            await context.SaveChangesAsync();
-        }
-        public async Task Save()
-        {
-            await context.SaveChangesAsync();
-        }
+
     }
 }
