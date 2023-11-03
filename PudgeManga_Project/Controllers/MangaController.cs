@@ -53,6 +53,16 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
+        public async Task<IActionResult> Reading(int id)
+        {
+            var manga = await _mangaRepository.GetById(id);
+            if (manga == null)
+            {
+                return NotFound();
+            }
+
+            return View(manga);
+        }
 
 
         // GET: Mangas/Create
