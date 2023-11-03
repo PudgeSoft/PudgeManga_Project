@@ -1,0 +1,62 @@
+﻿@model PudgeManga_Project.Models.Manga
+
+
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<!--dark theme, print 'light' for light theme-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/reading.css" asp-append-version="true">
+    <title>pudge soft corporation</title> <!--change title-->
+    <link rel="stylesheet" href="~/css/splide.min.css" asp-append-version="true">
+</head>
+
+<body>
+
+
+    <!--main part-->
+    <div class="py-5">
+        <div class="container">
+            <div class="row d-flex justify-content-center pb-5 pt-2">
+                <!--row with 5 titles on big display-->
+
+                <div class="col-12 col-md-10 pages">
+                    <section class="splide" aria-labelledby="carousel-heading">
+                        <h2 id="carousel-heading">рандомний текст</h2>
+
+                        <div class="splide__track">
+                            <ul class="splide__list ">
+                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/OUfcZfu.jpg" class="">
+                                </li>
+                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/IfROt7y.jpg" class="">
+                                </li>
+                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/IfROt7y.jpg" class="">
+                                </li>
+                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/OUfcZfu.jpg" class="">
+                                </li>
+                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/OUfcZfu.jpg" class="">
+                                </li>
+                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/IfROt7y.jpg" class="">
+                                </li>
+                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/IfROt7y.jpg" class="">
+                                </li>
+                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/OUfcZfu.jpg" class="">
+                                </li>
+                            </ul>
+                        </div>
+                    </section>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="~/js/splide.min.js"></script>
+    <script src="~/js/slider.js"></script>
+</body>
+
+</html>

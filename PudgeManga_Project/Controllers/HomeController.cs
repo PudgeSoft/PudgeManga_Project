@@ -9,8 +9,8 @@ namespace PudgeManga_Project.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDBContext _context;
-        private readonly IRepository<Manga, int> _mangaRepository;
-        public HomeController(IRepository<Manga, int> mangaRepository)
+        private readonly IAdminMangaRepository<Manga, int> _mangaRepository;
+        public HomeController(IAdminMangaRepository<Manga, int> mangaRepository)
         {
             _mangaRepository = mangaRepository;
         }
