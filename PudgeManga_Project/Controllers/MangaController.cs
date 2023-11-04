@@ -40,7 +40,7 @@ namespace PudgeManga_Project.Controllers
         }
         public async Task<IActionResult> Reading(int id)
         {
-            var manga = await _mangaRepository.GetById(id);
+            var manga = await _mangaRepository.GetByIdReading(id);
             if (manga == null)
             {
                 return NotFound();
@@ -50,7 +50,7 @@ namespace PudgeManga_Project.Controllers
         }
         public async Task<IActionResult> Chapters(int id)
         {
-            var manga = await _mangaRepository.GetById(id);
+            var manga = await _mangaRepository.GetByIdChapters(id);
             if (manga == null)
             {
                 return NotFound();
@@ -60,7 +60,7 @@ namespace PudgeManga_Project.Controllers
         }
         public async Task<IActionResult> Comments(int id)
         {
-            var manga = await _mangaRepository.GetById(id);
+            var manga = await _mangaRepository.GetByIdComments(id);
             if (manga == null)
             {
                 return NotFound();

@@ -35,9 +35,9 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-//app.MapControllerRoute(
-//    name: "Manga",
-//    pattern: "{controller}/{action}/{id?}/{section?}");
+app.MapControllerRoute(
+    name: "Manga",
+    pattern: "{controller}/{action}/{id?}/{chapter?}/{page?}");
 //app.MapControllerRoute(
 //    name: "Reading",
 //    pattern: "{controller}/{action}/{id?}");
