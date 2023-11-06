@@ -42,18 +42,18 @@ namespace PudgeManga_Project.Controllers
             //var chapters = await 
             return View(manga);
         }
-        public async Task<IActionResult> Reading(int mangaId,int chapterNumber =1)
+        public async Task<IActionResult> Reading(int mangaId,int chapterNumber = 1)
         {
             var manga = await _mangaRepository.GetByIdReading(mangaId,chapterNumber);
             if (manga == null)
             {
                 return NotFound();
             }
-            var viewModel = new MangaReadingViewModel 
-            {
-            Manga = manga,
-            ChapterNumber = chapterNumber
-            };
+            //var viewModel = new MangaReadingViewModel 
+            //{
+            //Manga = manga,
+            //ChapterNumber = chapterNumber
+            //};
            
             return View(manga);
         }
