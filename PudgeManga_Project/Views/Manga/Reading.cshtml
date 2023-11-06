@@ -28,7 +28,7 @@
 
                         <div class="splide__track">
                             <ul class="splide__list ">
-                                @foreach (var mangaPage in Model.Chapters.Where(ch => ch.ChapterId == 6).SelectMany(ch => ch.Pages))
+                                @foreach (var mangaPage in Model.Chapters.Where(ch => ch.ChapterId == 5).SelectMany(ch => ch.Pages))
                                 {
                                 <li class="splide__slide p-1 pb-5"><img src="@mangaPage.ImageUrl" class="">
                                 </li>

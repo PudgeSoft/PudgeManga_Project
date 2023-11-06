@@ -42,20 +42,20 @@ namespace PudgeManga_Project.Controllers
             //var chapters = await 
             return View(manga);
         }
-        public async Task<IActionResult> Reading(int mangaId)
+        public async Task<IActionResult> Reading(int mangaId,int chapterNumber =1)
         {
-            var manga = await _mangaRepository.GetByIdReading(mangaId);
+            var manga = await _mangaRepository.GetByIdReading(mangaId,chapterNumber);
             if (manga == null)
             {
                 return NotFound();
             }
-            var chapters = await _chapterRepository.GetChaptersForManga(mangaId);
-            var viewModel = new MangaReadingViewModel
+            var viewModel = new MangaReadingViewModel 
             {
-                Manga = manga,
-                Chapters = chapters
+            Manga = manga,
+            ChapterNumber = chapterNumber
             };
-            return View(viewModel);
+           
+            return View(manga);
         }
         public async Task<IActionResult> Chapters(int mangaId)
         {
@@ -64,8 +64,13 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
-
-            return View(manga);
+            var chapters = await _chapterRepository.GetChaptersForManga(mangaId);
+            var viewModel = new MangaChaptersViewModel
+            {
+                Manga = manga,
+                Chapters = chapters
+            };
+            return View(viewModel);
         }
         public async Task<IActionResult> Comments(int mangaId)
         {

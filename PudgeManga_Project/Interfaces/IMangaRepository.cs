@@ -6,6 +6,6 @@
         Task<T1> GetById(T2 id);
         Task<T1> GetByIdChapters(T2 id);
         Task<T1> GetByIdComments(T2 id);
-        Task<T1> GetByIdReading(T2 id);
+        Task<T1> GetByIdReading(T2 id , int chapterNumber);
     }
 }

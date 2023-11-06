@@ -40,8 +40,6 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "Manga",
     pattern: "{controller}/{action}/{id?}/{chapter?}/{page?}");
-//app.MapControllerRoute(
-//    name: "Reading",
-//    pattern: "{controller}/{action}/{id?}");
+
 
 app.Run();

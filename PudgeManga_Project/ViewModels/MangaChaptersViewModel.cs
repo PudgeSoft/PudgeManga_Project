@@ -2,9 +2,9 @@
 
 namespace PudgeManga_Project.ViewModels
 {
-    public class MangaReadingViewModel
+    public class MangaChaptersViewModel
     {
         public Manga Manga { get; set; }
-        public int ChapterNumber { get; set; }
+        public IEnumerable<Chapter> Chapters { get; set; }
     }
 }
