@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels;
 
 namespace PudgeManga_Project.Controllers
@@ -16,9 +17,12 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly IMangaRepository<Manga, int> _mangaRepository;
-        public MangaController(IMangaRepository<Manga, int> mangaRepository)
+        private readonly IChapterRepository<Chapter,int> _chapterRepository; 
+
+        public MangaController(IMangaRepository<Manga, int> mangaRepository, IChapterRepository<Chapter,int> chapterRepository) // Доданий параметр для IChapterRepository
         {
             _mangaRepository = mangaRepository;
+            _chapterRepository = chapterRepository; 
         }
 
         // GET: Mangas
@@ -35,7 +39,7 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
-
+            //var chapters = await 
             return View(manga);
         }
         public async Task<IActionResult> Reading(int mangaId)
@@ -45,8 +49,13 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
-
-            return View(manga);
+            var chapters = await _chapterRepository.GetChaptersForManga(mangaId);
+            var viewModel = new MangaReadingViewModel
+            {
+                Manga = manga,
+                Chapters = chapters
+            };
+            return View(viewModel);
         }
         public async Task<IActionResult> Chapters(int mangaId)
         {
