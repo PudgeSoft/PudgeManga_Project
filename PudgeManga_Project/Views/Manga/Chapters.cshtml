@@ -72,7 +72,7 @@
                     <div class="bottom-text-block mt-4">
                         <div class="top-nav d-flex justify-content-around p-2 flex-wrap">
 
-                            <a class="nav-link" asp-controller="Manga" asp-action="Description" asp-route-mangaId="@Model.Manga.MangaId">
+                            <a class="nav-link" asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@Model.Manga.MangaId">
                                 <div class="text-body-secondary nav-link fs-5">Опис</div>
                             </a>
                             <a class="nav-link" asp-controller="Manga" asp-action="Chapters" asp-route-mangaId="@Model.Manga.MangaId">
@@ -92,9 +92,9 @@
                             @foreach(var chapter in Model.Chapters.Where(ch => ch.MangaID == Model.Manga.MangaId)){
                             <div class="stroke d-flex mt-2">
                                 <a class="nav-link" asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
-                                <p class="fs-6">Глава"@chapter.ChapterNumber" - "@chapter.Title"</p>
+                                <p class="fs-6">Глава @chapter.ChapterNumber - @chapter.Title</p>
                                 </a>
-                                <p class="fs-6 text-white-50">10.10.2023</p>
+                                <p class="fs-6 text-white-50">@chapter.PublicationDate</p>
                             </div>
                             }
                         </div>
