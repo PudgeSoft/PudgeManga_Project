@@ -28,9 +28,9 @@ namespace PudgeManga_Project.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> MangaDetails(int id)
+        public async Task<IActionResult> MangaDetails(int mangaId)
         {
-            var manga = await _mangaRepository.GetById(id);
+            var manga = await _mangaRepository.GetById(mangaId);
             if (manga == null)
             {
                 return NotFound();
@@ -38,9 +38,9 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
-        public async Task<IActionResult> Reading(int id)
+        public async Task<IActionResult> Reading(int mangaId)
         {
-            var manga = await _mangaRepository.GetByIdReading(id);
+            var manga = await _mangaRepository.GetByIdReading(mangaId);
             if (manga == null)
             {
                 return NotFound();
@@ -48,9 +48,9 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
-        public async Task<IActionResult> Chapters(int id)
+        public async Task<IActionResult> Chapters(int mangaId)
         {
-            var manga = await _mangaRepository.GetByIdChapters(id);
+            var manga = await _mangaRepository.GetByIdChapters(mangaId);
             if (manga == null)
             {
                 return NotFound();
@@ -58,9 +58,9 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
-        public async Task<IActionResult> Comments(int id)
+        public async Task<IActionResult> Comments(int mangaId)
         {
-            var manga = await _mangaRepository.GetByIdComments(id);
+            var manga = await _mangaRepository.GetByIdComments(mangaId);
             if (manga == null)
             {
                 return NotFound();
@@ -68,9 +68,9 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
-        public async Task<IActionResult> Description(int id)
+        public async Task<IActionResult> Description(int mangaId)
         {
-            var manga = await _mangaRepository.GetById(id);
+            var manga = await _mangaRepository.GetById(mangaId);
             if (manga == null)
             {
                 return NotFound();
