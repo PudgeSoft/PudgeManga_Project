@@ -24,30 +24,20 @@
 
                 <div class="col-12 col-md-10 pages">
                     <section class="splide" aria-labelledby="carousel-heading">
-                        <h2 id="carousel-heading">рандомний текст</h2>
+                        <h2 id="carousel-heading">@Model.Title</h2>
 
                         <div class="splide__track">
                             <ul class="splide__list ">
-                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/OUfcZfu.jpg" class="">
+                                @foreach (var mangaPage in Model.Chapters.SelectMany(ch => ch.Pages))
+                                {
+                                <li class="splide__slide p-1 pb-5"><img src="@mangaPage.ImageUrl" class="">
                                 </li>
-                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/IfROt7y.jpg" class="">
-                                </li>
-                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/IfROt7y.jpg" class="">
-                                </li>
-                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/OUfcZfu.jpg" class="">
-                                </li>
-                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/OUfcZfu.jpg" class="">
-                                </li>
-                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/IfROt7y.jpg" class="">
-                                </li>
-                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/IfROt7y.jpg" class="">
-                                </li>
-                                <li class="splide__slide p-1 pb-5"><img src="https://i.imgur.com/OUfcZfu.jpg" class="">
-                                </li>
+                                }
                             </ul>
                         </div>
                     </section>
                 </div>
+
 
             </div>
         </div>
