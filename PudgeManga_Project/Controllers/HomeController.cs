@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PudgeManga_Project.Data;
+using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
-using PudgeManga_Project.Models.Repositories;
 using System.Diagnostics;
 
 namespace PudgeManga_Project.Controllers
