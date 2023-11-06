@@ -7,6 +7,8 @@ on:
   push:
     branches:
       - Develop
+  pull_request:
+    branches: [ Develop ]
   workflow_dispatch:
 
 jobs:
@@ -38,7 +40,7 @@ jobs:
     runs-on: windows-latest
     needs: build
     environment:
-      name: 'Production'
+      name: 'PRE-PROD'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
 
     steps:
