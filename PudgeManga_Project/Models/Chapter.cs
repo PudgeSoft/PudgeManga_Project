@@ -7,7 +7,6 @@ namespace PudgeManga_Project.Models
     {
         [Key]
         public int ChapterId { get; set; }
-        [ForeignKey("Manga")]
         public int MangaID { get; set; }
         public int ChapterNumber { get; set; }
         public string Title { get; set; }

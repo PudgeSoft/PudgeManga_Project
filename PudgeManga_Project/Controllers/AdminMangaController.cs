@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PudgeManga_Project.Data;
-using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.ViewModels;
+using PudgeManga_Project.Interfaces;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -34,20 +34,6 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
-        // GET: Mangas/MangaDetail/5
-        [HttpGet]
-        //[Route("MangaDetail/{id}")]
-        public async Task<IActionResult> MangaDetails(int id)
-        {
-            var manga = await _AdminMangaRepository.GetById(id);
-            if (manga == null)
-            {
-                return NotFound();
-            }
-
-            return View(manga);
-        }
-
 
         // GET: Mangas/Create
         public IActionResult Create()
@@ -72,7 +58,7 @@ namespace PudgeManga_Project.Controllers
                     CoverUrl = mangaViewModel.CoverUrl,
                     GenreId = mangaViewModel.GenreId,
                 };
-                _AdminMangaRepository.Add(manga);
+               await _AdminMangaRepository.Add(manga);
                 return RedirectToAction("Create");
             }
             return View(mangaViewModel);
@@ -113,7 +99,7 @@ namespace PudgeManga_Project.Controllers
                     GenreId = editMangaViewModel.GenreId,
 
                 };
-                _AdminMangaRepository.UpdateAsync(manga);
+               await _AdminMangaRepository.UpdateAsync(manga);
             }
 
             return RedirectToAction("Index");
@@ -141,8 +127,8 @@ namespace PudgeManga_Project.Controllers
             {
                 return View("Delete error");
             }
-            _AdminMangaRepository.Delete(manga);
-            _AdminMangaRepository.Save();
+            await _AdminMangaRepository.Delete(manga);
+            await _AdminMangaRepository.Save();
             return RedirectToAction("Index");
         }
     }

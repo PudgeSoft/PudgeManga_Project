@@ -1,4 +1,4 @@
-﻿namespace PudgeManga_Project.Models.Repositories
+﻿namespace PudgeManga_Project.Interfaces
 {
     public interface IAdminMangaRepository<T1, T2> where T1 : class
     {
