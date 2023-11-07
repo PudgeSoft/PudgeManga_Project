@@ -22,15 +22,11 @@ namespace PudgeManga_Project.Models.Repositories
         public async Task<Manga> GetById(int id)
         {
             return await context.Mangas
-                .FirstOrDefaultAsync(i => i.MangaId == id);
-        }
-
-        public async Task<Manga> GetByIdChapters(int id)
-        {
-            return await context.Mangas
                 .Include(ch => ch.Chapters)
                 .FirstOrDefaultAsync(i => i.MangaId == id);
         }
+
+
         public async Task<Manga> GetByIdComments(int id)
         {
             return await context.Mangas
