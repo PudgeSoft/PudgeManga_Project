@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 <head>
-    <link rel="stylesheet" href="~/css/Admin_manga_Index.css" type="text/css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
 </head>
 <h1>Vadym skazav napysaty tut admin panel</h1>
 
@@ -52,7 +52,7 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.MangaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MangaId">Details</a> |
+                
                 <a asp-action="Delete" asp-route-id="@item.MangaId">Delete</a>
             </td>
         </tr>
