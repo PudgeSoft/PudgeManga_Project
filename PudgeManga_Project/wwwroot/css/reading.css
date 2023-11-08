@@ -21,8 +21,8 @@ main {
 	align-items: flex-start;
 }
 
-.splide__slide:not(.is-active) {
-	height: 0;
+.splide__slide:not(.is-active, .is-next) {
+	height: 50vh;
 }
 
 .splide__list {

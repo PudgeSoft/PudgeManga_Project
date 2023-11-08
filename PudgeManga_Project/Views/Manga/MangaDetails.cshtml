@@ -1,5 +1,5 @@
 ﻿@model PudgeManga_Project.ViewModels.MangaChaptersViewModel
-
+<!--last version-->
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,7 @@
                     <h1 class="fs-4 d-block d-md-none pt-2">@Model.Manga.Title</h1>
                     <a class="nav-link" asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="1">
                     <div class="pt-2">
-                        <button type="button" class="btn btn-warning text-white fs-4">Читати мангу</button>
+                        <button type="button" class="btn btn-warning text-white fs-4">Читати мангу з початку</button>
                         </div>
                     </a>
                     <div class="stars d-flex d-md-none d-flex align-items-center justify-content-center">
@@ -72,32 +72,32 @@
                     <div class="bottom-text-block mt-4">
                         <div class="top-nav d-flex flex-wrap">
 
-                            <a class="nav-link active-page">
+                            <button class="nav-link tablinks" id="defaultOpen" onclick="openTab(event, 'Description')">
                                 <div class="text-body-secondary fs-5">Опис</div>
-                            </a>
-                            <a class="nav-link">
+                            </button>
+                            <button class="nav-link tablinks" onclick="openTab(event, 'Chapter')">
                                 <div class="text-body-secondary fs-5">Глави</div>
-                            </a>
-                            <a class="nav-link">
+                            </button>
+                            <button class="nav-link tablinks" onclick="openTab(event, 'Comment')">
                                 <div class="text-body-secondary fs-5">Коментарі</div>
-                            </a>
+                            </button>
                         </div>
 
 
 
 
-                        <div class="p-5">
+                        <div class="p-5 tabcontent" id="Description">
                             <p>@Model.Manga.Description</p>
                         </div>
 
-                        <div class="p-5 pt-3">
+                        <div class="p-5 pt-3 tabcontent" id="Chapter">
 
 
                             <div class="stroke d-flex text-white-50 border-bottom border-white">
                                 <p>Назва</p>
                                 <p>дата виходу</p>
                             </div>
-                            @foreach (var chapter in Model.Manga.Chapters.Where(ch => ch.MangaID == Model.Manga.MangaId))
+                            @foreach (var chapter in Model.Manga.Chapters.Where(ch => ch.MangaID == Model.Manga.MangaId).OrderByDescending(ch => ch.ChapterNumber))
                             {
                                 <div class="stroke d-flex mt-2">
                                     <a class="nav-link" asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
@@ -106,6 +106,10 @@
                                     <p class="fs-6 text-white-50">@chapter.PublicationDate</p>
                                 </div>
                             }
+                        </div>
+
+                        <div class="p-5 tabcontent" id="Comment">
+
                         </div>
 
 
@@ -117,4 +121,5 @@
             </div>
         </div>
     </main>
+    <script src="~/js/manga-tabs.js"></script>
 </body>
