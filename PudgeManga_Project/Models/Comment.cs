@@ -13,8 +13,6 @@ namespace PudgeManga_Project.Models
         public int MangaId { get; set; }
         public string Text { get; set; }
         public int Rating { get; set; }
-
-        public User User { get; set; }
         public Manga Manga { get; set; }
     }
 }
