@@ -141,7 +141,7 @@ namespace PudgeManga_Project.Controllers
             var chapters = await _chapterRepository.GetChaptersForManga(id);
             return View(chapters);
         }
-        public IActionResult CreateChapter()
+        public async Task<IActionResult> CreateChapter()
         {
             return View();
         }
@@ -159,7 +159,7 @@ namespace PudgeManga_Project.Controllers
                     Url = chapterViewModel.Url,
 
                 };
-                await _chapterRepository.Add(chapter);
+                //await _chapterRepository.Add(chapter);
                 return RedirectToAction("Create");
             }
             return View(chapterViewModel);

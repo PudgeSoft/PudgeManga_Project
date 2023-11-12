@@ -1,8 +1,7 @@
 ﻿namespace PudgeManga_Project.Interfaces
 {
-	public interface IAdminChapterRepository
-	{
-        Task<IEnumerable<T1>> GetAll();
+	public interface IAdminChapterRepository<T1, T2> where T1 : class
+    {
         Task<T1> GetById(T2 id);
         Task<T1> Add(T1 entity);
         Task Delete(T1 entity);

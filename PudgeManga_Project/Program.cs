@@ -10,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // register dependency injection with AddScoped method for manga model
 builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaRepository>();
+builder.Services.AddScoped<IAdminChapterRepository<Chapter, int>, AdminChapterRepository>();
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
