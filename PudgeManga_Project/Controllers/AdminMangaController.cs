@@ -3,6 +3,7 @@ using PudgeManga_Project.Data;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.ViewModels;
 using PudgeManga_Project.Interfaces;
+using PudgeManga_Project.Models.Repositories;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -10,9 +11,12 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly IAdminMangaRepository<Manga, int> _AdminMangaRepository;
-        public AdminMangaController(IAdminMangaRepository<Manga, int> mangaRepository)
+        private readonly IChapterRepository<Chapter, int> _chapterRepository;
+
+        public AdminMangaController(IAdminMangaRepository<Manga, int> adminMangaRepository, IChapterRepository<Chapter, int> chapterRepository) // Доданий параметр для IChapterRepository
         {
-            _AdminMangaRepository = mangaRepository;
+            _AdminMangaRepository = adminMangaRepository;
+            _chapterRepository = chapterRepository;
         }
 
         // GET: Mangas
@@ -130,6 +134,11 @@ namespace PudgeManga_Project.Controllers
             await _AdminMangaRepository.Delete(manga);
             await _AdminMangaRepository.Save();
             return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Chapters(int id)
+        {
+            var chapters = await _chapterRepository.GetChaptersForManga(id);
+            return View(chapters);
         }
     }
 }

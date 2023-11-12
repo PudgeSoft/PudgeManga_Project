@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PudgeManga_Project.Models.Chapter>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
+</head>
+
+<p>
+    <a asp-action="CreateChapter">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ChapterNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PublicationDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Url)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ChapterNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PublicationDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Url)
+                </td>
+  
+                <td>
+                    <a asp-action="EditChapter" asp-route-id="@item.ChapterId">Edit</a>
+                    <a asp-action="AddPages" asp-route-id="@item.ChapterId">Add pages</a>
+                    <a asp-action="DeleteChapter" asp-route-id="@item.ChapterId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

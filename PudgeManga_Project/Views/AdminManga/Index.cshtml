@@ -51,8 +51,8 @@
                 @Html.DisplayFor(modelItem => item.GenreId)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MangaId">Edit</a> |
-                
+                <a asp-action="Edit" asp-route-id="@item.MangaId">Edit</a> 
+                    <a asp-action="Chapters" asp-route-id="@item.MangaId">Chapters</a>
                 <a asp-action="Delete" asp-route-id="@item.MangaId">Delete</a>
             </td>
         </tr>
