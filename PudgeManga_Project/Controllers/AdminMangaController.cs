@@ -88,7 +88,7 @@ namespace PudgeManga_Project.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit club");
+                ModelState.AddModelError("", "Failed to edit Manga");
                 return View("Edit", editMangaViewModel);
             }
             if (ModelState.IsValid)
@@ -139,6 +139,94 @@ namespace PudgeManga_Project.Controllers
         {
             var chapters = await _chapterRepository.GetChaptersForManga(id);
             return View(chapters);
+        }
+        public IActionResult CreateChapter()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateChapters(CreateMangaViewModel mangaViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var manga = new Manga
+                {
+                    Title = mangaViewModel.Title,
+                    Author = mangaViewModel.Author,
+                    Description = mangaViewModel.Description,
+                    CoverUrl = mangaViewModel.CoverUrl,
+                    GenreId = mangaViewModel.GenreId,
+                };
+                await _AdminMangaRepository.Add(manga);
+                return RedirectToAction("Create");
+            }
+            return View(mangaViewModel);
+        }
+        public async Task<IActionResult> EditChapter(int id)
+        {
+            var manga = await _AdminMangaRepository.GetById(id);
+            if (manga == null)
+            {
+                return NotFound();
+            }
+            return View(manga);
+        }
+
+        // POST: Mangas/Edit/5
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditChapter(int id, EditMangaViewModel editMangaViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit club");
+                return View("Edit", editMangaViewModel);
+            }
+            if (ModelState.IsValid)
+            {
+                var manga = new Manga
+                {
+                    MangaId = id,
+                    Title = editMangaViewModel.Title,
+                    Author = editMangaViewModel.Author,
+                    Description = editMangaViewModel.Description,
+                    CoverUrl = editMangaViewModel.CoverUrl,
+                    GenreId = editMangaViewModel.GenreId,
+
+                };
+                await _AdminMangaRepository.UpdateAsync(manga);
+            }
+
+            return RedirectToAction("Index");
+
+        }
+        // GET: Mangas/Delete/5
+        public async Task<IActionResult> DeleteChapter(int id)
+        {
+            var manga = await _AdminMangaRepository.GetById(id);
+            if (manga == null)
+            {
+                return NotFound();
+            }
+            return View(manga);
+        }
+
+        // POST: Mangas/Delete/5
+        [HttpPost, ActionName("DeleteChapter")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmedChapter(int id)
+        {
+            var manga = await _AdminMangaRepository.GetById(id);
+            if (manga == null)
+            {
+                return View("Delete error");
+            }
+            await _AdminMangaRepository.Delete(manga);
+            await _AdminMangaRepository.Save();
+            return RedirectToAction("Index");
         }
     }
 }
