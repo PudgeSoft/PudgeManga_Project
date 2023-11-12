@@ -6,14 +6,14 @@ namespace PudgeManga_Project.Models.Repositories
 {
     public class ChapterRepository:IChapterRepository<Chapter,int>
     {
-        private readonly ApplicationDBContext context;
+        private readonly ApplicationDBContext _context;
         public ChapterRepository(ApplicationDBContext context)
         {
-            this.context = context;
+            _context = context;
         }
         public async Task<IEnumerable<Chapter>> GetChaptersForManga(int mangaId)
         {
-            var chapters = await context.Chapters
+            var chapters = await _context.Chapters
             .Where(c => c.MangaID == mangaId)
             .ToListAsync();
 

@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Models;
-using PudgeManga_Project.ViewModels;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models.Repositories;
+using PudgeManga_Project.ViewModels.AdminMangaViewModels;
+using PudgeManga_Project.ViewModels.AdminMangaViewModels.AdminChaptersViewModels;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -146,22 +147,22 @@ namespace PudgeManga_Project.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateChapters(CreateMangaViewModel mangaViewModel)
+        public async Task<IActionResult> CreateChapters(CreateChapterViewModel chapterViewModel)
         {
             if (ModelState.IsValid)
             {
-                var manga = new Manga
+                var chapter = new Chapter
                 {
-                    Title = mangaViewModel.Title,
-                    Author = mangaViewModel.Author,
-                    Description = mangaViewModel.Description,
-                    CoverUrl = mangaViewModel.CoverUrl,
-                    GenreId = mangaViewModel.GenreId,
+                    ChapterNumber = chapterViewModel.ChapterNumber,
+                    Title = chapterViewModel.Title,
+                    PublicationDate = chapterViewModel.PublicationDate,
+                    Url = chapterViewModel.Url,
+
                 };
-                await _AdminMangaRepository.Add(manga);
+                await _chapterRepository.Add(chapter);
                 return RedirectToAction("Create");
             }
-            return View(mangaViewModel);
+            return View(chapterViewModel);
         }
         public async Task<IActionResult> EditChapter(int id)
         {
