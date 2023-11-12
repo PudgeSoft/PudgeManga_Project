@@ -14,7 +14,7 @@ builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 var app = builder.Build();
