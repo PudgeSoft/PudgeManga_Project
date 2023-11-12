@@ -12,11 +12,14 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly IAdminMangaRepository<Manga, int> _AdminMangaRepository;
+        private readonly IAdminChapterRepository<Chapter, int> _AdminChapterRepository;
         private readonly IChapterRepository<Chapter, int> _chapterRepository;
-
-        public AdminMangaController(IAdminMangaRepository<Manga, int> adminMangaRepository, IChapterRepository<Chapter, int> chapterRepository) // Доданий параметр для IChapterRepository
+        public AdminMangaController(IAdminMangaRepository<Manga, int> adminMangaRepository, 
+            IAdminChapterRepository<Chapter, int> adminChapterRepository,
+            IChapterRepository<Chapter, int> chapterRepository) 
         {
             _AdminMangaRepository = adminMangaRepository;
+            _AdminChapterRepository = adminChapterRepository;
             _chapterRepository = chapterRepository;
         }
 
@@ -138,7 +141,7 @@ namespace PudgeManga_Project.Controllers
         }
         public async Task<IActionResult> Chapters(int id)
         {
-            var chapters = await _chapterRepository.GetChaptersForManga(id);
+            var chapters = await _AdminChapterRepository.GetChaptersForManga(id);
             return View(chapters);
         }
         public async Task<IActionResult> CreateChapter()

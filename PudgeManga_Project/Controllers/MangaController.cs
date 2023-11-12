@@ -19,7 +19,8 @@ namespace PudgeManga_Project.Controllers
         private readonly IMangaRepository<Manga, int> _mangaRepository;
         private readonly IChapterRepository<Chapter,int> _chapterRepository; 
 
-        public MangaController(IMangaRepository<Manga, int> mangaRepository, IChapterRepository<Chapter,int> chapterRepository) // Доданий параметр для IChapterRepository
+        public MangaController(IMangaRepository<Manga, int> mangaRepository,
+            IChapterRepository<Chapter,int> chapterRepository) 
         {
             _mangaRepository = mangaRepository;
             _chapterRepository = chapterRepository; 

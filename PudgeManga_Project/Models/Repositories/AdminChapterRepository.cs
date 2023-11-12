@@ -18,8 +18,15 @@ namespace PudgeManga_Project.Models.Repositories
             await _context.SaveChangesAsync();
             return chapter;
         }
+        public async Task<IEnumerable<Chapter>> GetChaptersForManga(int mangaId)
+        {
+            var chapters = await _context.Chapters
+            .Where(c => c.MangaID == mangaId)
+            .ToListAsync();
 
-		public async Task Delete(Chapter chapter)
+            return chapters;
+        }
+        public async Task Delete(Chapter chapter)
 		{
             _context.Remove(chapter);
             await _context.SaveChangesAsync();
@@ -47,5 +54,7 @@ namespace PudgeManga_Project.Models.Repositories
             _context.Chapters.Update(chapter);
             await _context.SaveChangesAsync();
         }
-	}
+
+
+    }
 }

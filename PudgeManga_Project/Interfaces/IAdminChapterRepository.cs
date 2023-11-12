@@ -7,5 +7,6 @@
         Task Delete(T1 entity);
         Task UpdateAsync(T1 entity);
         Task Save();
+        Task<IEnumerable<T1>> GetChaptersForManga(int T2);
     }
 }
