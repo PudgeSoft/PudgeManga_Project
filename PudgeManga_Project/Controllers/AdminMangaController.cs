@@ -239,5 +239,10 @@ namespace PudgeManga_Project.Controllers
             await _AdminChapterRepository.Delete(chapter);
             return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
         }
+        public async Task<IActionResult> AddPages()
+        {
+            return View();
+        }
+
     }
 }
