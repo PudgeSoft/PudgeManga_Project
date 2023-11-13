@@ -139,10 +139,10 @@ namespace PudgeManga_Project.Controllers
             await _AdminMangaRepository.Save();
             return RedirectToAction("Index");
         }
-        public async Task<IActionResult> Chapters(int id)
+        public async Task<IActionResult> Chapters(int mangaId)
         {
-            ViewData["MangaId"] = id;
-            var chapters = await _AdminChapterRepository.GetChaptersForManga(id);
+            ViewData["MangaId"] = mangaId;
+            var chapters = await _AdminChapterRepository.GetChaptersForManga(mangaId);
             return View(chapters);
         }
         public async Task<IActionResult> CreateChapter(int mangaId)
@@ -170,16 +170,16 @@ namespace PudgeManga_Project.Controllers
 
                 await _AdminChapterRepository.AddChapterToMangaAsync(chapterViewModel.MangaId, chapter);
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Chapters", new { mangaId = chapterViewModel.MangaId });
             }
 
             return View(chapterViewModel);
         }
 
 
-        public async Task<IActionResult> EditChapter(int id)
+        public async Task<IActionResult> EditChapter(int chapterId)
         {
-            var chapter = await _AdminChapterRepository.GetById(id);
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
             if (chapter == null)
             {
                 return NotFound();
@@ -190,7 +190,7 @@ namespace PudgeManga_Project.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditChapter(int id, EditChapterViewModel editChapterViewModel)
+        public async Task<IActionResult> EditChapter(int chapterId, EditChapterViewModel editChapterViewModel)
         {
             if (!ModelState.IsValid)
             {
@@ -198,7 +198,7 @@ namespace PudgeManga_Project.Controllers
                 return View(editChapterViewModel);
             }
 
-            var chapter = await _AdminChapterRepository.GetById(id);
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
 
             if (chapter == null)
             {
@@ -212,7 +212,7 @@ namespace PudgeManga_Project.Controllers
 
             await _AdminChapterRepository.UpdateAsync(chapter);
             ;
-            return RedirectToAction("Chapters",chapter.MangaID);
+            return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
         }
 
         public async Task<IActionResult> DeleteChapter(int id)
@@ -222,6 +222,7 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
+            ViewData["MangaId"] = chapter.MangaID;
             return View(chapter);
         }
 
@@ -234,8 +235,9 @@ namespace PudgeManga_Project.Controllers
             {
                 return View("Delete error");
             }
+            ViewData["MangaId"] = chapter.MangaID;
             await _AdminChapterRepository.Delete(chapter);
-            return RedirectToAction("Index");
+            return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
         }
     }
 }
