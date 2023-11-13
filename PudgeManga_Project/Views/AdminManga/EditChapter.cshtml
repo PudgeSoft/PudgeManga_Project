@@ -1,0 +1,54 @@
+﻿@model PudgeManga_Project.Models.Chapter
+
+@{
+    ViewData["Title"] = "EditChapters";
+}
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
+</head>
+
+<h1>Edit</h1>
+
+<h4>Chapter</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="EditChapter">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ChapterId" />
+            <div class="form-group">
+                <label asp-for="ChapterNumber" class="control-label"></label>
+                <input asp-for="ChapterNumber" class="form-control" />
+                <span asp-validation-for="ChapterNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PublicationDate" class="control-label"></label>
+                <input asp-for="PublicationDate" class="form-control" />
+                <span asp-validation-for="PublicationDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Url" class="control-label"></label>
+                <input asp-for="Url" class="form-control" />
+                <span asp-validation-for="Url" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Chapters" asp-route-mangaId="@ViewData["MangaId"]">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

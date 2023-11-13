@@ -1,0 +1,83 @@
+main .container {
+    background-color: #161313 !important;
+    border-radius: 5px;
+}
+
+.stars img {
+    display: block;
+    max-width: 80%;
+    max-height: 60%;
+    width: auto;
+    height: auto;
+    padding-right: 20px;
+}
+
+.stars{
+    max-width: 100%;
+}
+.manga-title img {
+    width: auto;
+    height: auto;
+    max-width: 70%;
+}
+.bottom-text-block{
+    background-color:#5c5858 ;
+}
+.top-nav{
+    background-color: #312b2b;
+}
+.top-nav .text-body-secondary:hover{
+    color: rgb(222 226 230 / 95%)!important;
+}
+.top-nav .nav-link{
+    flex-grow: 1;
+    text-align: center;
+    padding: 8px 0;
+}
+.top-nav .active-page{
+    background-color: #443b3b!important;
+}
+
+.other-info{
+    width: 100%;
+}
+.stroke{
+    justify-content: space-between;
+}
+.stroke a{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
+    transition: ease-in-out 0.2s;
+}
+.stroke p{
+    margin-bottom: 0;
+}
+.stroke a:hover{
+    border-bottom: 1px solid black;
+}
+
+.tabcontent {
+    display: none;
+    -webkit-animation: fadeEffect 1s;
+    animation: fadeEffect 1s;
+}
+@-webkit-keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeEffect {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}

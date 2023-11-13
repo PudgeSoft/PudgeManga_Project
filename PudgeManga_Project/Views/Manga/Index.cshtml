@@ -1,0 +1,94 @@
+﻿@model IEnumerable<PudgeManga_Project.Models.Manga>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true">
+    <title>pudge soft corporation</title> <!--change title-->
+
+    <style type="text/css" media="screen and (max-width:576px)">
+        .card .nav-link {
+            flex-direction: row !important;
+            margin-bottom: 35px;
+        }
+
+        .card h6 {
+            font-size: 1.5rem;
+        }
+
+        .card img {
+            width: 10rem !important;
+        }
+
+        .content_block {
+            width: 90% !important;
+            margin: 0 5% !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<main>
+    <div class="container">
+
+
+        <div class="row d-flex justify-content-center pb-5 pt-5">
+            <!--row with 5 titles on big display-->
+
+            <div class="col-sm-10 col-12 content_block">
+
+
+                <div class="content_block_head d-flex justify-content-between p-3">
+                    <h5 class="fs-6 text-white">Популярна манга</h5>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=""
+                            aria-controls="" aria-expanded="false" aria-label="Toggle navigation">
+                        <div class="toggler-icon"></div>
+                    </button>
+                </div><!--content header, name of category and button to look for more-->
+                <!--5 cards on big display, 4 on medium and 3 on small-->
+
+                <div class="content_block_body d-flex justify-content-start pb-2 flex-column flex-sm-row flex-wrap">
+                    @foreach (var item in Model)
+                    {
+
+                        <div class="card border-0">
+                                <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@item.MangaId">
+                                <img src="@item.CoverUrl" class="card-img-top" alt="...">
+                                <div class="card-body">
+
+                                    <h6 class="card-title">@item.Title</h6>
+
+                                </div>
+                            </a>
+                        </div>
+
+                    }
+                    @foreach (var item in Model)
+                    {
+
+                        <div class="card border-0">
+                                <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@item.MangaId">
+                                <img src="@item.CoverUrl" class="card-img-top" alt="...">
+                                <div class="card-body">
+
+                                    <h6 class="card-title">@item.Title</h6>
+
+                                </div>
+                            </a>
+                        </div>
+
+                    }
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+</main>
+</body>

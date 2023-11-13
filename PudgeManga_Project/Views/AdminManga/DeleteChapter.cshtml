@@ -1,0 +1,35 @@
+﻿@model PudgeManga_Project.Models.Chapter
+
+@{
+    ViewData["Title"] = "Delete";
+}
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
+</head>
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Chapter</h4>
+    <hr />
+    <dl class="row">
+        <dd>
+            @Html.DisplayNameFor(model => model.ChapterNumber)
+        </dd>
+        <dd>
+            @Html.DisplayNameFor(model => model.Title)
+        </dd>
+        <dd>
+            @Html.DisplayNameFor(model => model.PublicationDate)
+        </dd>
+        <dd>
+            @Html.DisplayNameFor(model => model.Url)
+        </dd>
+    </dl>
+
+    <form asp-action="DeleteChapter">
+        <input type="hidden" asp-for="ChapterId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <a asp-action="Chapters" asp-route-mangaId="@ViewData["MangaId"]">Back to List</a>
+    </form>
+</div>
