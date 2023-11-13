@@ -215,9 +215,9 @@ namespace PudgeManga_Project.Controllers
             return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
         }
 
-        public async Task<IActionResult> DeleteChapter(int id)
+        public async Task<IActionResult> DeleteChapter(int chapterId)
         {
-            var chapter = await _AdminChapterRepository.GetById(id);
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
             if (chapter == null)
             {
                 return NotFound();
@@ -228,9 +228,9 @@ namespace PudgeManga_Project.Controllers
 
         [HttpPost, ActionName("DeleteChapter")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmedChapter(int id)
+        public async Task<IActionResult> DeleteConfirmedChapter(int chapterId)
         {
-            var chapter = await _AdminChapterRepository.GetById(id);
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
             if (chapter == null)
             {
                 return View("Delete error");

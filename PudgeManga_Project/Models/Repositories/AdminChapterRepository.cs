@@ -50,11 +50,11 @@ namespace PudgeManga_Project.Models.Repositories
         }
 
 
-		public async Task<Chapter> GetById(int id)
+		public async Task<Chapter> GetById(int chapterId)
 		{
             return await _context.Chapters
                 .Include(p => p.Pages)
-                .FirstOrDefaultAsync(i => i.ChapterId == id);
+                .FirstOrDefaultAsync(i => i.ChapterId == chapterId);
         }
 
 
