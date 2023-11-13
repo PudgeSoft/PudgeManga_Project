@@ -7,26 +7,26 @@ namespace PudgeManga_Project.Models.Repositories
 {
     public class AdminMangaRepository : IAdminMangaRepository<Manga, int>
     {
-        private readonly ApplicationDBContext context;
+        private readonly ApplicationDBContext _context;
         public AdminMangaRepository(ApplicationDBContext context)
         {
-            this.context = context;
+            _context = context;
         }
 
         public async Task Delete(Manga manga)
         {
-            context.Remove(manga);
-            await context.SaveChangesAsync();
+            _context.Remove(manga);
+            await _context.SaveChangesAsync();
         }
 
         public async Task<IEnumerable<Manga>> GetAll()
         {
-            return await context.Mangas.ToListAsync();
+            return await _context.Mangas.ToListAsync();
         }
 
         public async Task<Manga> GetById(int id)
         {
-            return await context.Mangas
+            return await _context.Mangas
                 .Include(ch => ch.Chapters)
                 .Include(comm => comm.Comments)
                 .Include(popul => popul.Popularity)
@@ -35,8 +35,8 @@ namespace PudgeManga_Project.Models.Repositories
 
         public async Task<Manga> Add(Manga entity)
         {
-            await context.Mangas.AddAsync(entity);
-            await context.SaveChangesAsync();
+            await _context.Mangas.AddAsync(entity);
+            await _context.SaveChangesAsync();
             return entity;
         }
         public async Task UpdateAsync(Manga entity)
@@ -45,12 +45,21 @@ namespace PudgeManga_Project.Models.Repositories
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            context.Mangas.Update(entity);
-            await context.SaveChangesAsync();
-        }
+
+            // Перевірка чи об'єкт існує у контексті бази даних
+            var existingEntity = await _context.Mangas.FindAsync(entity.MangaId);
+            if (existingEntity == null)
+            {
+                throw new InvalidOperationException($"Manga with ID {entity.MangaId} not found.");
+            }
+
+            _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+            await _context.SaveChangesAsync();
+        
+    }
         public async Task Save()
         {
-            await context.SaveChangesAsync();
+            await _context.SaveChangesAsync();
         }
     }
 }

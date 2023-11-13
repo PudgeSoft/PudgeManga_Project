@@ -9,7 +9,7 @@ using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.Models.Repositories;
-using PudgeManga_Project.ViewModels;
+using PudgeManga_Project.ViewModels.MangaViewModels;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -19,7 +19,8 @@ namespace PudgeManga_Project.Controllers
         private readonly IMangaRepository<Manga, int> _mangaRepository;
         private readonly IChapterRepository<Chapter,int> _chapterRepository; 
 
-        public MangaController(IMangaRepository<Manga, int> mangaRepository, IChapterRepository<Chapter,int> chapterRepository) // Доданий параметр для IChapterRepository
+        public MangaController(IMangaRepository<Manga, int> mangaRepository,
+            IChapterRepository<Chapter,int> chapterRepository) 
         {
             _mangaRepository = mangaRepository;
             _chapterRepository = chapterRepository; 
@@ -34,7 +35,7 @@ namespace PudgeManga_Project.Controllers
 
         public async Task<IActionResult> MangaDetails(int mangaId)
         {
-            var manga = await _mangaRepository.GetByIdChapters(mangaId);
+            var manga = await _mangaRepository.GetById(mangaId);
             if (manga == null)
             {
                 return NotFound();
@@ -64,16 +65,6 @@ namespace PudgeManga_Project.Controllers
         }
         public async Task<IActionResult> Comments(int mangaId)
         {
-            var manga = await _mangaRepository.GetByIdComments(mangaId);
-            if (manga == null)
-            {
-                return NotFound();
-            }
-
-            return View(manga);
-        }
-        public async Task<IActionResult> Description(int mangaId)
-        {
             var manga = await _mangaRepository.GetById(mangaId);
             if (manga == null)
             {
@@ -82,5 +73,6 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
+
     }
 }

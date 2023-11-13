@@ -10,11 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 // register dependency injection with AddScoped method for manga model
 builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaRepository>();
+builder.Services.AddScoped<IAdminChapterRepository<Chapter, int>, AdminChapterRepository>();
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 var app = builder.Build();
@@ -40,6 +41,8 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "Manga",
     pattern: "{controller}/{action}/{id?}/{chapter?}/{page?}");
-
+//app.MapControllerRoute(
+//    name: "AdminManga",
+//    pattern: "{controller}/{action}/{chapterId?}");
 
 app.Run();

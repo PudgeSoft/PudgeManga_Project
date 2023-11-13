@@ -1,4 +1,4 @@
-﻿namespace PudgeManga_Project.ViewModels
+﻿namespace PudgeManga_Project.ViewModels.AdminMangaViewModels
 {
     public class CreateMangaViewModel
     {

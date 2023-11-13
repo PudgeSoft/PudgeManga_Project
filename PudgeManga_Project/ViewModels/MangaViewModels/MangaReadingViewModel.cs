@@ -1,6 +1,6 @@
 ﻿using PudgeManga_Project.Models;
 
-namespace PudgeManga_Project.ViewModels
+namespace PudgeManga_Project.ViewModels.MangaViewModels
 {
     public class MangaReadingViewModel
     {

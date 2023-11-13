@@ -1,7 +1,8 @@
-﻿namespace PudgeManga_Project.ViewModels
+﻿namespace PudgeManga_Project.ViewModels.AdminMangaViewModels
 {
-    public class IndexMangaViewModel
+    public class EditMangaViewModel
     {
+        public int Mangaid { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }
         public string Description { get; set; }
