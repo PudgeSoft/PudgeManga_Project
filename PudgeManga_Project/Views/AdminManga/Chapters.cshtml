@@ -46,9 +46,9 @@
                 </td>
   
                 <td>
-                    <a asp-action="EditChapter" asp-route-id="@item.ChapterId">Edit</a>
+                    <a asp-action="EditChapter" asp-route-chapterId="@item.ChapterId">Edit</a>
                     <a asp-action="AddPages" asp-route-id="@item.ChapterId">Add pages</a>
-                    <a asp-action="DeleteChapter" asp-route-id="@item.ChapterId">Delete</a>
+                    <a asp-action="DeleteChapter" asp-route-chapterId="@item.ChapterId">Delete</a>
                 </td>
             </tr>
         }
