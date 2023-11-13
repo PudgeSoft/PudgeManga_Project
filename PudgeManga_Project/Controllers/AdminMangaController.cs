@@ -141,6 +141,7 @@ namespace PudgeManga_Project.Controllers
         }
         public async Task<IActionResult> Chapters(int id)
         {
+            ViewData["MangaId"] = id;
             var chapters = await _AdminChapterRepository.GetChaptersForManga(id);
             return View(chapters);
         }
@@ -150,6 +151,7 @@ namespace PudgeManga_Project.Controllers
             {
                 MangaId = mangaId
             };
+            ViewData["MangaId"] = mangaId;
             return View(viewModel);
         }
         [HttpPost]
@@ -182,6 +184,7 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
+            ViewData["MangaId"] = chapter.MangaID;
             return View(chapter);
         }
 
@@ -208,8 +211,8 @@ namespace PudgeManga_Project.Controllers
             chapter.Url = editChapterViewModel.Url;
 
             await _AdminChapterRepository.UpdateAsync(chapter);
-
-            return RedirectToAction("Index");
+            ;
+            return RedirectToAction("Chapters",chapter.MangaID);
         }
 
         public async Task<IActionResult> DeleteChapter(int id)
