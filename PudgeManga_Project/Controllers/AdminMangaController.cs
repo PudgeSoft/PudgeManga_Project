@@ -139,10 +139,10 @@ namespace PudgeManga_Project.Controllers
             await _AdminMangaRepository.Save();
             return RedirectToAction("Index");
         }
-        public async Task<IActionResult> Chapters(int mangaId)
+        public async Task<IActionResult> Chapters(int id)
         {
-            ViewData["MangaId"] = mangaId;
-            var chapters = await _AdminChapterRepository.GetChaptersForManga(mangaId);
+            ViewData["MangaId"] = id;
+            var chapters = await _AdminChapterRepository.GetChaptersForManga(id);
             return View(chapters);
         }
         public async Task<IActionResult> CreateChapter(int mangaId)
@@ -177,9 +177,9 @@ namespace PudgeManga_Project.Controllers
         }
 
 
-        public async Task<IActionResult> EditChapter(int chapterId)
+        public async Task<IActionResult> EditChapter(int id)
         {
-            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            var chapter = await _AdminChapterRepository.GetById(id);
             if (chapter == null)
             {
                 return NotFound();
@@ -215,22 +215,21 @@ namespace PudgeManga_Project.Controllers
             return RedirectToAction("Chapters",chapter.MangaID);
         }
 
-        public async Task<IActionResult> DeleteChapter(int chapterId)
+        public async Task<IActionResult> DeleteChapter(int id)
         {
-            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            var chapter = await _AdminChapterRepository.GetById(id);
             if (chapter == null)
             {
                 return NotFound();
             }
-            ViewData["MangaId"] = chapter.MangaID;
             return View(chapter);
         }
 
         [HttpPost, ActionName("DeleteChapter")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmedChapter(int chapterId)
+        public async Task<IActionResult> DeleteConfirmedChapter(int id)
         {
-            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            var chapter = await _AdminChapterRepository.GetById(id);
             if (chapter == null)
             {
                 return View("Delete error");
