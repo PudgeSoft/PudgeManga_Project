@@ -1,5 +1,4 @@
-﻿@model PudgeManga_Project.Models.Chapter
-
+﻿@model PudgeManga_Project.ViewModels.AdminMangaViewModels.AdminChaptersViewModels.CreateChapterViewModel
 @{
     ViewData["Title"] = "Create";
 }
@@ -12,30 +11,35 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <form asp-action="CreateChapter" method="post">
+            <input type="hidden" asp-for="MangaId" />
+
             <div class="form-group">
                 <label asp-for="ChapterNumber" class="control-label"></label>
                 <input asp-for="ChapterNumber" class="form-control" />
                 <span asp-validation-for="ChapterNumber" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Title" class="control-label"></label>
                 <input asp-for="Title" class="form-control" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="PublicationDate" class="control-label"></label>
                 <input asp-for="PublicationDate" class="form-control" />
                 <span asp-validation-for="PublicationDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Url" class="control-label"></label>
                 <input asp-for="Url" class="form-control" />
                 <span asp-validation-for="Url" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create Chapter" class="btn btn-primary" />
             </div>
         </form>
     </div>

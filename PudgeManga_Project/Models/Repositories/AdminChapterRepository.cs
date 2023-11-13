@@ -18,6 +18,23 @@ namespace PudgeManga_Project.Models.Repositories
             await _context.SaveChangesAsync();
             return chapter;
         }
+        public async Task AddChapterToMangaAsync(int mangaId, Chapter chapter)
+        {
+            var manga = await _context.Mangas
+            .Include(m => m.Chapters) 
+            .FirstOrDefaultAsync(m => m.MangaId == mangaId);
+
+            if (manga != null)
+            {
+                manga.Chapters.Add(chapter);
+                await _context.SaveChangesAsync();
+            }
+            else
+            {
+                throw new InvalidOperationException($"Manga with ID {mangaId} not found.");
+            }
+        }
+
         public async Task<IEnumerable<Chapter>> GetChaptersForManga(int mangaId)
         {
             var chapters = await _context.Chapters
@@ -40,10 +57,6 @@ namespace PudgeManga_Project.Models.Repositories
                 .FirstOrDefaultAsync(i => i.ChapterId == id);
         }
 
-		public async Task Save()
-		{
-            await _context.SaveChangesAsync();
-        }
 
 		public async Task UpdateAsync(Chapter chapter)
 		{

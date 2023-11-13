@@ -13,14 +13,14 @@ namespace PudgeManga_Project.Controllers
         private readonly ApplicationDBContext _context;
         private readonly IAdminMangaRepository<Manga, int> _AdminMangaRepository;
         private readonly IAdminChapterRepository<Chapter, int> _AdminChapterRepository;
-        private readonly IChapterRepository<Chapter, int> _chapterRepository;
+        //private readonly IChapterRepository<Chapter, int> _chapterRepository;
         public AdminMangaController(IAdminMangaRepository<Manga, int> adminMangaRepository, 
             IAdminChapterRepository<Chapter, int> adminChapterRepository,
             IChapterRepository<Chapter, int> chapterRepository) 
         {
             _AdminMangaRepository = adminMangaRepository;
             _AdminChapterRepository = adminChapterRepository;
-            _chapterRepository = chapterRepository;
+            //_chapterRepository = chapterRepository;
         }
 
         // GET: Mangas
@@ -144,13 +144,16 @@ namespace PudgeManga_Project.Controllers
             var chapters = await _AdminChapterRepository.GetChaptersForManga(id);
             return View(chapters);
         }
-        public async Task<IActionResult> CreateChapter()
+        public async Task<IActionResult> CreateChapter(int mangaId)
         {
-            return View();
+            var viewModel = new CreateChapterViewModel
+            {
+                MangaId = mangaId
+            };
+            return View(viewModel);
         }
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> CreateChapters(CreateChapterViewModel chapterViewModel)
+        public async Task<IActionResult> CreateChapter(CreateChapterViewModel chapterViewModel)
         {
             if (ModelState.IsValid)
             {
@@ -162,74 +165,73 @@ namespace PudgeManga_Project.Controllers
                     Url = chapterViewModel.Url,
 
                 };
-                //await _chapterRepository.Add(chapter);
-                return RedirectToAction("Create");
+
+                await _AdminChapterRepository.AddChapterToMangaAsync(chapterViewModel.MangaId, chapter);
+
+                return RedirectToAction("Index");
             }
+
             return View(chapterViewModel);
         }
+
+
         public async Task<IActionResult> EditChapter(int id)
         {
-            var manga = await _AdminMangaRepository.GetById(id);
-            if (manga == null)
+            var chapter = await _AdminChapterRepository.GetById(id);
+            if (chapter == null)
             {
                 return NotFound();
             }
-            return View(manga);
+            return View(chapter);
         }
 
-        // POST: Mangas/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditChapter(int id, EditMangaViewModel editMangaViewModel)
+        public async Task<IActionResult> EditChapter(int id, EditChapterViewModel editChapterViewModel)
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit club");
-                return View("Edit", editMangaViewModel);
-            }
-            if (ModelState.IsValid)
-            {
-                var manga = new Manga
-                {
-                    MangaId = id,
-                    Title = editMangaViewModel.Title,
-                    Author = editMangaViewModel.Author,
-                    Description = editMangaViewModel.Description,
-                    CoverUrl = editMangaViewModel.CoverUrl,
-                    GenreId = editMangaViewModel.GenreId,
-
-                };
-                await _AdminMangaRepository.UpdateAsync(manga);
+                ModelState.AddModelError("", "Failed to edit chapter");
+                return View(editChapterViewModel);
             }
 
-            return RedirectToAction("Index");
+            var chapter = await _AdminChapterRepository.GetById(id);
 
-        }
-        // GET: Mangas/Delete/5
-        public async Task<IActionResult> DeleteChapter(int id)
-        {
-            var manga = await _AdminMangaRepository.GetById(id);
-            if (manga == null)
+            if (chapter == null)
             {
                 return NotFound();
             }
-            return View(manga);
+
+            chapter.Title = editChapterViewModel.Title;
+            chapter.ChapterNumber = editChapterViewModel.ChapterNumber;
+            chapter.PublicationDate = editChapterViewModel.PublicationDate;
+            chapter.Url = editChapterViewModel.Url;
+
+            await _AdminChapterRepository.UpdateAsync(chapter);
+
+            return RedirectToAction("Index");
         }
 
-        // POST: Mangas/Delete/5
+        public async Task<IActionResult> DeleteChapter(int id)
+        {
+            var chapter = await _AdminChapterRepository.GetById(id);
+            if (chapter == null)
+            {
+                return NotFound();
+            }
+            return View(chapter);
+        }
+
         [HttpPost, ActionName("DeleteChapter")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmedChapter(int id)
         {
-            var manga = await _AdminMangaRepository.GetById(id);
-            if (manga == null)
+            var chapter = await _AdminChapterRepository.GetById(id);
+            if (chapter == null)
             {
                 return View("Delete error");
             }
-            await _AdminMangaRepository.Delete(manga);
-            await _AdminMangaRepository.Save();
+            await _AdminChapterRepository.Delete(chapter);
             return RedirectToAction("Index");
         }
     }

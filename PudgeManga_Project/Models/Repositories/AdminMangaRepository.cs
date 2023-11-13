@@ -45,9 +45,18 @@ namespace PudgeManga_Project.Models.Repositories
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            _context.Mangas.Update(entity);
+
+            // Перевірка чи об'єкт існує у контексті бази даних
+            var existingEntity = await _context.Mangas.FindAsync(entity.MangaId);
+            if (existingEntity == null)
+            {
+                throw new InvalidOperationException($"Manga with ID {entity.MangaId} not found.");
+            }
+
+            _context.Entry(existingEntity).CurrentValues.SetValues(entity);
             await _context.SaveChangesAsync();
-        }
+        
+    }
         public async Task Save()
         {
             await _context.SaveChangesAsync();
