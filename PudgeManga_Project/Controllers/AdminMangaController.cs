@@ -5,6 +5,7 @@ using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels.AdminMangaViewModels;
 using PudgeManga_Project.ViewModels.AdminMangaViewModels.AdminChaptersViewModels;
+using PudgeManga_Project.Helpers;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -253,16 +254,42 @@ namespace PudgeManga_Project.Controllers
         [HttpPost, ActionName("AddPages")]
         public async Task<IActionResult> Upload(IFormFile file, int chapterId)
         {
-            var uploads = @"C:\Users\Владислав\Downloads";
-            if (file.Length > 0)
+            try
             {
-                using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                // Отримайте аутентифікаційний сервіс Google Drive
+                var service = GoogleDriveAPIHelper.GetService();
+
+                // Отримайте ідентифікатор папки, куди ви хочете завантажити файли
+                // Це може бути ідентифікатор створеної папки або інша логіка, яку ви визначили
+                var folderId = "15vcLnxy-BA0AIDk114FB2N-tHTj9RGmM"; // Замініть це на власний ідентифікатор папки
+
+                // Створіть об'єкт файлу Google Drive
+                var driveFile = new Google.Apis.Drive.v3.Data.File
                 {
-                    await file.CopyToAsync(fileStream);
+                    Name = file.FileName,
+                    Parents = new List<string> { folderId }
+                };
+
+                // Завантажте файл на Google Drive
+                using (var stream = file.OpenReadStream())
+                {
+                    var request = service.Files.Create(driveFile, stream, file.ContentType);
+                    request.Upload();
                 }
+
+                //// Опціонально: отримайте посилання на завантажений файл
+                //var webViewLink = service.Files.Get(driveFile.Id).Execute().WebViewLink;
+
+                return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+            catch (Exception ex)
+            {
+                // Обробте помилку, наприклад, виведення у консоль, логування або повернення користувачу повідомлення про помилку
+                Console.WriteLine($"Error uploading file to Google Drive: {ex.Message}");
+                return RedirectToAction("Index"); // При необхідності змініть це на іншу дію
+            }
         }
+
 
     }
 }
