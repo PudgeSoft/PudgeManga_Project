@@ -1,8 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿
 <head>
 	<link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/admin-drop-zone.css" type="text/css" asp-append-version="true" />
@@ -16,7 +12,7 @@
     <div class="row">
         <div class="col-md-9">
             <div id="dropzone">
-                <form action="/Home/Upload" class="dropzone needsclick dz-clickable" id="uploader">
+                <form asp-controller="AdminManga" asp-action="AddPages" asp-route-chapterId="@ViewData["ChapterId"]" class="dropzone needsclick dz-clickable" id="uploader">
                     <div class="dz-message needsclick">
                         Drop files here or click to upload.<br>
                     </div>

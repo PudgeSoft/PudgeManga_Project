@@ -239,9 +239,29 @@ namespace PudgeManga_Project.Controllers
             await _AdminChapterRepository.Delete(chapter);
             return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
         }
-        public async Task<IActionResult> AddPages()
+        public async Task<IActionResult> AddPages(int chapterId)
         {
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            if (chapter == null)
+            {
+                return NotFound();
+            }
+            ViewData["ChapterId"] = chapterId;
             return View();
+        }
+
+        [HttpPost, ActionName("AddPages")]
+        public async Task<IActionResult> Upload(IFormFile file, int chapterId)
+        {
+            var uploads = @"C:\Users\Владислав\Downloads";
+            if (file.Length > 0)
+            {
+                using (var fileStream = new FileStream(Path.Combine(uploads, file.FileName), FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+            }
+            return RedirectToAction("Index");
         }
 
     }
