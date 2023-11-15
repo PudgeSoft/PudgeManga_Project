@@ -257,24 +257,11 @@ namespace PudgeManga_Project.Controllers
         {
             try
             {
-                string folderName = $"{chapterId}";
-                var folderid = _googleDriveAPIRepository.UploadPhotoToGoogleDrive(file,folderName);
-                
-                var modifiedPhotoLinks = _googleDriveAPIRepository.GetModifiedPhotoLinks(folderid);
-                //List<string> photoLinks = GoogleDriveAPIHelper.GetPhotoLinksInFolder(folderId);
+                var folderName = $"{chapterId}";
+                var folderId = _googleDriveAPIRepository.UploadPhotoToGoogleDrive(file, folderName);
 
-                //List<string> modifiedPhotoLinks = GoogleDriveAPIHelper.ModifyDriveUrls(photoLinks);
-
-                //var chapter = await _context.Chapters.FindAsync(chapterId);
-                //if (chapter != null)
-                //{
-                //    foreach (var fileLink in modifiedPhotoLinks)
-                //    {
-                //        var newPage = new Page { PageId = 39, ImageUrl = fileLink, ChapterId = chapterId,PageNumber = 1 };
-                //        chapter.Pages.Add(newPage);
-                //    }
-                //    await _context.SaveChangesAsync();
-                //}
+                var modifiedPhotoLinks = await _googleDriveAPIRepository.GetModifiedPhotoLinks(folderId);
+                await _googleDriveAPIRepository.AddPhotoLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
 
                 return RedirectToAction("Index");
             }
