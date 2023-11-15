@@ -13,6 +13,7 @@ builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaReposito
 builder.Services.AddScoped<IAdminChapterRepository<Chapter, int>, AdminChapterRepository>();
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
+builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
@@ -41,8 +42,6 @@ app.MapControllerRoute(
 app.MapControllerRoute(
     name: "Manga",
     pattern: "{controller}/{action}/{id?}/{chapter?}/{page?}");
-//app.MapControllerRoute(
-//    name: "AdminManga",
-//    pattern: "{controller}/{action}/{chapterId?}");
+
 
 app.Run();

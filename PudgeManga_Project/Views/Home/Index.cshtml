@@ -12,25 +12,6 @@
     <link rel="stylesheet" href="~/css/home.css" asp-append-version="true">
     <title>pudge soft corporation</title> <!--change title-->
 
-    <style type="text/css" media="screen and (max-width:576px)">
-        .card .nav-link{
-            flex-direction: row!important;
-            margin-bottom: 35px;
-        }
-
-            .card h6 {
-                font-size: 1.5rem;
-            }
-
-            .card img {
-                width: 10rem !important;
-            }
-
-        .content_block {
-            width: 90% !important;
-            margin: 0 5% !important;
-        }
-    </style>
 </head>
 
 <body>
@@ -44,15 +25,14 @@
             <div class="row d-flex justify-content-center pb-5 pt-5">
                 <!--row with 5 titles on big display-->
 
-                <div class="col-sm-10 col-12 content_block">
+                <div class="col-lg-10 col-12 content_block">
 
 
                     <div class="content_block_head d-flex justify-content-between p-3">
                         <h5 class="fs-6 text-white">Популярна манга</h5>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=""
-                                aria-controls="" aria-expanded="false" aria-label="Toggle navigation">
+                        <a class="navbar-toggler" asp-controller="Manga" asp-action="Index">
                             <div class="toggler-icon"></div>
-                        </button>
+                        </a>
                     </div><!--content header, name of category and button to look for more-->
                     <!--5 cards on big display, 4 on medium and 3 on small-->
 

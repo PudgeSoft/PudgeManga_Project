@@ -5,22 +5,24 @@ using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels.AdminMangaViewModels;
 using PudgeManga_Project.ViewModels.AdminMangaViewModels.AdminChaptersViewModels;
+using PudgeManga_Project.Helpers;
 
 namespace PudgeManga_Project.Controllers
 {
     public class AdminMangaController : Controller
     {
-        private readonly ApplicationDBContext _context;
         private readonly IAdminMangaRepository<Manga, int> _AdminMangaRepository;
         private readonly IAdminChapterRepository<Chapter, int> _AdminChapterRepository;
-        //private readonly IChapterRepository<Chapter, int> _chapterRepository;
+        private readonly IGoogleDriveAPIRepository<IFormFile> _googleDriveAPIRepository;
         public AdminMangaController(IAdminMangaRepository<Manga, int> adminMangaRepository, 
             IAdminChapterRepository<Chapter, int> adminChapterRepository,
-            IChapterRepository<Chapter, int> chapterRepository) 
+            IChapterRepository<Chapter, int> chapterRepository,
+            IGoogleDriveAPIRepository<IFormFile> googleDriveAPIRepository) 
         {
             _AdminMangaRepository = adminMangaRepository;
             _AdminChapterRepository = adminChapterRepository;
-            //_chapterRepository = chapterRepository;
+            _googleDriveAPIRepository = googleDriveAPIRepository;
+
         }
 
         // GET: Mangas
@@ -239,10 +241,38 @@ namespace PudgeManga_Project.Controllers
             await _AdminChapterRepository.Delete(chapter);
             return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
         }
-        public async Task<IActionResult> AddPages()
+        public async Task<IActionResult> AddPages(int chapterId)
         {
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            if (chapter == null)
+            {
+                return NotFound();
+            }
+            ViewData["ChapterId"] = chapterId;
             return View();
         }
+
+        [HttpPost, ActionName("AddPages")]
+        public async Task<IActionResult> Upload(IFormFile file, int chapterId)
+        {
+            try
+            {
+                var folderName = $"{chapterId}";
+                var folderId = _googleDriveAPIRepository.UploadPhotoToGoogleDrive(file, folderName);
+
+                var modifiedPhotoLinks = await _googleDriveAPIRepository.GetModifiedPhotoLinks(folderId);
+                await _googleDriveAPIRepository.AddPhotoLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Error uploading file to Google Drive: {ex.Message}");
+                return RedirectToAction("Index"); 
+            }
+        }
+
 
     }
 }
