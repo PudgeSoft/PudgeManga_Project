@@ -11,17 +11,18 @@ namespace PudgeManga_Project.Controllers
 {
     public class AdminMangaController : Controller
     {
-        private readonly ApplicationDBContext _context;
         private readonly IAdminMangaRepository<Manga, int> _AdminMangaRepository;
         private readonly IAdminChapterRepository<Chapter, int> _AdminChapterRepository;
-        //private readonly IChapterRepository<Chapter, int> _chapterRepository;
+        private readonly IGoogleDriveAPIRepository<IFormFile> _googleDriveAPIRepository;
         public AdminMangaController(IAdminMangaRepository<Manga, int> adminMangaRepository, 
             IAdminChapterRepository<Chapter, int> adminChapterRepository,
-            IChapterRepository<Chapter, int> chapterRepository) 
+            IChapterRepository<Chapter, int> chapterRepository,
+            IGoogleDriveAPIRepository<IFormFile> googleDriveAPIRepository) 
         {
             _AdminMangaRepository = adminMangaRepository;
             _AdminChapterRepository = adminChapterRepository;
-            //_chapterRepository = chapterRepository;
+            _googleDriveAPIRepository = googleDriveAPIRepository;
+
         }
 
         // GET: Mangas
@@ -256,37 +257,32 @@ namespace PudgeManga_Project.Controllers
         {
             try
             {
-                // Отримайте аутентифікаційний сервіс Google Drive
-                var service = GoogleDriveAPIHelper.GetService();
+                string folderName = $"{chapterId}";
+                var folderid = _googleDriveAPIRepository.UploadPhotoToGoogleDrive(file,folderName);
+                
+                var modifiedPhotoLinks = _googleDriveAPIRepository.GetModifiedPhotoLinks(folderid);
+                //List<string> photoLinks = GoogleDriveAPIHelper.GetPhotoLinksInFolder(folderId);
 
-                // Отримайте ідентифікатор папки, куди ви хочете завантажити файли
-                // Це може бути ідентифікатор створеної папки або інша логіка, яку ви визначили
-                var folderId = "15vcLnxy-BA0AIDk114FB2N-tHTj9RGmM"; // Замініть це на власний ідентифікатор папки
+                //List<string> modifiedPhotoLinks = GoogleDriveAPIHelper.ModifyDriveUrls(photoLinks);
 
-                // Створіть об'єкт файлу Google Drive
-                var driveFile = new Google.Apis.Drive.v3.Data.File
-                {
-                    Name = file.FileName,
-                    Parents = new List<string> { folderId }
-                };
-
-                // Завантажте файл на Google Drive
-                using (var stream = file.OpenReadStream())
-                {
-                    var request = service.Files.Create(driveFile, stream, file.ContentType);
-                    request.Upload();
-                }
-
-                //// Опціонально: отримайте посилання на завантажений файл
-                //var webViewLink = service.Files.Get(driveFile.Id).Execute().WebViewLink;
+                //var chapter = await _context.Chapters.FindAsync(chapterId);
+                //if (chapter != null)
+                //{
+                //    foreach (var fileLink in modifiedPhotoLinks)
+                //    {
+                //        var newPage = new Page { PageId = 39, ImageUrl = fileLink, ChapterId = chapterId,PageNumber = 1 };
+                //        chapter.Pages.Add(newPage);
+                //    }
+                //    await _context.SaveChangesAsync();
+                //}
 
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                // Обробте помилку, наприклад, виведення у консоль, логування або повернення користувачу повідомлення про помилку
+
                 Console.WriteLine($"Error uploading file to Google Drive: {ex.Message}");
-                return RedirectToAction("Index"); // При необхідності змініть це на іншу дію
+                return RedirectToAction("Index"); 
             }
         }
 

@@ -18,8 +18,8 @@ namespace PudgeManga_Project.Helpers
                 RefreshToken = "1//049yfNpQ37dctCgYIARAAGAQSNwF-L9IrMp8o00sokY6vH7PFqfzh1A8m5W0_hkoTZla1Kt3uKlG2p06Fh5b2WVEf4nqZOC-riUo"
             };
 
-            var applicationName = "googleDrive test"; // Використовуйте назву проекту в Google Cloud
-            var username = "melnyk.vladyslav2@lll.kpi.ua"; // Використовуйте свій електронний адрес
+            var applicationName = "googleDrive test"; 
+            var username = "melnyk.vladyslav2@lll.kpi.ua"; 
 
             var clientSecrets = new ClientSecrets
             {
@@ -53,7 +53,6 @@ namespace PudgeManga_Project.Helpers
             {
                 var service = GetService();
 
-                // Створення об'єкта, що представляє папку в Google Drive
                 var driveFolder = new Google.Apis.Drive.v3.Data.File
                 {
                     Name = folderName,
@@ -61,41 +60,35 @@ namespace PudgeManga_Project.Helpers
                     Parents = new List<string> { parent }
                 };
 
-                // Створення команди для створення папки
                 var createFolderRequest = service.Files.Create(driveFolder);
 
-                // Виконання команди та отримання інформації про створений файл (папку)
                 var createdFolder = createFolderRequest.Execute();
 
-                // Повернення ідентифікатора створеної папки
                 return createdFolder.Id;
             }
             catch (Exception ex)
             {
-                // Обробка помилок (виведення або логування)
+
                 Console.WriteLine($"Error creating folder: {ex.Message}");
-                return null; // або киньте власний виняток, відповідно до вашого сценарію
+                return null; 
             }
         }
 
-        private static List<string> GetPhotoLinksInFolder(string folderId)
+        public static List<string> GetPhotoLinksInFolder(string folderId)
         {
             try
             {
                 var service = GetService();
 
-                // Запит для отримання файлів у вказаній папці
-                FilesResource.ListRequest listRequest = service.Files.List();
-                listRequest.Q = $"'{folderId}' in parents"; // Обмеження результатів до вказаної папки
-                listRequest.Fields = "files(id, name, webViewLink)"; // Отримати лише необхідні поля
 
-                // Виклик запиту і отримання результатів
+                FilesResource.ListRequest listRequest = service.Files.List();
+                listRequest.Q = $"'{folderId}' in parents"; 
+                listRequest.Fields = "files(id, name, webViewLink)"; 
+
                 FileList fileList = listRequest.Execute();
 
-                // Створення списку посилань на фото
                 List<string> photoLinks = new List<string>();
 
-                // Додавання посилань на фото до списку
                 if (fileList.Files != null)
                 {
                     foreach (var file in fileList.Files)
@@ -114,11 +107,11 @@ namespace PudgeManga_Project.Helpers
         }
 
 
-        private static List<string> ModifyDriveUrls(List<string> originalUrls)
+        public static List<string> ModifyDriveUrls(List<string> originalUrls)
         {
             try
             {
-                // Створення списку для зберігання модифікованих посилань
+
                 List<string> modifiedUrls = new List<string>();
 
                 foreach (var originalUrl in originalUrls)
@@ -126,13 +119,10 @@ namespace PudgeManga_Project.Helpers
                     Uri uri = new Uri(originalUrl);
                     string fileId = GetFileIdFromUrl(uri);
 
-                    // Побудова нового URL зі зміненим ідентифікатором
                     string modifiedUrl = $"https://drive.google.com/uc?export=view&id={fileId}";
 
-                    // Видалення зайвого символу "/" в кінці URL, якщо він присутній
                     modifiedUrl = modifiedUrl.TrimEnd('/');
 
-                    // Додавання модифікованого посилання до списку
                     modifiedUrls.Add(modifiedUrl);
                 }
 
@@ -145,7 +135,7 @@ namespace PudgeManga_Project.Helpers
             }
         }
 
-        private static string GetFileIdFromUrl(Uri uri)
+        public static string GetFileIdFromUrl(Uri uri)
         {
             // Отримання ідентифікатора файлу з URL
             string[] segments = uri.Segments;
