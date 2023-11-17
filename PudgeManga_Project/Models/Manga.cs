@@ -5,6 +5,7 @@ namespace PudgeManga_Project.Models
     public class Manga
     {
         [Key]
+        
         public int MangaId { get; set; }
         public string Title { get; set; }
         public string Author { get; set; }

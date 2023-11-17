@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PudgeManga_Project.Data;
 
@@ -11,9 +12,11 @@ using PudgeManga_Project.Data;
 namespace PudgeManga_Project.Data.migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231117182303_Identity_Fix2_User")]
+    partial class Identity_Fix2_User
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -184,7 +187,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("MangaID");
 
-                    b.ToTable("Chapters", (string)null);
+                    b.ToTable("Chapters");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Comment", b =>
@@ -209,7 +212,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("MangaId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Manga", b =>
@@ -241,7 +244,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasKey("MangaId");
 
-                    b.ToTable("Mangas", (string)null);
+                    b.ToTable("Mangas");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Page", b =>
@@ -266,7 +269,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("ChapterId");
 
-                    b.ToTable("Pages", (string)null);
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Popularity", b =>
@@ -285,7 +288,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasKey("MangaId");
 
-                    b.ToTable("Popularities", (string)null);
+                    b.ToTable("Popularities");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.User", b =>
