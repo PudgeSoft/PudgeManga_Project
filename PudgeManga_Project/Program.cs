@@ -1,3 +1,5 @@
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Models;
@@ -10,10 +12,14 @@ builder.Services.AddControllersWithViews();
 // register dependency injection with AddScoped method for manga model
 builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaRepository>();
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddMemoryCache();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+
 
 var app = builder.Build();
 

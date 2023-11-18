@@ -1,82 +1,85 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using PudgeManga_Project.Data;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.ViewModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace PudgeManga_Project.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
-
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<User> signInManager)
+        private readonly ApplicationDBContext _context;
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDBContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
+        }
+            
+        public IActionResult Login()
+        {
+            var response = new LoginViewModel();
+            return View(response);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel LoginViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(LoginViewModel);
+            }
+
+            var user = await _userManager.FindByEmailAsync(LoginViewModel.Email);
+
+            if (user != null)
+            {
+                var passwordCheck = await _userManager.CheckPasswordAsync(user, LoginViewModel.Password);
+                if (passwordCheck)
+                {
+                    var result = await _signInManager.PasswordSignInAsync(user, LoginViewModel.Password, false, false);
+                    if(result.Succeeded)
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }
+                TempData["Error"] = "Wrong credentials. Try again";
+                return View(LoginViewModel);
+            }
+            TempData["Error"] = "Wrong credentials. Try again";
+            return View(LoginViewModel);
+        }
         [HttpGet]
         public IActionResult Register()
         {
-            return View();
+            var response = new RegisterViewModel();
+            return View(response);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid) return View(registerViewModel);
+
+            var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
+            if (user != null)
             {
-                var user = new User { UserName = model.UserName, Email = model.Email };
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, isPersistent: false);
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    foreach (var error in result.Errors)
-                    {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                    }
-                }
+                TempData["Error"] = "This email address is already in use";
+                return View(registerViewModel);
             }
-            return View(model);
-        }
 
-        public IActionResult Login()
-        {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel model)
-        {
-            if (ModelState.IsValid)
+            var newUser = new User()
             {
-                var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
-                    return View(model);
-                }
-            }
-            return View(model);
-        }
+                Email = registerViewModel.EmailAddress,
+                UserName = registerViewModel.EmailAddress
+            };
+            var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
+            if (newUserResponse.Succeeded)
+                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+
             return RedirectToAction("Index", "Home");
         }
     }
