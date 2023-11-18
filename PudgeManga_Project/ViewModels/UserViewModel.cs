@@ -1,4 +1,4 @@
-﻿namespace RunGroopWebApp.ViewModels;
+﻿namespace PudgeManga_Project.ViewModels;
 
 public class UserViewModel
 {
