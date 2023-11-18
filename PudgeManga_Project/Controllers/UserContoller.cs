@@ -3,20 +3,21 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.ViewModels;
 
-namespace RunGroopWebApp.Controllers
+namespace PudgeManga_Project.Controllers
 {
     public class UserController : Controller
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<User> _userManager;
-        private readonly IPhotoService _photoService;
 
-        public UserController(IUserRepository userRepository, UserManager<User> userManager, IPhotoService photoService)
+
+        public UserController(IUserRepository userRepository, UserManager<User> userManager)
         {
             _userRepository = userRepository;
             _userManager = userManager;
-            _photoService = photoService;
+
         }
 
         [HttpGet("users")]
@@ -29,12 +30,12 @@ namespace RunGroopWebApp.Controllers
                 var userViewModel = new UserViewModel()
                 {
                     Id = user.Id,
-                    Pace = user.Pace,
                     City = user.City,
-                    State = user.State,
-                    Mileage = user.Mileage,
                     UserName = user.UserName,
-                    ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
+                    State = user.State,
+                    //Pace = user.Pace,
+                    //Mileage = user.Mileage,
+                    //ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
                 };
                 result.Add(userViewModel);
             }
@@ -53,12 +54,12 @@ namespace RunGroopWebApp.Controllers
             var userDetailViewModel = new UserDetailViewModel()
             {
                 Id = user.Id,
-                Pace = user.Pace,
                 City = user.City,
                 State = user.State,
-                Mileage = user.Mileage,
                 UserName = user.UserName,
-                ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
+                //Pace = user.Pace,
+                //Mileage = user.Mileage,
+                //ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
             };
             return View(userDetailViewModel);
         }
@@ -76,12 +77,13 @@ namespace RunGroopWebApp.Controllers
 
             var editMV = new EditProfileViewModel()
             {
-                City = user.City,
-                State = user.State,
-                Pace = user.Pace,
-                Mileage = user.Mileage,
-                ProfileImageUrl = user.ProfileImageUrl,
+            //    City = user.City,
+            //    State = user.State,
+            //    Pace = user.Pace,
+            //    Mileage = user.Mileage,
+            //    ProfileImageUrl = user.ProfileImageUrl,
             };
+
             return View(editMV);
         }
 
@@ -102,35 +104,35 @@ namespace RunGroopWebApp.Controllers
                 return View("Error");
             }
 
-            if (editVM.Image != null) // only update profile image
-            {
-                var photoResult = await _photoService.AddPhotoAsync(editVM.Image);
+            //if (editVM.Image != null) // only update profile image
+            //{
+            //    var photoResult = await _photoService.AddPhotoAsync(editVM.Image);
 
-                if (photoResult.Error != null)
-                {
-                    ModelState.AddModelError("Image", "Failed to upload image");
-                    return View("EditProfile", editVM);
-                }
+            //    if (photoResult.Error != null)
+            //    {
+            //        ModelState.AddModelError("Image", "Failed to upload image");
+            //        return View("EditProfile", editVM);
+            //    }
 
-                if (!string.IsNullOrEmpty(user.ProfileImageUrl))
-                {
-                    _ = _photoService.DeletePhotoAsync(user.ProfileImageUrl);
-                }
+            //    if (!string.IsNullOrEmpty(user.ProfileImageUrl))
+            //    {
+            //        _ = _photoService.DeletePhotoAsync(user.ProfileImageUrl);
+            //    }
 
-                user.ProfileImageUrl = photoResult.Url.ToString();
-                editVM.ProfileImageUrl = user.ProfileImageUrl;
+               // user.ProfileImageUrl = photoResult.Url.ToString();
+               //editVM.ProfileImageUrl = user.ProfileImageUrl;
 
-                await _userManager.UpdateAsync(user);
+            //    await _userManager.UpdateAsync(user);
 
-                return View(editVM);
-            }
+            //    return View(editVM);
+            //}
 
-            user.City = editVM.City;
-            user.State = editVM.State;
-            user.Pace = editVM.Pace;
-            user.Mileage = editVM.Mileage;
+            //user.City = editVM.City;
+            //user.State = editVM.State;
+            ////user.Pace = editVM.Pace;
+            ////user.Mileage = editVM.Mileage;
 
-            await _userManager.UpdateAsync(user);
+            //await _userManager.UpdateAsync(user);
 
             return RedirectToAction("Detail", "User", new { user.Id });
         }
