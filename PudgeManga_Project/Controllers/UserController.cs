@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels;
 
 namespace PudgeManga_Project.Controllers
@@ -30,7 +30,6 @@ namespace PudgeManga_Project.Controllers
                 var userViewModel = new UserViewModel()
                 {
                     Id = user.Id,
-                    City = user.City,
                     UserName = user.UserName,
                     State = user.State,
                     //Pace = user.Pace,
@@ -54,7 +53,6 @@ namespace PudgeManga_Project.Controllers
             var userDetailViewModel = new UserDetailViewModel()
             {
                 Id = user.Id,
-                City = user.City,
                 State = user.State,
                 UserName = user.UserName,
                 //Pace = user.Pace,
