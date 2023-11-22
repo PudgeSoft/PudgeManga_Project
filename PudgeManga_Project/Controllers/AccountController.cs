@@ -3,6 +3,7 @@ using PudgeManga_Project.Data;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.ViewModels;
 using Microsoft.AspNetCore.Identity;
+using System.Runtime.ConstrainedExecution;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -11,13 +12,15 @@ namespace PudgeManga_Project.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ApplicationDBContext _context;
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, ApplicationDBContext context)
+        public AccountController(UserManager<User> userManager,
+                   SignInManager<User> signInManager,
+                   ApplicationDBContext context)
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
             _context = context;
+            _signInManager = signInManager;
+            _userManager = userManager;
         }
-            
+
         public IActionResult Login()
         {
             var response = new LoginViewModel();
@@ -32,7 +35,7 @@ namespace PudgeManga_Project.Controllers
                 return View(LoginViewModel);
             }
 
-            var user = await _userManager.FindByEmailAsync(LoginViewModel.Email);
+            var user = await _userManager.FindByEmailAsync(LoginViewModel.EmailAddress);
 
             if (user != null)
             {
@@ -61,7 +64,11 @@ namespace PudgeManga_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterViewModel registerViewModel)
         {
-            if (!ModelState.IsValid) return View(registerViewModel);
+            if (!ModelState.IsValid)
+            {
+
+                return View(registerViewModel);
+            }
 
             var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
             if (user != null)
@@ -78,9 +85,19 @@ namespace PudgeManga_Project.Controllers
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
             if (newUserResponse.Succeeded)
-                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
-
-            return RedirectToAction("Index", "Home");
+            {
+                await _signInManager.SignInAsync(newUser, false);
+               // await _userManager.AddToRoleAsync(newUser, UserRoles.User);
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                foreach (var error in newUserResponse.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                return View(registerViewModel);
+            }
         }
 
         [HttpGet]
