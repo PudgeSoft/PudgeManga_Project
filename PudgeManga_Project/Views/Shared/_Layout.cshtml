@@ -94,7 +94,10 @@
 							 <li>
 								<hr class="dropdown-divider">
 							 </li>
-						<li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Вийти<li/></a>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Вийти</a></li>
+                            }
 						</ul>
 					</div> <!--block for user button-->
 				</div>
