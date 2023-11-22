@@ -14,7 +14,7 @@ namespace PudgeManga_Project.Models
         public int Rating { get; set; }
         public Manga Manga { get; set; }
 
-        //[ForeignKey("IdentityUser")]
-        //public User Id { get; set; }
+        [ForeignKey("User")]
+        public User Id { get; set; }
     }
 }
