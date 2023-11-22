@@ -14,6 +14,7 @@ builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaReposito
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
@@ -37,7 +38,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseAuthentication();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

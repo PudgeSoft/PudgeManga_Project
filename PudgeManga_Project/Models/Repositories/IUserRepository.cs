@@ -1,6 +1,6 @@
 ﻿using PudgeManga_Project.Models;
 
-namespace PudgeManga_Project.Interfaces
+namespace PudgeManga_Project.Models.Repositories
 {
     public interface IUserRepository
     {

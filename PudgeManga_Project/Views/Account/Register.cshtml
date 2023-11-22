@@ -1,9 +1,9 @@
-﻿@using PudgeManga_Project.ViewModels
-@model RegisterViewModel
+﻿@model PudgeManga_Project.ViewModels.RegisterViewModel
 
 @{
     ViewData["Title"] = "Sign up";
 }
+
 <div class="row">
     <div class="col-md-6 offset-3">
         <p>
@@ -27,6 +27,7 @@
                         <input asp-for="EmailAddress" class="form-control" />
                         <span asp-validation-for="EmailAddress" class="text-danger"></span>
                     </div>
+
                     <div class="form-group">
                         <label asp-for="Password" class="control-label"></label>
                         <input asp-for="Password" class="form-control" />
@@ -40,7 +41,7 @@
 
                     <div class="form-group">
                         <input class="btn btn-outline-success float-right" type="submit" value="Sign up" />
-                        <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Cancel</a>
+                        <a class="btn btn-outline-secondary" asp-controller="Race" asp-action="Index">Cancel</a>
                     </div>
                 </form>
             </div>
