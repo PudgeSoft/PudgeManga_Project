@@ -12,4 +12,15 @@
         <input type="submit" value="Пошук" clas=""/>
     </div>
 </form>
+<a asp-action="Index">Повернутися до повного списку</a>
+<hr />
 
+<form asp-action="Index" method="post">
+    <label for="genres">Виберіть жанри:</label><br>
+    <select id="genres" name="genres" multiple>
+        <option value="genre1">Еротика</option>
+        <option value="genre2">Драма</option>
+        <option value="genre3">Екшн</option>
+    </select>
+    <input type="submit" value="Пошук">
+</form>
