@@ -258,10 +258,10 @@ namespace PudgeManga_Project.Controllers
             try
             {
                 var folderName = $"{chapterId}";
-                var folderId = _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderName);
+                var folderId = _googleDriveAPIRepository.UploadPhotoToGoogleDrive(file, folderName);
 
-                var modifiedPhotoLinks = await _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
-                await _googleDriveAPIRepository.AddFileLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
+                var modifiedPhotoLinks = await _googleDriveAPIRepository.GetModifiedPhotoLinks(folderId);
+                await _googleDriveAPIRepository.AddPhotoLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
 
                 return RedirectToAction("Index");
             }

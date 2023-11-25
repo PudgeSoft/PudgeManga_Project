@@ -12,7 +12,7 @@ namespace PudgeManga_Project.Models.Repositories
         {
             _context = context;
         }
-        public async Task AddFileLinksToPagesWithChapters(IEnumerable<string> modifiedPhotoLinks, int chapterId)
+        public async Task AddPhotoLinksToPagesWithChapters(IEnumerable<string> modifiedPhotoLinks, int chapterId)
         {
             var chapter = await _context.Chapters
                 .Include(p => p.Pages)
@@ -30,7 +30,7 @@ namespace PudgeManga_Project.Models.Repositories
             }
         }
 
-        public async Task<List<string>> GetModifiedFileLinks(string folderId)
+        public async Task<List<string>> GetModifiedPhotoLinks(string folderId)
         {
             List<string> photoLinks = GoogleDriveAPIHelper.GetPhotoLinksInFolder(folderId);
 
@@ -38,7 +38,7 @@ namespace PudgeManga_Project.Models.Repositories
             return modifiedPhotoLinks;
         }
 
-        public string UploadFileToGoogleDrive(IFormFile file, string folderName)
+        public string UploadPhotoToGoogleDrive(IFormFile file, string folderName)
         {
             string parent = null;
             var service = GoogleDriveAPIHelper.GetService();
