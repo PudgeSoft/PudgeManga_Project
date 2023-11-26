@@ -59,9 +59,11 @@
 
                             </ul>
                     </div>
+                        <a asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@(Model.ChapterNumber +1)">
                         <button type="button" class="btn btn-warning fs-5  m-2">
                             Наступна глава
                         </button>
+                        </a>
                     </div>
 
                 </div>
