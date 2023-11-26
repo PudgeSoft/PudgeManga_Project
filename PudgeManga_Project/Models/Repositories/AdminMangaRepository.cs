@@ -23,7 +23,10 @@ namespace PudgeManga_Project.Models.Repositories
         {
             return await _context.Mangas.ToListAsync();
         }
-
+        //public async Task<IEnumerable<Manga>> GetAllGenres()
+        //{
+        //    return await _context.Genres.ToListAsync();
+        //}
         public async Task<Manga> GetById(int id)
         {
             return await _context.Mangas

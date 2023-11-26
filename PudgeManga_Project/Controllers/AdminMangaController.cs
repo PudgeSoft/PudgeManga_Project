@@ -66,7 +66,7 @@ namespace PudgeManga_Project.Controllers
                     Author = mangaViewModel.Author,
                     Description = mangaViewModel.Description,
                     CoverUrl = mangaViewModel.CoverUrl,
-                    GenreId = mangaViewModel.GenreId,
+                    MangaGenres = mangaViewModel.GenreIds.Select(genreId =>  new MangaGenre { GenreId = genreId}).ToList()
                 };
                await _AdminMangaRepository.Add(manga);
                 return RedirectToAction("Create");
@@ -106,7 +106,7 @@ namespace PudgeManga_Project.Controllers
                     Author = editMangaViewModel.Author,
                     Description = editMangaViewModel.Description,
                     CoverUrl = editMangaViewModel.CoverUrl,
-                    GenreId = editMangaViewModel.GenreId,
+                    MangaGenres = editMangaViewModel.GenreIds.Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
 
                 };
                await _AdminMangaRepository.UpdateAsync(manga);
