@@ -36,10 +36,9 @@
             </div>
             @*<div class="form-group">
                 <label asp-for="GenreIds" class="control-label"></label>
-                <select asp-for="GenreIds" asp-items="@(new SelectList(ViewBag.Genres, "GenreId", "GenreName"))" multiple class="form-control"></select>
+                <select asp-for="GenreIds" asp-items="@Model.AllGenres" class="form-control" multiple></select>
                 <span asp-validation-for="GenreIds" class="text-danger"></span>
             </div>*@
-
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
