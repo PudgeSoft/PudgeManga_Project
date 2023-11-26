@@ -47,12 +47,17 @@
                         <button type="button" class="btn btn-warning dropdown-toggle fs-5  m-2" data-bs-toggle="dropdown" aria-expanded="false">
                             Оберіть главу
                         </button>
-                        <ul class="dropdown-menu" style="">
-                            <li><a class="dropdown-item fs-5" href="#">1 Глава</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">2 Глава</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">3 Глава</a></li>
-                            <li><a class="dropdown-item fs-5" href="#">4 Глава</a></li>
-                        </ul>
+                            <ul class="dropdown-menu" style="">
+                                @foreach (var chapter in Model.Manga.Chapters.Where(ch => ch.MangaID == Model.Manga.MangaId).OrderByDescending(ch => ch.ChapterNumber))
+                                {
+                                    <li>
+                                        <a class="dropdown-item asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
+                                            Глава @chapter.ChapterNumber - @chapter.Title
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
                     </div>
                         <button type="button" class="btn btn-warning fs-5  m-2">
                             Наступна глава
