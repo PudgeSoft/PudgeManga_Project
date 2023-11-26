@@ -49,9 +49,20 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var allGenres = await _genreRepository.GetAllGenres();
+
+            var createMangaViewModel = new CreateMangaViewModel
+            {
+                AllGenres = allGenres.Select(genre => new SelectListItem
+                {
+                    Value = genre.GenreId.ToString(),
+                    Text = genre.Name
+                }).ToList()
+            };
+
+            return View(createMangaViewModel);
         }
 
         // POST: Mangas/Create
@@ -61,8 +72,7 @@ namespace PudgeManga_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateMangaViewModel mangaViewModel)
         {
-            if (ModelState.IsValid)
-            {
+
                 var manga = new Manga
                 {
                     Title = mangaViewModel.Title,
@@ -71,11 +81,19 @@ namespace PudgeManga_Project.Controllers
                     CoverUrl = mangaViewModel.CoverUrl,
                     MangaGenres = mangaViewModel.GenreIds.Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
                 };
+
                 await _AdminMangaRepository.Add(manga);
-                return RedirectToAction("Create");
-            }
-            return View(mangaViewModel);
+                
+
+            var allGenres = await _genreRepository.GetAllGenres();
+            mangaViewModel.AllGenres = allGenres.Select(genre => new SelectListItem
+            {
+                Value = genre.GenreId.ToString(),
+                Text = genre.Name
+            }).ToList();
+            return RedirectToAction("Index");
         }
+
 
         // GET: Mangas/Edit/5
         public async Task<IActionResult> Edit(int id)
@@ -113,11 +131,6 @@ namespace PudgeManga_Project.Controllers
         public async Task<IActionResult> Edit(int id, EditMangaViewModel editMangaViewModel)
         {
             
-            //if (!ModelState.IsValid)
-            //{
-            //    ModelState.AddModelError("", "Failed to edit Manga");
-            //    return View("Edit", editMangaViewModel);
-            //}
 
             List<int> selectedGenreIds = editMangaViewModel.GenreIds;
             var manga = new Manga
