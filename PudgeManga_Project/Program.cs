@@ -17,7 +17,7 @@ builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIR
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
 });
 
 var app = builder.Build();
