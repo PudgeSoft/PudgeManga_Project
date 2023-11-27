@@ -4,7 +4,7 @@
     ViewData["Title"] = "Delete";
 }
 <head>
-    <link rel="stylesheet" href="~/css/Delete.css" type="text/css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
 </head>
 <h1>Delete</h1>
 
@@ -25,9 +25,9 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CoverUrl)
         </dd>
-        <dd class = "col-sm-10">
+        @*<dd class = "col-sm-10">
             @Html.DisplayFor(model => model.GenreId)
-        </dd>
+        </dd>*@
     </dl>
     
     <form asp-action="Delete">

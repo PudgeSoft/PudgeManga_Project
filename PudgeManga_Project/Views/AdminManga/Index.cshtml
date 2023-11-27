@@ -4,9 +4,9 @@
     ViewData["Title"] = "Index";
 }
 <head>
-    <link rel="stylesheet" href="~/css/Admin_manga_Index.css" type="text/css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
 </head>
-<h1>Index</h1>
+<h1>Vadym skazav napysaty tut admin panel</h1>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -26,9 +26,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CoverUrl)
             </th>
-            <th>
+            @*<th>
                 @Html.DisplayNameFor(model => model.GenreId)
-            </th>
+            </th>*@
             <th></th>
         </tr>
     </thead>
@@ -47,12 +47,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.CoverUrl)
             </td>
-            <td>
+           @* <td>
                 @Html.DisplayFor(modelItem => item.GenreId)
-            </td>
+            </td>*@
             <td>
-                <a asp-action="Edit" asp-route-id="@item.MangaId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.MangaId">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.MangaId">Edit</a> 
+                <a asp-action="Chapters" asp-route-mangaId="@item.MangaId">Chapters</a>
                 <a asp-action="Delete" asp-route-id="@item.MangaId">Delete</a>
             </td>
         </tr>

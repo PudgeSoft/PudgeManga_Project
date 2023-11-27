@@ -1,18 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using PudgeManga_Project.Data;
-using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.Models;
-using PudgeManga_Project.ViewModels;
+using PudgeManga_Project.Interfaces;
+using PudgeManga_Project.Models.Repositories;
+using PudgeManga_Project.ViewModels.AdminMangaViewModels;
+using PudgeManga_Project.ViewModels.AdminMangaViewModels.AdminChaptersViewModels;
+using PudgeManga_Project.Helpers;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PudgeManga_Project.Controllers
 {
     public class AdminMangaController : Controller
     {
-        private readonly ApplicationDBContext _context;
         private readonly IAdminMangaRepository<Manga, int> _AdminMangaRepository;
-        public AdminMangaController(IAdminMangaRepository<Manga, int> mangaRepository)
+        private readonly IAdminChapterRepository<Chapter, int> _AdminChapterRepository;
+        private readonly IGoogleDriveAPIRepository<IFormFile> _googleDriveAPIRepository;
+        private readonly IGenreRepository _genreRepository;
+        public AdminMangaController(IAdminMangaRepository<Manga, int> adminMangaRepository,
+            IAdminChapterRepository<Chapter, int> adminChapterRepository,
+            IChapterRepository<Chapter, int> chapterRepository,
+            IGoogleDriveAPIRepository<IFormFile> googleDriveAPIRepository,
+            IGenreRepository genreRepository)
         {
-            _AdminMangaRepository = mangaRepository;
+            _AdminMangaRepository = adminMangaRepository;
+            _AdminChapterRepository = adminChapterRepository;
+            _googleDriveAPIRepository = googleDriveAPIRepository;
+            _genreRepository = genreRepository;
         }
 
         // GET: Mangas
@@ -34,25 +47,22 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
-        // GET: Mangas/MangaDetail/5
-        [HttpGet]
-        //[Route("MangaDetail/{id}")]
-        public async Task<IActionResult> MangaDetails(int id)
-        {
-            var manga = await _AdminMangaRepository.GetById(id);
-            if (manga == null)
-            {
-                return NotFound();
-            }
-
-            return View(manga);
-        }
-
 
         // GET: Mangas/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            return View();
+            var allGenres = await _genreRepository.GetAllGenres();
+
+            var createMangaViewModel = new CreateMangaViewModel
+            {
+                AllGenres = allGenres.Select(genre => new SelectListItem
+                {
+                    Value = genre.GenreId.ToString(),
+                    Text = genre.Name
+                }).ToList()
+            };
+
+            return View(createMangaViewModel);
         }
 
         // POST: Mangas/Create
@@ -62,21 +72,28 @@ namespace PudgeManga_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateMangaViewModel mangaViewModel)
         {
-            if (ModelState.IsValid)
-            {
+
                 var manga = new Manga
                 {
                     Title = mangaViewModel.Title,
                     Author = mangaViewModel.Author,
                     Description = mangaViewModel.Description,
                     CoverUrl = mangaViewModel.CoverUrl,
-                    GenreId = mangaViewModel.GenreId,
+                    MangaGenres = mangaViewModel.GenreIds.Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
                 };
-                _AdminMangaRepository.Add(manga);
-                return RedirectToAction("Create");
-            }
-            return View(mangaViewModel);
+
+                await _AdminMangaRepository.Add(manga);
+                
+
+            var allGenres = await _genreRepository.GetAllGenres();
+            mangaViewModel.AllGenres = allGenres.Select(genre => new SelectListItem
+            {
+                Value = genre.GenreId.ToString(),
+                Text = genre.Name
+            }).ToList();
+            return RedirectToAction("Index");
         }
+
 
         // GET: Mangas/Edit/5
         public async Task<IActionResult> Edit(int id)
@@ -86,7 +103,24 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
-            return View(manga);
+            var allGenres = await _genreRepository.GetAllGenres();
+
+            var editMangaViewModel = new EditMangaViewModel
+            {
+                MangaId = manga.MangaId,
+                Title = manga.Title,
+                Author = manga.Author,
+                Description = manga.Description,
+                CoverUrl = manga.CoverUrl,
+                GenreIds = manga.MangaGenres.Select(mg => mg.GenreId).ToList(),
+                AllGenres = allGenres.Select(genre => new SelectListItem
+                {
+                    Value = genre.GenreId.ToString(),
+                    Text = genre.Name
+                }).ToList()
+            };
+
+            return View(editMangaViewModel);
         }
 
         // POST: Mangas/Edit/5
@@ -96,25 +130,22 @@ namespace PudgeManga_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditMangaViewModel editMangaViewModel)
         {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "Failed to edit club");
-                return View("Edit", editMangaViewModel);
-            }
-            if (ModelState.IsValid)
-            {
-                var manga = new Manga
-                {
-                    MangaId = id,
-                    Title = editMangaViewModel.Title,
-                    Author = editMangaViewModel.Author,
-                    Description = editMangaViewModel.Description,
-                    CoverUrl = editMangaViewModel.CoverUrl,
-                    GenreId = editMangaViewModel.GenreId,
+            
 
-                };
-                _AdminMangaRepository.UpdateAsync(manga);
-            }
+            List<int> selectedGenreIds = editMangaViewModel.GenreIds;
+            var manga = new Manga
+            {
+                MangaId = editMangaViewModel.MangaId,
+                Title = editMangaViewModel.Title,
+                Author = editMangaViewModel.Author,
+                Description = editMangaViewModel.Description,
+                CoverUrl = editMangaViewModel.CoverUrl,
+                MangaGenres = selectedGenreIds
+                .Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
+            };
+
+            await _AdminMangaRepository.UpdateAsync(manga);
+
 
             return RedirectToAction("Index");
 
@@ -141,9 +172,142 @@ namespace PudgeManga_Project.Controllers
             {
                 return View("Delete error");
             }
-            _AdminMangaRepository.Delete(manga);
-            _AdminMangaRepository.Save();
+            await _AdminMangaRepository.Delete(manga);
+            await _AdminMangaRepository.Save();
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> Chapters(int mangaId)
+        {
+            ViewData["MangaId"] = mangaId;
+            var chapters = await _AdminChapterRepository.GetChaptersForManga(mangaId);
+            return View(chapters);
+        }
+        public async Task<IActionResult> CreateChapter(int mangaId)
+        {
+            var viewModel = new CreateChapterViewModel
+            {
+                MangaId = mangaId
+            };
+            ViewData["MangaId"] = mangaId;
+            return View(viewModel);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateChapter(CreateChapterViewModel chapterViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var chapter = new Chapter
+                {
+                    ChapterNumber = chapterViewModel.ChapterNumber,
+                    Title = chapterViewModel.Title,
+                    PublicationDate = chapterViewModel.PublicationDate,
+                    Url = chapterViewModel.Url,
+
+                };
+
+                await _AdminChapterRepository.AddChapterToMangaAsync(chapterViewModel.MangaId, chapter);
+
+                return RedirectToAction("Chapters", new { mangaId = chapterViewModel.MangaId });
+            }
+
+            return View(chapterViewModel);
+        }
+
+
+        public async Task<IActionResult> EditChapter(int chapterId)
+        {
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            if (chapter == null)
+            {
+                return NotFound();
+            }
+            ViewData["MangaId"] = chapter.MangaID;
+            return View(chapter);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditChapter(int chapterId, EditChapterViewModel editChapterViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit chapter");
+                return View(editChapterViewModel);
+            }
+
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+
+            if (chapter == null)
+            {
+                return NotFound();
+            }
+
+            chapter.Title = editChapterViewModel.Title;
+            chapter.ChapterNumber = editChapterViewModel.ChapterNumber;
+            chapter.PublicationDate = editChapterViewModel.PublicationDate;
+            chapter.Url = editChapterViewModel.Url;
+
+            await _AdminChapterRepository.UpdateAsync(chapter);
+            ;
+            return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
+        }
+
+        public async Task<IActionResult> DeleteChapter(int chapterId)
+        {
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            if (chapter == null)
+            {
+                return NotFound();
+            }
+            ViewData["MangaId"] = chapter.MangaID;
+            return View(chapter);
+        }
+
+        [HttpPost, ActionName("DeleteChapter")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmedChapter(int chapterId)
+        {
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            if (chapter == null)
+            {
+                return View("Delete error");
+            }
+            ViewData["MangaId"] = chapter.MangaID;
+            await _AdminChapterRepository.Delete(chapter);
+            return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
+        }
+        public async Task<IActionResult> AddPages(int chapterId)
+        {
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            if (chapter == null)
+            {
+                return NotFound();
+            }
+            ViewData["ChapterId"] = chapterId;
+            return View();
+        }
+
+        [HttpPost, ActionName("AddPages")]
+        public async Task<IActionResult> Upload(IFormFile file, int chapterId)
+        {
+            try
+            {
+                var folderName = $"{chapterId}";
+                var folderId = _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderName);
+
+                var modifiedPhotoLinks = await _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
+                await _googleDriveAPIRepository.AddFileLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine($"Error uploading file to Google Drive: {ex.Message}");
+                return RedirectToAction("Index");
+            }
+        }
+
+
     }
 }

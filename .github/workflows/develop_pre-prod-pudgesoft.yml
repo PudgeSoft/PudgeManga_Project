@@ -4,8 +4,9 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - pre-prod-pudgesoft
 
 on:
-  pull_request:
-    branches: [ Develop ]
+  push:
+    branches:
+      - Develop
   workflow_dispatch:
 
 jobs:
@@ -51,6 +52,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         with:
           app-name: 'pre-prod-pudgesoft'
-          slot-name: 'PRE-PROD'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8BD275AE9D7B485AB1F27BD771E131D0 }}
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_99DB00F054164FEE95E57E068B2F58C3 }}
           package: .
