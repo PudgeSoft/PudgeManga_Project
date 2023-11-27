@@ -14,6 +14,7 @@ builder.Services.AddScoped<IAdminChapterRepository<Chapter, int>, AdminChapterRe
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
 builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

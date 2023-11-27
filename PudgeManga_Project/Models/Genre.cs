@@ -6,7 +6,7 @@ namespace PudgeManga_Project.Models
     {
         [Key]
         public int GenreId { get; set; }
-        public string Title {get; set; }
+        public string Name { get; set; }
 
         public ICollection<MangaGenre> MangaGenres { get; set; }
 

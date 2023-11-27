@@ -1,5 +1,8 @@
-﻿namespace PudgeManga_Project.Models
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace PudgeManga_Project.Models
 {
+    [Keyless]
     public class MangaGenre
     {
         public int MangaId { get; set; }
