@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
-using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels;
 
 namespace PudgeManga_Project.Controllers

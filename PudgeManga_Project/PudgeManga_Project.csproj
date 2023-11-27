@@ -49,7 +49,6 @@
 
   <ItemGroup>
     <Folder Include="Data\Enum\" />
-    <Folder Include="Interfaces\" />
   </ItemGroup>
 
   <ItemGroup>

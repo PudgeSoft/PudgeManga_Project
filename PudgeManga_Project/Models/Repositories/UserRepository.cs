@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
-using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.Interfaces;
 
 namespace RunGroopWebApp.Repository
 {
