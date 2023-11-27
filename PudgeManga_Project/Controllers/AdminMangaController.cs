@@ -73,17 +73,17 @@ namespace PudgeManga_Project.Controllers
         public async Task<IActionResult> Create(CreateMangaViewModel mangaViewModel)
         {
 
-                var manga = new Manga
-                {
-                    Title = mangaViewModel.Title,
-                    Author = mangaViewModel.Author,
-                    Description = mangaViewModel.Description,
-                    CoverUrl = mangaViewModel.CoverUrl,
-                    MangaGenres = mangaViewModel.GenreIds.Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
-                };
+            var manga = new Manga
+            {
+                Title = mangaViewModel.Title,
+                Author = mangaViewModel.Author,
+                Description = mangaViewModel.Description,
+                CoverUrl = mangaViewModel.CoverUrl,
+                MangaGenres = mangaViewModel.GenreIds.Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
+            };
 
-                await _AdminMangaRepository.Add(manga);
-                
+            await _AdminMangaRepository.Add(manga);
+
 
             var allGenres = await _genreRepository.GetAllGenres();
             mangaViewModel.AllGenres = allGenres.Select(genre => new SelectListItem
@@ -130,7 +130,7 @@ namespace PudgeManga_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditMangaViewModel editMangaViewModel)
         {
-            
+
 
             List<int> selectedGenreIds = editMangaViewModel.GenreIds;
             var manga = new Manga
