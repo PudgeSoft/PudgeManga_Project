@@ -1,15 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PudgeManga_Project.Models
 {
     public class AnimeEpisode
     {
-        public int EpisodeId { get; set; }
+        [Key]
+        public int AnimeEpisodeId { get; set; }
 
         [ForeignKey("AnimeSeason")]
         public int SeasonId { get; set; }
-
-
+        public int EpisodeNumber { get; set; }
+        public string EpisodeUrl { get; set; }
         public AnimeSeason AnimeSeason { get; set; }
     }
 }
