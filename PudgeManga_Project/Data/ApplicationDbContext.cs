@@ -18,6 +18,12 @@ namespace PudgeManga_Project.Data
         public DbSet<Popularity> Popularities => Set<Popularity>();
         public DbSet<User> Users => Set<User>();
         public DbSet<Genre> Genres => Set<Genre>();
+
+        public DbSet<Anime> Animes => Set<Anime>();
+        public DbSet<AnimeEpisode> AnimesEpisodes => Set<AnimeEpisode>();
+        public DbSet<AnimeSeason> AnimeSeasons => Set<AnimeSeason>();
+        public DbSet<GenreForAnime> GenresForAnimes => Set<GenreForAnime>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MangaGenre>()
@@ -25,7 +31,7 @@ namespace PudgeManga_Project.Data
 
             modelBuilder.Entity<MangaGenre>()
                 .HasOne(mg => mg.Manga)
-                .WithMany(m => m.MangaGenres) 
+                .WithMany(m => m.MangaGenres)
                 .HasForeignKey(mg => mg.MangaId);
 
             modelBuilder.Entity<MangaGenre>()
@@ -33,6 +39,18 @@ namespace PudgeManga_Project.Data
                 .WithMany(g => g.MangaGenres)
                 .HasForeignKey(mg => mg.GenreId);
 
+            modelBuilder.Entity<AnimeGenre>()
+                .HasKey(ag => new { ag.AnimeId, ag.GenreId });
+
+            modelBuilder.Entity<AnimeGenre>()
+                .HasOne(ag => ag.Anime)
+                .WithMany(a => a.AnimeGenres)
+                .HasForeignKey(ag => ag.AnimeId);
+
+            modelBuilder.Entity<AnimeGenre>()
+                .HasOne(ag => ag.GenreForAnime)
+                .WithMany(g => g.AnimeGenres)
+                .HasForeignKey(ag => ag.GenreId);
             base.OnModelCreating(modelBuilder);
         }
 

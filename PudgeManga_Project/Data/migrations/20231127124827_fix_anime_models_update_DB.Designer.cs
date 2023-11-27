@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PudgeManga_Project.Data;
 
@@ -11,9 +12,11 @@ using PudgeManga_Project.Data;
 namespace PudgeManga_Project.Data.migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231127124827_fix_anime_models_update_DB")]
+    partial class fix_anime_models_update_DB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,115 +24,6 @@ namespace PudgeManga_Project.Data.migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("PudgeManga_Project.Models.Anime", b =>
-                {
-                    b.Property<int>("AnimeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnimeId"));
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Director")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Dubbing")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ReleaseYear")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Studio")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AnimeId");
-
-                    b.ToTable("Animes");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeEpisode", b =>
-                {
-                    b.Property<int>("AnimeEpisodeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnimeEpisodeId"));
-
-                    b.Property<int>("EpisodeNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("EpisodeUrl")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("SeasonId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AnimeEpisodeId");
-
-                    b.HasIndex("SeasonId");
-
-                    b.ToTable("AnimesEpisodes");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeGenre", b =>
-                {
-                    b.Property<int>("AnimeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("GenreId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AnimeId", "GenreId");
-
-                    b.HasIndex("GenreId");
-
-                    b.ToTable("AnimeGenre");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeSeason", b =>
-                {
-                    b.Property<int>("AnimeSeasonId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnimeSeasonId"));
-
-                    b.Property<int>("AnimeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SeasonNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AnimeSeasonId");
-
-                    b.HasIndex("AnimeId");
-
-                    b.ToTable("AnimeSeasons");
-                });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Chapter", b =>
                 {
@@ -208,23 +102,6 @@ namespace PudgeManga_Project.Data.migrations
                     b.HasKey("GenreId");
 
                     b.ToTable("Genres");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.GenreForAnime", b =>
-                {
-                    b.Property<int>("AnimeGenreId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AnimeGenreId"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("AnimeGenreId");
-
-                    b.ToTable("GenresForAnimes");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Manga", b =>
@@ -348,47 +225,6 @@ namespace PudgeManga_Project.Data.migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeEpisode", b =>
-                {
-                    b.HasOne("PudgeManga_Project.Models.AnimeSeason", "AnimeSeason")
-                        .WithMany("AnimeEpisodes")
-                        .HasForeignKey("SeasonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AnimeSeason");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeGenre", b =>
-                {
-                    b.HasOne("PudgeManga_Project.Models.Anime", "Anime")
-                        .WithMany("AnimeGenres")
-                        .HasForeignKey("AnimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PudgeManga_Project.Models.GenreForAnime", "GenreForAnime")
-                        .WithMany("AnimeGenres")
-                        .HasForeignKey("GenreId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Anime");
-
-                    b.Navigation("GenreForAnime");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeSeason", b =>
-                {
-                    b.HasOne("PudgeManga_Project.Models.Anime", "Anime")
-                        .WithMany("AnimeSeasons")
-                        .HasForeignKey("AnimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Anime");
-                });
-
             modelBuilder.Entity("PudgeManga_Project.Models.Chapter", b =>
                 {
                     b.HasOne("PudgeManga_Project.Models.Manga", "Manga")
@@ -460,18 +296,6 @@ namespace PudgeManga_Project.Data.migrations
                     b.Navigation("Manga");
                 });
 
-            modelBuilder.Entity("PudgeManga_Project.Models.Anime", b =>
-                {
-                    b.Navigation("AnimeGenres");
-
-                    b.Navigation("AnimeSeasons");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeSeason", b =>
-                {
-                    b.Navigation("AnimeEpisodes");
-                });
-
             modelBuilder.Entity("PudgeManga_Project.Models.Chapter", b =>
                 {
                     b.Navigation("Pages");
@@ -480,11 +304,6 @@ namespace PudgeManga_Project.Data.migrations
             modelBuilder.Entity("PudgeManga_Project.Models.Genre", b =>
                 {
                     b.Navigation("MangaGenres");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.GenreForAnime", b =>
-                {
-                    b.Navigation("AnimeGenres");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Manga", b =>
