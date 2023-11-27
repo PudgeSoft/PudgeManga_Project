@@ -18,7 +18,10 @@ namespace PudgeManga_Project.Controllers
         // GET: Mangas
         public async Task<IActionResult> Index()
         {
-            var model = await _mangaRepository.GetAll();
+            var mangaList = await _mangaRepository.GetAll();
+
+            var model = mangaList.Take(5).ToList();
+
             return View(model);
         }
 
