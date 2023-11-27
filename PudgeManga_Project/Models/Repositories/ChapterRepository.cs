@@ -19,5 +19,14 @@ namespace PudgeManga_Project.Models.Repositories
 
             return chapters;
         }
+        public async Task<int> GetTotalChapters(int mangaId)
+        {
+
+            var totalChapters = await _context.Chapters
+                .Where(c => c.MangaID == mangaId)
+                .CountAsync();
+
+            return totalChapters;
+        }
     }
 }

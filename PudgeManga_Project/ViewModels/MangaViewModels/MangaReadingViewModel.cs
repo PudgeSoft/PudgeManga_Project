@@ -6,5 +6,6 @@ namespace PudgeManga_Project.ViewModels.MangaViewModels
     {
         public Manga Manga { get; set; }
         public int ChapterNumber { get; set; }
+        public int TotalChapters { get; set; }
     }
 }
