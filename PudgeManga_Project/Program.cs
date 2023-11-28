@@ -14,19 +14,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaRepository>();
 builder.Services.AddScoped<IAdminChapterRepository<Chapter, int>, AdminChapterRepository>();
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
+builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
+builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
 
-builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
-builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
-builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 
