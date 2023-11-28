@@ -79,6 +79,10 @@ namespace PudgeManga_Project.Controllers
                 Author = mangaViewModel.Author,
                 Description = mangaViewModel.Description,
                 CoverUrl = mangaViewModel.CoverUrl,
+                Type = mangaViewModel.Type,
+                Publish = mangaViewModel.Publish,
+                Artist = mangaViewModel.Artist,
+                Translator = mangaViewModel.Translator,
                 MangaGenres = mangaViewModel.GenreIds.Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
             };
 
@@ -112,6 +116,10 @@ namespace PudgeManga_Project.Controllers
                 Author = manga.Author,
                 Description = manga.Description,
                 CoverUrl = manga.CoverUrl,
+                Type = manga.Type,
+                Publish = manga.Publish,
+                Artist = manga.Artist,
+                Translator = manga.Translator,
                 GenreIds = manga.MangaGenres.Select(mg => mg.GenreId).ToList(),
                 AllGenres = allGenres.Select(genre => new SelectListItem
                 {
@@ -140,6 +148,10 @@ namespace PudgeManga_Project.Controllers
                 Author = editMangaViewModel.Author,
                 Description = editMangaViewModel.Description,
                 CoverUrl = editMangaViewModel.CoverUrl,
+                Type = editMangaViewModel.Type,
+                Publish = editMangaViewModel.Publish,
+                Artist = editMangaViewModel.Artist,
+                Translator = editMangaViewModel.Translator,
                 MangaGenres = selectedGenreIds
                 .Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
             };
