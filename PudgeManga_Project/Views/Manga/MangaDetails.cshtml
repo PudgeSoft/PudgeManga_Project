@@ -38,11 +38,11 @@
                     <div class="other-info mt-3 p-3 d-flex flex-row justify-content-md-start justify-content-between flex-md-column flex-wrap">
                         <div class="info-block mb-3">
                             <h4 class="text-secondary fs-5">Тип</h4>
-                            <p>Тип</p>
+                            <p>@Model.Manga.Type</p>
                         </div>
                         <div class="info-block mb-3">
                             <h4 class="text-secondary fs-5">Жанр</h4>
-                            <p>Тип</p>
+                            <p>@string.Join(", ", Model.Manga.MangaGenres.Select(mg => mg.Genre.Name))</p>
                         </div>
                         <div class="info-block mb-3">
                             <h4 class="text-secondary fs-5">Автор</h4>
@@ -50,11 +50,11 @@
                         </div>
                         <div class="info-block mb-3">
                             <h4 class="text-secondary fs-5">Художник</h4>
-                            <p>Тип</p>
+                            <p>@Model.Manga.Artist</p>
                         </div>
                         <div class="info-block mb-3">
                             <h4 class="text-secondary fs-5">Видавництво</h4>
-                            <p>Тип</p>
+                            <p>@Model.Manga.Publish</p>
                         </div>
                     </div>
 
