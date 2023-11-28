@@ -97,7 +97,23 @@ namespace PudgeManga_Project.Controllers
             }).ToList();
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> CreateGenre()
+        {
+            return View();
+        }
 
+        // POST: Mangas/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to.
+        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateGenre(Genre genre)
+        {
+           
+            await _genreRepository.AddGenre(genre);
+
+            return RedirectToAction("Index");
+        }
 
         // GET: Mangas/Edit/5
         public async Task<IActionResult> Edit(int id)
