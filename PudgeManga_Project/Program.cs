@@ -15,8 +15,12 @@ builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaReposito
 builder.Services.AddScoped<IAdminChapterRepository<Chapter, int>, AdminChapterRepository>();
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
-builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+
+
+builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
+
+builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();

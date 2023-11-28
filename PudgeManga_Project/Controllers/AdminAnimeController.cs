@@ -10,9 +10,10 @@ namespace PudgeManga_Project.Controllers
         private readonly IGoogleDriveAPIRepository<IFormFile> _googleDriveAPIRepository;
         private readonly IGenreRepository _genreRepository;
         public AdminAnimeController(IGoogleDriveAPIRepository<IFormFile> googleDriveAPIRepository,
-            IGenreRepository genreRepository)
+            IGenreRepository genreRepository,
+            IAdminAnimeRepository<Anime,int> adminAnimeRepository)
         {
-            
+            _adminAnimeRepository = adminAnimeRepository;
             _googleDriveAPIRepository = googleDriveAPIRepository;
             _genreRepository = genreRepository;
         }

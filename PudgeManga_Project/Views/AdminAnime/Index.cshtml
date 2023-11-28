@@ -1,5 +1,94 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<PudgeManga_Project.Models.Anime>
+
 @{
+    ViewData["Title"] = "Index";
 }
+
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
+</head>
+
+<h1>Vadym skazav napysaty tut admin panel</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+    <a asp-action="CreateGenre">Create new Genre</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Director)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Studio)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Dubbing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReleaseYear)
+            </th>
+            <th>
+                Genres
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Director)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Studio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dubbing)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Type)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ReleaseYear)
+                </td>
+                <td>
+                    @foreach (var genre in item.AnimeGenres)
+                    {
+                        @genre.GenreForAnime.Name
+                        <br />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.AnimeId">Edit</a>
+                    <!-- Додайте інші посилання для редагування, перегляду, видалення і т.д., за необхідності -->
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
