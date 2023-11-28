@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
@@ -19,6 +20,9 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+       .AddCookie();
 
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
 builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
@@ -26,11 +30,16 @@ builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 
 var app = builder.Build();
+
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
+{
+    await Seed.SeedUsersAndRolesAsync(app);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

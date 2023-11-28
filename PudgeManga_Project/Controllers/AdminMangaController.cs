@@ -7,6 +7,7 @@ using PudgeManga_Project.ViewModels.AdminMangaViewModels;
 using PudgeManga_Project.ViewModels.AdminMangaViewModels.AdminChaptersViewModels;
 using PudgeManga_Project.Helpers;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -29,6 +30,7 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             var model = await _AdminMangaRepository.GetAll();
@@ -37,6 +39,7 @@ namespace PudgeManga_Project.Controllers
 
 
         // GET: Mangas/Details/5
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int id)
         {
             var manga = await _AdminMangaRepository.GetById(id);
@@ -49,6 +52,7 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas/Create
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create()
         {
             var allGenres = await _genreRepository.GetAllGenres();
