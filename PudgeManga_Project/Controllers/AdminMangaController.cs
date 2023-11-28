@@ -73,17 +73,21 @@ namespace PudgeManga_Project.Controllers
         public async Task<IActionResult> Create(CreateMangaViewModel mangaViewModel)
         {
 
-                var manga = new Manga
-                {
-                    Title = mangaViewModel.Title,
-                    Author = mangaViewModel.Author,
-                    Description = mangaViewModel.Description,
-                    CoverUrl = mangaViewModel.CoverUrl,
-                    MangaGenres = mangaViewModel.GenreIds.Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
-                };
+            var manga = new Manga
+            {
+                Title = mangaViewModel.Title,
+                Author = mangaViewModel.Author,
+                Description = mangaViewModel.Description,
+                CoverUrl = mangaViewModel.CoverUrl,
+                Type = mangaViewModel.Type,
+                Publish = mangaViewModel.Publish,
+                Artist = mangaViewModel.Artist,
+                Translator = mangaViewModel.Translator,
+                MangaGenres = mangaViewModel.GenreIds.Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
+            };
 
-                await _AdminMangaRepository.Add(manga);
-                
+            await _AdminMangaRepository.Add(manga);
+
 
             var allGenres = await _genreRepository.GetAllGenres();
             mangaViewModel.AllGenres = allGenres.Select(genre => new SelectListItem
@@ -112,6 +116,10 @@ namespace PudgeManga_Project.Controllers
                 Author = manga.Author,
                 Description = manga.Description,
                 CoverUrl = manga.CoverUrl,
+                Type = manga.Type,
+                Publish = manga.Publish,
+                Artist = manga.Artist,
+                Translator = manga.Translator,
                 GenreIds = manga.MangaGenres.Select(mg => mg.GenreId).ToList(),
                 AllGenres = allGenres.Select(genre => new SelectListItem
                 {
@@ -130,7 +138,7 @@ namespace PudgeManga_Project.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditMangaViewModel editMangaViewModel)
         {
-            
+
 
             List<int> selectedGenreIds = editMangaViewModel.GenreIds;
             var manga = new Manga
@@ -140,6 +148,10 @@ namespace PudgeManga_Project.Controllers
                 Author = editMangaViewModel.Author,
                 Description = editMangaViewModel.Description,
                 CoverUrl = editMangaViewModel.CoverUrl,
+                Type = editMangaViewModel.Type,
+                Publish = editMangaViewModel.Publish,
+                Artist = editMangaViewModel.Artist,
+                Translator = editMangaViewModel.Translator,
                 MangaGenres = selectedGenreIds
                 .Select(genreId => new MangaGenre { GenreId = genreId }).ToList()
             };

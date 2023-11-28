@@ -85,12 +85,20 @@
 						   data-bs-toggle="dropdown" aria-expanded="false">
 							<img src="~/src/img/user_icon.png" alt="mdo" width="32" height="32" class="rounded-circle">
 						</a>
+						
 						<ul class="dropdown-menu text-small">
-							<li><a class="dropdown-item" href="../pages/special_for_Vlad.html">Sign in</a></li>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Вийти</a></li>
+							<li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="EditProfile">Мій кабінет</a></li>
+                            }
+							else{
+							<li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Login"> Увійти</a></li>
 							<li>
 								<hr class="dropdown-divider">
 							</li>
-							<li><a class="dropdown-item" href="#">Sign out</a></li>
+							<li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Register">Зареєструватись</a></li>
+							}
 						</ul>
 					</div> <!--block for user button-->
 				</div>

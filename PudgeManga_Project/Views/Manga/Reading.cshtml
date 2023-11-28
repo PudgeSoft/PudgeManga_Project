@@ -59,11 +59,22 @@
 
                             </ul>
                     </div>
-                        <a asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@(Model.ChapterNumber +1)">
-                        <button type="button" class="btn btn-warning fs-5  m-2">
-                            Наступна глава
-                        </button>
-                        </a>
+                        @if (Model.ChapterNumber < Model.TotalChapters)
+                        {
+                            <a asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@(Model.ChapterNumber + 1)">
+                                <button type="button" class="btn btn-warning fs-5  m-2">
+                                    Наступна глава
+                                </button>
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@Model.Manga.MangaId">
+                                <button type="button" class="btn btn-warning fs-5  m-2">
+                                    Перейти на сторінку манги
+                                </button>
+                            </a>
+                        }
                     </div>
 
                 </div>
