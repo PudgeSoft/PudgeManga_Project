@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PudgeManga_Project.Models.Manga>
+﻿@model PudgeManga_Project.ViewModels.SearchViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -7,20 +7,35 @@
 <form asp-action="Index" method="get">
     <div class="">
         <label for="SearchString">Введіть назву</label>
-        <input type="text" name="SearchString" 
-            value="@ViewData["CurrentFilter"]"/>
-        <input type="submit" value="Пошук" clas=""/>
+        <input type="text" name="SearchString"
+               value="@ViewData["CurrentFilter"]" />
+        <input type="submit" value="Пошук" clas="" />
+    </div>
+    <div class="form-group">
+        <label asp-for="GenreIds" class="control-label"></label>
+        <select name="genres" asp-items="@Model.AllGenres" class="form-control" multiple></select>
+        <span asp-validation-for="GenreIds" class="text-danger"></span>
     </div>
 </form>
 <a asp-action="Index">Повернутися до повного списку</a>
 <hr />
 
-<form asp-action="Index" method="post">
-    <label for="genres">Виберіть жанри:</label><br>
-    <select id="genres" name="genres" multiple>
-        <option value="genre1">Еротика</option>
-        <option value="genre2">Драма</option>
-        <option value="genre3">Екшн</option>
-    </select>
-    <input type="submit" value="Пошук">
-</form>
+
+
+<div class="content_block_body d-flex justify-content-start pb-2 flex-column flex-sm-row flex-wrap">
+    @foreach (var item in Model.Mangas)
+    {
+
+        <div class="card border-0">
+            <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@item.MangaId">
+                <img src="@item.CoverUrl" class="card-img-top" alt="...">
+                <div class="card-body">
+
+                    <h6 class="card-title">@item.Title</h6>
+
+                </div>
+            </a>
+        </div>
+
+    }
+</div>
