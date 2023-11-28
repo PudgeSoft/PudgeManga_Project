@@ -21,12 +21,11 @@ namespace PudgeManga_Project.Models.Repositories
 
         public async Task<IEnumerable<Manga>> GetAll()
         {
-            return await _context.Mangas.ToListAsync();
+            return await _context.Mangas
+            .Include(m => m.MangaGenres)
+                .ThenInclude(mg => mg.Genre)
+            .ToListAsync();
         }
-        //public async Task<IEnumerable<Manga>> GetAllGenres()
-        //{
-        //    return await _context.Genres.ToListAsync();
-        //}
         public async Task<Manga> GetById(int id)
         {
             return await _context.Mangas
@@ -52,7 +51,8 @@ namespace PudgeManga_Project.Models.Repositories
             }
 
             var existingEntity = await _context.Mangas
-                .Include(m => m.MangaGenres) 
+                .Include(m => m.MangaGenres)
+                    .ThenInclude(mg => mg.Genre)
                 .FirstOrDefaultAsync(m => m.MangaId == entity.MangaId);
 
             if (existingEntity == null)
