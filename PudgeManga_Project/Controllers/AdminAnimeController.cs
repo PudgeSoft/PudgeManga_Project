@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentAssertions.Execution;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
@@ -208,43 +209,41 @@ namespace PudgeManga_Project.Controllers
 
             return View(seasonViewModel);
         }
-        //public async Task<IActionResult> EditChapter(int chapterId)
-        //{
-        //    var chapter = await _AdminChapterRepository.GetById(chapterId);
-        //    if (chapter == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    ViewData["MangaId"] = chapter.MangaID;
-        //    return View(chapter);
-        //}
+        public async Task<IActionResult> EditSeason(int seasonId)
+        {
+            var season = await _adminSeasonRepository.GetByIdAsync(seasonId);
+            if (season == null)
+            {
+                return NotFound();
+            }
+            ViewData["AnimeId"] = season.AnimeId;
+            return View(season);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> EditChapter(int chapterId, EditChapterViewModel editChapterViewModel)
-        //{
-        //    if (!ModelState.IsValid)
-        //    {
-        //        ModelState.AddModelError("", "Failed to edit chapter");
-        //        return View(editChapterViewModel);
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditSeason(int seasonId, EditSeasonViewModel editSeasonViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("", "Failed to edit season");
+                return View(editSeasonViewModel);
+            }
 
-        //    var chapter = await _AdminChapterRepository.GetById(chapterId);
+            var chapter = await _adminSeasonRepository.GetByIdAsync(seasonId);
 
-        //    if (chapter == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (chapter == null)
+            {
+                return NotFound();
+            }
 
-        //    chapter.Title = editChapterViewModel.Title;
-        //    chapter.ChapterNumber = editChapterViewModel.ChapterNumber;
-        //    chapter.PublicationDate = editChapterViewModel.PublicationDate;
-        //    chapter.Url = editChapterViewModel.Url;
+            chapter.SeasonNumber = editSeasonViewModel.SeasonNumber;
+            chapter.Title = editSeasonViewModel.Title;
 
-        //    await _AdminChapterRepository.UpdateAsync(chapter);
-        //    ;
-        //    return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
-        //}
+            await _adminSeasonRepository.UpdateAsync(chapter);
+            ;
+            return RedirectToAction("Seasons", new { AnimeId = chapter.AnimeId });
+        }
 
         public async Task<IActionResult> DeleteSeason(int seasonId)
         {
