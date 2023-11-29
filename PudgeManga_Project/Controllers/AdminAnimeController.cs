@@ -156,6 +156,18 @@ namespace PudgeManga_Project.Controllers
             await _adminAnimeRepository.SaveAsync();
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> CreateGenre()
+        {
+            return View();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateGenre(GenreForAnime genre)
+        {
 
+            await _animeGenreRepository.AddGenreAsync(genre);
+
+            return RedirectToAction("Index");
+        }
     }
 }
