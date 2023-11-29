@@ -71,6 +71,67 @@ namespace PudgeManga_Project.Controllers
 
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> Edit(int animeId)
+        {
+            var anime = await _adminAnimeRepository.GetByIdAsync(animeId);
+            if (anime == null)
+            {
+                return NotFound();
+            }
+
+            var allGenres = await _animeGenreRepository.GetAllGenresAsync();
+
+            var editAnimeViewModel = new EditAnimeViewModel
+            {
+                AnimeId = anime.AnimeId,
+                Title = anime.Title,
+                Description = anime.Description,
+                ImageUrl = anime.ImageUrl,
+                Director = anime.Director,
+                Studio = anime.Studio,
+                Dubbing = anime.Dubbing,
+                Type = anime.Type,
+                ReleaseYear = anime.ReleaseYear,
+                AnimeGenreIds = anime.AnimeGenres.Select(ag => ag.GenreId).ToList(),
+                AllGenres = allGenres.Select(genre => new SelectListItem
+                {
+                    Value = genre.AnimeGenreId.ToString(),
+                    Text = genre.Name
+                }).ToList()
+            };
+
+            return View(editAnimeViewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int animeId, EditAnimeViewModel editAnimeViewModel)
+        {
+
+            List<int> selectedGenreIds = editAnimeViewModel.AnimeGenreIds;
+            var anime = new Anime
+            {
+                AnimeId = editAnimeViewModel.AnimeId,
+                Title = editAnimeViewModel.Title,
+                Description= editAnimeViewModel.Description,
+                ImageUrl= editAnimeViewModel.ImageUrl,
+                Director= editAnimeViewModel.Director,
+                Studio= editAnimeViewModel.Studio,
+                Dubbing= editAnimeViewModel.Dubbing,
+                Type= editAnimeViewModel.Type,
+                ReleaseYear= editAnimeViewModel.ReleaseYear,
+                AnimeGenres = selectedGenreIds
+                .Select(genreId => new AnimeGenre { GenreId = genreId }).ToList()
+            };
+
+            await _adminAnimeRepository.UpdateAsync(anime);
+
+
+            return RedirectToAction("Index");
+        }
+
+
         public async Task<IActionResult> Delete(int animeId)
         {
             var anime = await _adminAnimeRepository.GetByIdAsync(animeId);

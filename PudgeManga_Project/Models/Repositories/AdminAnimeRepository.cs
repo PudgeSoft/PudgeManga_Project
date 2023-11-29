@@ -48,9 +48,38 @@ namespace PudgeManga_Project.Models.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public Task UpdateAsync(Anime entity)
+        public async Task UpdateAsync(Anime entity)
         {
-            throw new NotImplementedException();
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            var existingEntity = await _context.Animes
+                .Include(a => a.AnimeGenres)
+                    .ThenInclude(ag => ag.GenreForAnime)
+                .FirstOrDefaultAsync(a => a.AnimeId == entity.AnimeId);
+
+            if (existingEntity == null)
+            {
+                throw new InvalidOperationException($"Anime with ID {entity.AnimeId} not found.");
+            }
+
+            _context.Entry(existingEntity).CurrentValues.SetValues(entity);
+
+            // Очистити існуючі жанри
+            existingEntity.AnimeGenres.Clear();
+
+            foreach (var genreId in entity.AnimeGenres.Select(mg => mg.GenreId))
+            {
+                existingEntity.AnimeGenres.Add(new AnimeGenre { AnimeId = existingEntity.AnimeId, GenreId = genreId });
+            }
+
+
+
+            await _context.SaveChangesAsync();
         }
+
+
     }
 }
