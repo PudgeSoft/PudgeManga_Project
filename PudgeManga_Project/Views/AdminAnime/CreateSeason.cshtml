@@ -1,0 +1,46 @@
+﻿@model PudgeManga_Project.ViewModels.AdminAnimeViewModels.AdminSeasonsViewModels.CreateSeasonViewModel
+@{
+    ViewData["Title"] = "Create";
+}
+
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
+</head>
+
+<h1>Create</h1>
+
+<h4>Season</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateSeason" method="post">
+            <input type="hidden" asp-for="AnimeId" />
+
+            <div class="form-group">
+                <label asp-for="SeasonNumber" class="control-label"></label>
+                <input asp-for="SeasonNumber" class="form-control" />
+                <span asp-validation-for="SeasonNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create Season" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Seasons" asp-route-animeId="@ViewData["AnimeId"]">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

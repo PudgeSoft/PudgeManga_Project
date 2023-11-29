@@ -23,6 +23,8 @@ builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIR
 builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeRepository>();
 builder.Services.AddScoped<IAnimeGenreRepository, AnimeGenreRepository>();
 builder.Services.AddScoped<IAnimeRepository<Anime, int>, AnimeRepository>();
+builder.Services.AddScoped<IAdminSeasonRepository<AnimeSeason, int>, AdminSeasonRepository>();
+
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
 builder.Services.AddControllersWithViews();

@@ -4,7 +4,9 @@ using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels.AdminAnimeViewModels;
+using PudgeManga_Project.ViewModels.AdminAnimeViewModels.AdminSeasonsViewModels;
 using PudgeManga_Project.ViewModels.AdminMangaViewModels;
+using PudgeManga_Project.ViewModels.AdminMangaViewModels.AdminChaptersViewModels;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -13,13 +15,16 @@ namespace PudgeManga_Project.Controllers
         private readonly IAdminAnimeRepository<Anime, int> _adminAnimeRepository;
         private readonly IGoogleDriveAPIRepository<IFormFile> _googleDriveAPIRepository;
         private readonly IAnimeGenreRepository _animeGenreRepository;
+        private readonly IAdminSeasonRepository<AnimeSeason, int> _adminSeasonRepository;
         public AdminAnimeController(IGoogleDriveAPIRepository<IFormFile> googleDriveAPIRepository,
             IAnimeGenreRepository animeGenreRepository,
-            IAdminAnimeRepository<Anime, int> adminAnimeRepository)
+            IAdminAnimeRepository<Anime, int> adminAnimeRepository,
+            IAdminSeasonRepository<AnimeSeason,int> adminSeasonRepository)
         {
             _adminAnimeRepository = adminAnimeRepository;
             _googleDriveAPIRepository = googleDriveAPIRepository;
             _animeGenreRepository = animeGenreRepository;
+            _adminSeasonRepository = adminSeasonRepository;
         }
         public async Task<IActionResult> Index()
         {
@@ -169,5 +174,102 @@ namespace PudgeManga_Project.Controllers
 
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> Seasons(int animeId)
+        {
+            ViewData["AnimeId"] = animeId;
+            var seasons = await _adminSeasonRepository.GetSeasonsForAnimeAsync(animeId);
+            return View(seasons);
+        }
+        public async Task<IActionResult> CreateSeason(int animeId)
+        {
+            var viewModel = new CreateSeasonViewModel
+            {
+                AnimeId = animeId
+            };
+            ViewData["AnimeId"] = animeId;
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateSeason(CreateSeasonViewModel seasonViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var season = new AnimeSeason
+                {
+                    SeasonNumber = seasonViewModel.SeasonNumber,
+                    Title = seasonViewModel.Title
+                };
+
+                await _adminSeasonRepository.AddSeasonsToAnimeAsync(seasonViewModel.AnimeId, season);
+
+                return RedirectToAction("Seasons", new { AnimeId = seasonViewModel.AnimeId });
+            }
+
+            return View(seasonViewModel);
+        }
+        //public async Task<IActionResult> EditChapter(int chapterId)
+        //{
+        //    var chapter = await _AdminChapterRepository.GetById(chapterId);
+        //    if (chapter == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    ViewData["MangaId"] = chapter.MangaID;
+        //    return View(chapter);
+        //}
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> EditChapter(int chapterId, EditChapterViewModel editChapterViewModel)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        ModelState.AddModelError("", "Failed to edit chapter");
+        //        return View(editChapterViewModel);
+        //    }
+
+        //    var chapter = await _AdminChapterRepository.GetById(chapterId);
+
+        //    if (chapter == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    chapter.Title = editChapterViewModel.Title;
+        //    chapter.ChapterNumber = editChapterViewModel.ChapterNumber;
+        //    chapter.PublicationDate = editChapterViewModel.PublicationDate;
+        //    chapter.Url = editChapterViewModel.Url;
+
+        //    await _AdminChapterRepository.UpdateAsync(chapter);
+        //    ;
+        //    return RedirectToAction("Chapters", new { mangaId = chapter.MangaID });
+        //}
+
+        public async Task<IActionResult> DeleteSeason(int seasonId)
+        {
+            var season = await _adminSeasonRepository.GetByIdAsync(seasonId);
+            if (season == null)
+            {
+                return NotFound();
+            }
+            ViewData["AnimeId"] = season.AnimeId;
+            return View(season);
+        }
+
+        [HttpPost, ActionName("DeleteSeason")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmedSeason(int seasonId)
+        {
+            var season = await _adminSeasonRepository.GetByIdAsync(seasonId);
+            if (season == null)
+            {
+                return View("Delete error");
+            }
+            ViewData["AnimeId"] = season.AnimeId;
+            await _adminSeasonRepository.DeleteAsync(season);
+            return RedirectToAction("Seasons", new { AnimeId = season.AnimeId });
+        }
+
     }
 }
