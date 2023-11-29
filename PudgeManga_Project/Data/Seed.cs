@@ -36,21 +36,7 @@ namespace PudgeManga_Project.Data
                     await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
                 }
 
-                string UserEmail = "user@example.com";
-
-                var User = await userManager.FindByEmailAsync(UserEmail);
-                if (User == null)
-                {
-                    var newUser = new User()
-                    {
-                        UserName = "user",
-                        Email = UserEmail,
-                        EmailConfirmed = true,
-                    };
-                    await userManager.CreateAsync(newUser, "UserPassword123!");
-                    await userManager.AddToRoleAsync(newUser, UserRoles.User);
                 }
             }
         }
     }
-}
