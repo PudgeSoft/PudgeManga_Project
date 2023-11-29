@@ -2,24 +2,58 @@
     border-radius: 5px;
     background-color: #161313;
 }
-.content_block_body {
-    gap: 1em;
-}
+
 
 .card {
     
     width:auto;
-    flex: 1 1 12em;
+    flex: 0 1 20%;
 }
 
 .card img {
     max-width:12em;
+    width: 90%;
     border-radius: 0px;
 }
 .card-img-top{
     aspect-ratio: 9/13;
+    object-fit: cover;
+
 }
 
 .card-body {
     text-align: left;
+}
+@media only screen and (max-width : 576px){
+    .card .nav-link {
+        flex-direction: row !important;
+        margin-bottom: 35px;
+    }
+    
+    .card h6 {
+        font-size: 1.5rem;
+    }
+    
+    .card img {
+        width: 10rem !important;
+    }
+    
+    .content_block {
+        width: 90% !important;
+        margin: 0 5% !important;
+    }
+    
+    .card {
+        flex: 1 1 50% !important;
+    }
+}
+@media only screen and (max-width : 1200px){
+    .card {
+        flex: 0 1 25% !important;
+    }
+}
+@media only screen and (max-width : 764px){
+    .card {
+        flex: 0 1 33% !important;
+    }
 }

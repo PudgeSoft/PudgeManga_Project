@@ -4,56 +4,90 @@
 <!--dark theme, print 'light' for light theme-->
 
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="~/css/reading.css" asp-append-version="true">
-	<title>pudge soft corporation</title> <!--change title-->
-	<link rel="stylesheet" href="~/css/splide.min.css" asp-append-version="true">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/reading.css" asp-append-version="true">
+    <title>pudge soft corporation</title> <!--change title-->
+    <link rel="stylesheet" href="~/css/splide.min.css" asp-append-version="true">
 </head>
+
+<style type="text/css" media="screen and (max-width:576px)">
+    .splide__pagination {
+        bottom: -3em !important;
+    }
+</style>
 
 <body>
 
 
-	<!--main part-->
-	<div class="py-5">
-		<div class="container">
-			<div class="row d-flex justify-content-center pb-5 pt-2">
-				<!--row with 5 titles on big display-->
+    <!--main part-->
+    <div class="py-5">
+        <div class="container">
+            <div class="row d-flex justify-content-center pb-5 pt-2">
+                <!--row with 5 titles on big display-->
 
-				<div class="col-12 col-md-10 pages">
-					<section class="splide" id="main-carousel" aria-labelledby="carousel-heading">
-						<h2 id="carousel-heading">@Model.Manga.Title</h2>
+                <div class="col-12 col-md-10 pages">
+                    <section class="splide" id="main-carousel" aria-labelledby="carousel-heading">
+                        <h2 id="carousel-heading">@Model.Manga.Title</h2>
 
-						<div class="splide__track">
-							<ul class="splide__list ">
-								@foreach (var mangaPage in Model.Manga.Chapters.Where(ch => ch.ChapterNumber == Model.ChapterNumber).SelectMany(ch => ch.Pages))
-								{
-									<li class="splide__slide p-1 pb-5">
-										<img data-splide-lazy="@mangaPage.ImageUrl" class="mb-4">
-									</li>
-								}
-							</ul>
-						</div>
-					</section>
-					<div class="d-flex ">
-						<button class="btn btn-warning fs-4 flex-grow-1 m-2" type="button">
-							Попередня глава
-						</button>
-						<button class="btn btn-warning fs-4 flex-grow-1 m-2" type="button">
-							Наступна глава
-						</button>
-					</div>
-				</div>
+                        <div class="splide__track">
+                            <ul class="splide__list ">
+                                @foreach (var mangaPage in Model.Manga.Chapters.Where(ch => ch.ChapterNumber == Model.ChapterNumber).SelectMany(ch => ch.Pages))
+                                {
+                                    <li class="splide__slide p-1 pb-0">
+                                        <img data-splide-lazy="@mangaPage.ImageUrl" class="">
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </section>
+
+                    <div class="d-flex justify-content-between mt-5 mb-2">
+                    <div class="btn-group dropup ">
+                        <button type="button" class="btn btn-warning dropdown-toggle fs-5  m-2" data-bs-toggle="dropdown" aria-expanded="false">
+                            Оберіть главу
+                        </button>
+                            <ul class="dropdown-menu" style="">
+                                @foreach (var chapter in Model.Manga.Chapters.Where(ch => ch.MangaID == Model.Manga.MangaId).OrderByDescending(ch => ch.ChapterNumber))
+                                {
+                                    <li>
+                                        <a class="dropdown-item asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
+                                            Глава @chapter.ChapterNumber - @chapter.Title
+                                        </a>
+                                    </li>
+                                }
+
+                            </ul>
+                    </div>
+                        @if (Model.ChapterNumber < Model.TotalChapters)
+                        {
+                            <a asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@(Model.ChapterNumber + 1)">
+                                <button type="button" class="btn btn-warning fs-5  m-2">
+                                    Наступна глава
+                                </button>
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@Model.Manga.MangaId">
+                                <button type="button" class="btn btn-warning fs-5  m-2">
+                                    Перейти на сторінку манги
+                                </button>
+                            </a>
+                        }
+                    </div>
+
+                </div>
 
 
-			</div>
-		</div>
-	</div>
+            </div>
+        </div>
+    </div>
 
 
 
-	<script src="~/js/splide.min.js"></script>
-	<script src="~/js/slider.js"></script>
+    <script src="~/js/splide.min.js"></script>
+    <script src="~/js/slider.js"></script>
 </body>
 
 </html>

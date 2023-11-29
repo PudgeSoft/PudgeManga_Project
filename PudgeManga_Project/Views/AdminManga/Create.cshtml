@@ -1,4 +1,4 @@
-﻿@model PudgeManga_Project.Models.Manga
+﻿@model PudgeManga_Project.ViewModels.AdminMangaViewModels.CreateMangaViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -35,14 +35,35 @@
                 <span asp-validation-for="CoverUrl" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="GenreId" class="control-label"></label>
-                <input asp-for="GenreId" class="form-control" />
-                <span asp-validation-for="GenreId" class="text-danger"></span>
+                <label asp-for="Type" class="control-label"></label>
+                <input asp-for="Type" class="form-control" />
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Publish" class="control-label"></label>
+                <input asp-for="Publish" class="form-control" />
+                <span asp-validation-for="Publish" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Artist" class="control-label"></label>
+                <input asp-for="Artist" class="form-control" />
+                <span asp-validation-for="Artist" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Translator" class="control-label"></label>
+                <input asp-for="Translator" class="form-control" />
+                <span asp-validation-for="Translator" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GenreIds" class="control-label"></label>
+                <select asp-for="GenreIds" asp-items="@Model.AllGenres" class="form-control" multiple></select>
+                <span asp-validation-for="GenreIds" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+
     </div>
 </div>
 

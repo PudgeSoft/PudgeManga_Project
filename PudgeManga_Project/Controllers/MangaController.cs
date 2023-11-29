@@ -55,10 +55,12 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
+            var totalChapters = await _chapterRepository.GetTotalChapters(mangaId);
             var viewModel = new MangaReadingViewModel
             {
                 Manga = manga,
-                ChapterNumber = chapter
+                ChapterNumber = chapter,
+                TotalChapters = totalChapters
             };
 
             return View(viewModel);

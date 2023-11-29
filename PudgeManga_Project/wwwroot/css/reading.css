@@ -11,7 +11,7 @@ main {
 .splide__slide {
 	display: flex;
 	justify-content: center;
-	max-height: 80vh;
+	max-height: 85vh;
 	overflow: auto;
 }
 
@@ -31,4 +31,8 @@ main {
 
 .splide__list {
 	transition: all 300ms ease;
+}
+
+.splide__pagination{
+	bottom: -2em!important;
 }
