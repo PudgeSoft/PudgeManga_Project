@@ -86,8 +86,8 @@ namespace PudgeManga_Project.Controllers
 
             if (newUserResponse.Succeeded)
             {
+                await _userManager.AddToRoleAsync(newUser, UserRoles.User);
                 await _signInManager.SignInAsync(newUser, false);
-               // await _userManager.AddToRoleAsync(newUser, UserRoles.User);
                 return RedirectToAction("Index", "Home");
             }
             else
@@ -98,7 +98,7 @@ namespace PudgeManga_Project.Controllers
                 }
                 return View(registerViewModel);
             }
-        }
+            }
 
         [HttpGet]
         public async Task<IActionResult> Logout()
