@@ -21,7 +21,8 @@ builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
 
 builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeRepository>();
-
+builder.Services.AddScoped<IAnimeGenreRepository, AnimeGenreRepository>();
+builder.Services.AddScoped<IAnimeRepository<Anime, int>, AnimeRepository>();
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
 builder.Services.AddControllersWithViews();

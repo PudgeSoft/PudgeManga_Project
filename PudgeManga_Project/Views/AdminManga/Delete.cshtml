@@ -24,10 +24,13 @@
         </dd>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CoverUrl)
+        <dd class="col-sm-10">
+                @foreach (var genre in Model.MangaGenres)
+                {
+                    @genre.Genre.Name
+                <br />
+                }
         </dd>
-        @*<dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.GenreId)
-        </dd>*@
     </dl>
     
     <form asp-action="Delete">

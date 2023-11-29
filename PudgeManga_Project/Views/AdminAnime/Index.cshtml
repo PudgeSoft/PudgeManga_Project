@@ -84,8 +84,8 @@
                     }
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.AnimeId">Edit</a>
-                    <!-- Додайте інші посилання для редагування, перегляду, видалення і т.д., за необхідності -->
+                    <a asp-action="Edit" asp-route-AnimeId="@item.AnimeId">Edit</a>
+                    <a asp-action="Delete" asp-route-AnimeId="@item.AnimeId">Delete</a>
                 </td>
             </tr>
         }
