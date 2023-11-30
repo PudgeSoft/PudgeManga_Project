@@ -54,6 +54,7 @@ namespace PudgeManga_Project.Controllers
             TempData["Error"] = "Wrong credentials. Try again";
             return View(LoginViewModel);
         }
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -86,6 +87,20 @@ namespace PudgeManga_Project.Controllers
 
             if (newUserResponse.Succeeded)
             {
+                //Цей блок коду потрібен для перевірки справжності почти, на почту надсилається повідомлення на яке потрібно перейти для підтвердження реєстрації
+                //Поки цей блок коду хай буде закоміченний, більшість коду зробленна, але поки це не працює можливо якщо закінчу з профелем раніше дороблю
+                // генерация токена для пользователя
+                //var code = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+                //var callbackUrl = Url.Action(
+                //    "ConfirmEmail",
+                //    "Account",
+                //    new { userId = newUser.Id, code = code },
+                //    protocol: HttpContext.Request.Scheme);
+                //EmailService emailService = new EmailService();
+                //await emailService.SendEmailAsync(registerViewModel.EmailAddress, "Confirm your account",
+                //    $"Подтвердите регистрацию, перейдя по ссылке: <a href='{callbackUrl}'>link</a>");
+
+                //Content("Для завершения регистрации проверьте электронную почту и перейдите по ссылке, указанной в письме");
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
                 await _signInManager.SignInAsync(newUser, false);
                 return RedirectToAction("Index", "Home");
