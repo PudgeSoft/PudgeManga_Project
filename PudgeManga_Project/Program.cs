@@ -16,6 +16,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaRepository>();
 builder.Services.AddScoped<IAdminChapterRepository<Chapter, int>, AdminChapterRepository>();
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
+builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+
+
+builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
+
+builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeRepository>();
+builder.Services.AddScoped<IAnimeGenreRepository, AnimeGenreRepository>();
+builder.Services.AddScoped<IAnimeRepository<Anime, int>, AnimeRepository>();
+builder.Services.AddScoped<IAdminSeasonRepository<AnimeSeason, int>, AdminSeasonRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
@@ -25,9 +35,6 @@ builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
        .AddCookie();
 
-builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
-builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
-builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 builder.Services.AddSingleton<Seed>();
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
