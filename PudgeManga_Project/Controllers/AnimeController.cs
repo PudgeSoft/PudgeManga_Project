@@ -1,12 +1,25 @@
+
 ﻿using Microsoft.AspNetCore.Mvc;
+using PudgeManga_Project.Data;
+using PudgeManga_Project.Interfaces;
+using PudgeManga_Project.Models;
+﻿using Microsoft.AspNetCore.Authorization;
 
 namespace PudgeManga_Project.Controllers
 {
     public class AnimeController : Controller
     {
-        public IActionResult Index()
+        private readonly IAnimeRepository<Anime, int> _animeRepository;
+
+        public AnimeController(IAnimeRepository<Anime, int> animeRepository)
         {
-            return View();
+            _animeRepository = animeRepository;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var model = await _animeRepository.GetAllAsync();
+            return View(model);
         }
     }
 }
