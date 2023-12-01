@@ -10,7 +10,7 @@ namespace PudgeManga_Project.Helpers
 {
     public class GoogleDriveAPIHelper
     {
-        public static DriveService GetService()
+        public static async Task<DriveService> GetServiceAsync()
         {
             var tokenResponse = new TokenResponse
             {
@@ -47,45 +47,43 @@ namespace PudgeManga_Project.Helpers
             return service;
         }
 
-        public static string CreateFolder(string parent, string folderName)
+        public static async Task<string> CreateFolderAsync(string folderName)
         {
             try
             {
-                var service = GetService();
+                var service = await GetServiceAsync();
 
                 var driveFolder = new Google.Apis.Drive.v3.Data.File
                 {
                     Name = folderName,
                     MimeType = "application/vnd.google-apps.folder",
-                    Parents = new List<string> { parent }
+                    Parents = new List<string> { null }
                 };
 
                 var createFolderRequest = service.Files.Create(driveFolder);
 
-                var createdFolder = createFolderRequest.Execute();
+                var createdFolder = await createFolderRequest.ExecuteAsync();
 
                 return createdFolder.Id;
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine($"Error creating folder: {ex.Message}");
-                return null; 
+                return null;
             }
         }
 
-        public static List<string> GetPhotoLinksInFolder(string folderId)
+        public static async Task<List<string>> GetPhotoLinksInFolderAsync(string folderId)
         {
             try
             {
-                var service = GetService();
-
+                var service = await GetServiceAsync();
 
                 FilesResource.ListRequest listRequest = service.Files.List();
-                listRequest.Q = $"'{folderId}' in parents"; 
-                listRequest.Fields = "files(id, name, webViewLink)"; 
+                listRequest.Q = $"'{folderId}' in parents";
+                listRequest.Fields = "files(id, name, webViewLink)";
 
-                FileList fileList = listRequest.Execute();
+                FileList fileList = await listRequest.ExecuteAsync();
 
                 List<string> photoLinks = new List<string>();
 
@@ -101,17 +99,17 @@ namespace PudgeManga_Project.Helpers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Помилка при отриманні файлів: {ex.Message}");
+                Console.WriteLine($"Error getting files: {ex.Message}");
                 return null;
             }
         }
 
 
-        public static List<string> ModifyDriveUrls(List<string> originalUrls)
+
+        public static async Task<List<string>> ModifyDriveUrlsAsync(List<string> originalUrls)
         {
             try
             {
-
                 List<string> modifiedUrls = new List<string>();
 
                 foreach (var originalUrl in originalUrls)
@@ -130,14 +128,43 @@ namespace PudgeManga_Project.Helpers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Помилка при модифікації посилань: {ex.Message}");
+                Console.WriteLine($"Error modifying URLs: {ex.Message}");
                 return originalUrls;
+            }
+        }
+
+        public static async Task<string> GetOrCreateFolderIdAsync(string folderName)
+        {
+            try
+            {
+                var service = await GetServiceAsync();
+
+                // Пошук папки за ім'ям та батьківським ID
+                FilesResource.ListRequest listRequest = service.Files.List();
+                listRequest.Q = $"name='{folderName}' and mimeType='application/vnd.google-apps.folder'";
+                listRequest.Fields = "files(id)";
+                FileList fileList = await listRequest.ExecuteAsync();
+
+                if (fileList.Files.Count > 0)
+                {
+                    // Папка знайдена, повертаємо ідентифікатор
+                    return fileList.Files[0].Id;
+                }
+                else
+                {
+                    // Папка не знайдена, створюємо нову
+                    return await CreateFolderAsync(folderName);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting/creating folder: {ex.Message}");
+                return null;
             }
         }
 
         public static string GetFileIdFromUrl(Uri uri)
         {
-            // Отримання ідентифікатора файлу з URL
             string[] segments = uri.Segments;
             int indexOfD = Array.IndexOf(segments, "d/");
 
@@ -148,6 +175,7 @@ namespace PudgeManga_Project.Helpers
 
             throw new InvalidOperationException("Invalid Google Drive URL");
         }
+
     }
 }
 

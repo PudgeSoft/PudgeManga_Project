@@ -30,7 +30,7 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> Index()
         {
             var model = await _AdminMangaRepository.GetAll();
@@ -39,7 +39,7 @@ namespace PudgeManga_Project.Controllers
 
 
         // GET: Mangas/Details/5
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> Details(int id)
         {
             var manga = await _AdminMangaRepository.GetById(id);
@@ -52,7 +52,7 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas/Create
-        [Authorize(Roles = "admin")]
+        //[Authorize(Roles = "admin")]
         public async Task<IActionResult> Create()
         {
             var allGenres = await _genreRepository.GetAllGenres();
@@ -106,9 +106,6 @@ namespace PudgeManga_Project.Controllers
             return View();
         }
 
-        // POST: Mangas/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateGenre(Genre genre)
@@ -325,21 +322,23 @@ namespace PudgeManga_Project.Controllers
             try
             {
                 var folderName = $"{chapterId}";
-                var folderId =  _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderName);
 
-                var modifiedPhotoLinksTask = _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
-                var modifiedPhotoLinks = await modifiedPhotoLinksTask; 
-                await _googleDriveAPIRepository.AddFileLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
+                var folderIdTask = _googleDriveAPIRepository.UploadFileToGoogleDriveAsync(file, folderName);
+                var folderId = await folderIdTask;
+                var modifiedPhotoLinks = await _googleDriveAPIRepository.GetModifiedFileLinksAsync(folderId);
+
+
+                await _googleDriveAPIRepository.AddFileLinksToPagesWithChaptersAsync(modifiedPhotoLinks, chapterId);
 
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-
-                Console.WriteLine($"Error uploading file to Google Drive: {ex.Message}");
+                Console.WriteLine($"Помилка при завантаженні файлу на Google Drive: {ex.Message}");
                 return RedirectToAction("Index");
             }
         }
+
 
 
     }
