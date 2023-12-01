@@ -6,16 +6,19 @@ using PudgeManga_Project.Models;
 ﻿using Microsoft.AspNetCore.Authorization;
 using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels.MangaViewModels;
+using PudgeManga_Project.ViewModels.AnimeViewModels;
 
 namespace PudgeManga_Project.Controllers
 {
     public class AnimeController : Controller
     {
         private readonly IAnimeRepository<Anime, int> _animeRepository;
-
-        public AnimeController(IAnimeRepository<Anime, int> animeRepository)
+        private readonly IAnimeSeasonsRepository<AnimeSeason, int> _seasonsRepository;
+        public AnimeController(IAnimeRepository<Anime, int> animeRepository,
+            IAnimeSeasonsRepository<AnimeSeason, int> seasonsRepository)
         {
             _animeRepository = animeRepository;
+            _seasonsRepository = seasonsRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -26,16 +29,16 @@ namespace PudgeManga_Project.Controllers
 
         public async Task<IActionResult> AnimeDetails(int animeId)
         {
-            var anime = await _mangaRepository.GetById(animeId);
+            var anime = await _animeRepository.GetByIdAsync(animeId);
             if (anime == null)
             {
                 return NotFound();
             }
-            var episodes = await _seasonRepository.GetChaptersForManga(animeId);
-            var viewModel = new MangaChaptersViewModel
+            var seasons = await _seasonsRepository.GetSeasonsForAnimeAsync(animeId);
+            var viewModel = new AnimeDetailsViewModel
             {
-                Manga = anime,
-                Chapters = chapters
+                Anime = anime,
+                AnimeSeasons = seasons
             };
             return View(viewModel);
         }
