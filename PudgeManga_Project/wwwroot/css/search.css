@@ -1,0 +1,26 @@
+﻿main .content-block {
+    background-color: #161313;
+    border-radius: 5px;
+}
+
+.search-buttons button {
+    margin: 10px 15px 10px 0;
+    padding: 5px 15px !important;
+}
+
+.btn-link img {
+    filter: invert(1);
+    max-width: 2.5rem;
+}
+
+.dropdown-menu {
+    overflow-x: hidden;
+    overflow-y: auto;
+    max-height: 15rem;
+    max-width: 15rem;
+}
+
+.form-check {
+    background-color: #161313;
+    padding: 5px 5px 5px 2rem;
+}
