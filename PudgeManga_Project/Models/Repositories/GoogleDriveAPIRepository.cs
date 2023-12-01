@@ -12,7 +12,7 @@ namespace PudgeManga_Project.Models.Repositories
         {
             _context = context;
         }
-        public async Task AddFileLinksToPagesWithChapters(IEnumerable<string> modifiedPhotoLinks, int chapterId)
+        public async Task AddFileLinksToPagesWithChaptersAsync(IEnumerable<string> modifiedPhotoLinks, int chapterId)
         {
             var chapter = await _context.Chapters
                 .Include(p => p.Pages)
@@ -30,35 +30,38 @@ namespace PudgeManga_Project.Models.Repositories
             }
         }
 
-        public async Task<List<string>> GetModifiedFileLinks(string folderId)
+        public async Task<List<string>> GetModifiedFileLinksAsync(string folderId)
         {
-            List<string> photoLinks = GoogleDriveAPIHelper.GetPhotoLinksInFolder(folderId);
+            List<string> photoLinks = await GoogleDriveAPIHelper.GetPhotoLinksInFolderAsync(folderId);
 
-            List<string> modifiedPhotoLinks = GoogleDriveAPIHelper.ModifyDriveUrls(photoLinks);
+            List<string> modifiedPhotoLinks = await GoogleDriveAPIHelper.ModifyDriveUrlsAsync(photoLinks);
+
             return modifiedPhotoLinks;
         }
 
-        public string UploadFileToGoogleDrive(IFormFile file, string folderName)
+        public async Task<string> UploadFileToGoogleDriveAsync(IFormFile file, string folderName)
         {
-            string parent = null;
-            var service = GoogleDriveAPIHelper.GetService();
+            var service = await GoogleDriveAPIHelper.GetServiceAsync();
 
-            var folderId = GoogleDriveAPIHelper.CreateFolder(parent, folderName);
-            
+            var folderId = await GoogleDriveAPIHelper.GetOrCreateFolderIdAsync(folderName);
+
             var driveFile = new Google.Apis.Drive.v3.Data.File
             {
                 Name = file.FileName,
                 Parents = new List<string> { folderId }
             };
 
-
             using (var stream = file.OpenReadStream())
             {
                 var request = service.Files.Create(driveFile, stream, file.ContentType);
-                request.Upload();
+
+                var uploadResponse = await request.UploadAsync();
             }
+
             return folderId;
         }
+
+
     }
 
 }

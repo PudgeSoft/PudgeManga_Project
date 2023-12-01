@@ -26,6 +26,7 @@ builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeReposito
 builder.Services.AddScoped<IAnimeGenreRepository, AnimeGenreRepository>();
 builder.Services.AddScoped<IAnimeRepository<Anime, int>, AnimeRepository>();
 builder.Services.AddScoped<IAdminSeasonRepository<AnimeSeason, int>, AdminSeasonRepository>();
+builder.Services.AddScoped<IAnimeSeasonsRepository<AnimeSeason, int>, AnimeSeasonsRepository>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>();
@@ -41,7 +42,7 @@ builder.Services.AddSingleton<Seed>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 

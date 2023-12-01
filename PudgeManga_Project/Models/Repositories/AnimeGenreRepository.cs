@@ -15,7 +15,7 @@ namespace PudgeManga_Project.Models.Repositories
         }
         public async Task<List<GenreForAnime>> GetAllGenresAsync()
         {
-            return await _context.GenresForAnimes.ToListAsync();
+            return await _context.GenresForAnimes.OrderBy(g => g.Name).ToListAsync();
         }
         public async Task AddGenreAsync(GenreForAnime genre)
         {
