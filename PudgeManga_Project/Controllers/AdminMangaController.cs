@@ -51,7 +51,7 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas/Create
-        [Authorize(Roles = "admin")]
+        // [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create()
         {
             var allGenres = await _genreRepository.GetAllGenres();
