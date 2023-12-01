@@ -35,7 +35,10 @@ builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
        .AddCookie();
 
+builder.Services.AddScoped<ISearchRepository, SearchRepository>();
+
 builder.Services.AddSingleton<Seed>();
+
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
