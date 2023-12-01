@@ -4,38 +4,132 @@
     ViewData["Title"] = "Index";
 }
 
-<form asp-action="Index" method="get">
-    <div class="">
-        <label for="SearchString">Введіть назву</label>
-        <input type="text" name="SearchString"
-               value="@ViewData["CurrentFilter"]" />
-        <input type="submit" value="Пошук" clas="" />
-    </div>
-    <div class="form-group">
-        <label asp-for="GenreIds" class="control-label"></label>
-        <select name="genres" asp-items="@Model.AllGenres" class="form-control" multiple></select>
-        <span asp-validation-for="GenreIds" class="text-danger"></span>
-    </div>
-</form>
-<a asp-action="Index">Повернутися до повного списку</a>
-<hr />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/search.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/home.css" asp-append-version="true">
+</head>
 
+<body>
 
-
-<div class="content_block_body d-flex justify-content-start pb-2 flex-column flex-sm-row flex-wrap">
-    @foreach (var item in Model.Mangas)
-    {
-
-        <div class="card border-0">
-            <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@item.MangaId">
-                <img src="@item.CoverUrl" class="card-img-top" alt="...">
-                <div class="card-body">
-
-                    <h6 class="card-title">@item.Title</h6>
-
+    <div class="container py-5 ">
+        <div class="row d-flex justify-content-center pb-5 pt-2">
+            <div class="col-12 col-md-11 py-2 content-block">
+                <div class="search-buttons d-flex gap-1">
+                    <button class="btn btn-outline-warning" id="animeButton" type="button"
+                            onclick="animeButtonSwitch()">
+                        Аніме
+                    </button>
+                    <button class="btn btn-warning" id="mangaButton" type="button"
+                            onclick="mangaButtonSwitch()">
+                        Манга
+                    </button>
                 </div>
-            </a>
-        </div>
 
-    }
-</div>
+
+
+                <form asp-action="Index" method="get">
+                    <div class="">
+                        <label for="SearchString">Введіть назву</label>
+                        <div class="d-flex align-items-center mt-2">
+                            <input class="form-control  flex-grow-1" id="inputName" type="text" name="SearchString"
+                                   value="@ViewData["CurrentFilter"]" />
+                            <input type="submit" value="Пошук" class="mx-2 btn btn-danger" />
+                        </div>
+                    </div>
+
+
+
+
+                    <div class="d-flex gap-2">
+                        <div class="dropdown mt-2">
+                            <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                Жанри
+                            </button>
+                            <ul class="dropdown-menu">
+                                @foreach (var genre in Model.AllGenres)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="@genre.Value"
+                                               id="@genre.Value" name="genres">
+                                        <label class="form-check-label" for="@genre.Value">
+                                            @genre.Text
+                                        </label>
+                                    </div>
+                                }
+                            </ul>
+                        </div>
+                        <div class="dropdown mt-2">
+                            <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                Тип
+                            </button>
+                            <ul class="dropdown-menu">
+                                @foreach (var genre in Model.AllGenres)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="@genre.Value"
+                                               id="@genre.Value" name="genres">
+                                        <label class="form-check-label" for="@genre.Value">
+                                            @genre.Text
+                                        </label>
+                                    </div>
+                                }
+                            </ul>
+                        </div>
+                        <div class="dropdown mt-2">
+                            <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                                    aria-expanded="false">
+                                Ще щось
+                            </button>
+                            <ul class="dropdown-menu">
+                                @foreach (var genre in Model.AllGenres)
+                                {
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="@genre.Value"
+                                               id="@genre.Value" name="genres">
+                                        <label class="form-check-label" for="@genre.Value">
+                                            @genre.Text
+                                        </label>
+                                    </div>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn btn-link" onclick="clearInput() ">
+                        <p class="fs-5 text-white">Скинути</p>
+                    </button>
+                </form>
+
+
+
+
+                <hr />
+
+
+
+                <div class="content_block_body d-flex justify-content-start pb-2 flex-column flex-sm-row flex-wrap">
+                    @foreach (var item in Model.Mangas)
+                    {
+
+                        <div class="card border-0">
+                            <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga"
+                               asp-action="MangaDetails" asp-route-mangaId="@item.MangaId">
+                                <img src="@item.CoverUrl" class="card-img-top" alt="...">
+                                <div class="card-body">
+
+                                    <h6 class="card-title">@item.Title</h6>
+
+                                </div>
+                            </a>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/search.js"></script>
+</body>

@@ -60,12 +60,10 @@ namespace PudgeManga_Project.Controllers
                 {
                     Value = genre.GenreId.ToString(),
                     Text = genre.Name
-                }).ToList()
+                }).OrderBy(item => item.Text).ToList()
             };
 
             return View(searchViewModel);
         }
-
-
     }
 }
