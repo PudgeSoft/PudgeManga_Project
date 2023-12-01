@@ -3,3 +3,117 @@
 *@
 @{
 }
+<head>
+    <link rel="stylesheet" href="~/css/anime.css" asp-append-version="true">
+    <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" /> <!-- player link-->
+
+</head>
+<body>
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center pb-5 pt-2 pages">
+            <div class="col-12 col-md-11 py-2">
+                <h2>Назва аніме</h2>
+                <p>колись буде рейтинг (*****)</p>
+                <div class="row justify-content-center">
+                    <div class="col-9 col-sm-5 manga-image">
+                        <img src="../src/img/manga_example.jpg">
+
+                    </div>
+                    <div class="col-12 col-sm-7 ">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th scope="col">Рік виходу</th>
+                                    <td scope="col">2013</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Країна</th>
+                                    <td>Японія</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Жанр</th>
+                                    <td>а хуй його зна</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Режисер</th>
+                                    <td colspan="2">о вау, так само</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="col">Рік виходу</th>
+                                    <td scope="col">2013</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Країна</th>
+                                    <td>Японія</td>
+
+                                </tr>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="description mt-5">
+                    <h2>Опис</h2>
+                    <p>
+                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate error vel quia deleniti
+                        quas nisi quod suscipit officia delectus! Ipsa, enim? Nobis quae rerum qui! Temporibus
+                        doloremque similique error modi voluptas illo fugit iure assumenda tempore et facere cumque
+                        officia asperiores quisquam consequuntur sit, incidunt quidem consequatur placeat. Odio
+                        reprehenderit voluptas quam voluptatum nesciunt quia ex a ratione ab accusamus cupiditate
+                        quasi iure adipisci repudiandae quidem repellendus odit obcaecati velit voluptates nihil
+                        consequatur, ea praesentium!
+                    </p>
+                </div>
+                <div class="player d-flex ">
+                    <div class="d-flex mx-5 my-1">
+                        <h4 class="me-4">Дивитись онлайн</h4>
+                        <h4>Серія х</h4>
+                    </div>
+                    <div class="video mb-2">
+                        <video id="my-video" class="video-js" controls preload="auto" width="640" height="400"
+                               data-setup="{}">
+                            <source src="https://vjs.zencdn.net/v/oceans.mp4" type="" />
+                            <p class="vjs-no-js">
+                                To view this video please enable JavaScript, and consider upgrading to a
+                                web browser that
+                                <a href="https://videojs.com/html5-video-support/" target="_blank">
+                                    supports HTML5
+                                    video
+                                </a>
+                            </p>
+                        </video>
+                    </div>
+                </div>
+                <div class="control-buttons mt-2">
+
+                    <h4>Сезони</h4>
+                        <div class="season-buttons">
+                            <button class="btn btn-danger">Сезон 1</button>
+                            <button class="btn btn-outline-danger">Сезон 1</button>
+                            <button class="btn btn-outline-danger">Сезон 1</button>
+                        </div>
+                        <h4 class="mt-3">Серії</h4>
+                            <div class="episode-buttons">
+                                <button class="btn btn-danger">Серія 1</button>
+                                <button class="btn btn-outline-danger">Серія 1</button>
+                                <button class="btn btn-outline-danger">Серія 1</button>
+                                <button class="btn btn-outline-danger">Серія 1</button>
+                                <button class="btn btn-outline-danger">Серія 1</button>
+                                <button class="btn btn-outline-danger">Серія 1</button>
+                                <button class="btn btn-outline-danger">Серія 1</button>
+                                <button class="btn btn-outline-danger">Серія 1</button>
+                                <button class="btn btn-outline-danger">Серія 1</button>
+                            </div>
+                </div>
+                <div class="comments pt-5">
+                    <h4>Коментарі</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://vjs.zencdn.net/8.6.1/video.min.js"></script> <!-- player script-->
+</body>
