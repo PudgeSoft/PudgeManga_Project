@@ -1,4 +1,4 @@
-﻿@model PudgeManga_Project.ViewModels.SearchViewModel
+﻿@model PudgeManga_Project.ViewModels.SearchViewModels.SearchMangaAndAnimeViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -17,11 +17,11 @@
         <div class="row d-flex justify-content-center pb-5 pt-2">
             <div class="col-12 col-md-11 py-2 content-block">
                 <div class="search-buttons d-flex gap-1">
-                    <button class="btn btn-outline-warning" id="animeButton" type="button"
+                    <button class="btn btn-outline-warning" id="animeButton" type="button" searchType="Anime"
                             onclick="animeButtonSwitch()">
                         Аніме
                     </button>
-                    <button class="btn btn-warning" id="mangaButton" type="button"
+                    <button class="btn btn-warning" id="mangaButton" type="button" searchType="Manga"
                             onclick="mangaButtonSwitch()">
                         Манга
                     </button>
@@ -49,19 +49,35 @@
                                 Жанри
                             </button>
                             <ul class="dropdown-menu">
-                                @foreach (var genre in Model.AllGenres)
+                                @if (Model.SearchType == 0)
                                 {
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" value="@genre.Value"
-                                               id="@genre.Value" name="genres">
-                                        <label class="form-check-label" for="@genre.Value">
-                                            @genre.Text
-                                        </label>
-                                    </div>
+                                    @foreach (var genre in Model.AllGenresMangas)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="@genre.Value"
+                                                   id="@genre.Value" name="genres">
+                                            <label class="form-check-label" for="@genre.Value">
+                                                @genre.Text
+                                            </label>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    @foreach (var genre in Model.AllGenresAnimes)
+                                    {
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" value="@genre.Value"
+                                                   id="@genre.Value" name="genres">
+                                            <label class="form-check-label" for="@genre.Value">
+                                                @genre.Text
+                                            </label>
+                                        </div>
+                                    }
                                 }
                             </ul>
                         </div>
-                        <div class="dropdown mt-2">
+                       @*  <div class="dropdown mt-2">
                             <button class="btn btn-warning dropdown-toggle" type="button" data-bs-toggle="dropdown"
                                     aria-expanded="false">
                                 Тип
@@ -96,7 +112,7 @@
                                     </div>
                                 }
                             </ul>
-                        </div>
+                        </div> *@
                     </div>
                     <button class="btn btn-link" onclick="clearInput() ">
                         <p class="fs-5 text-white">Скинути</p>

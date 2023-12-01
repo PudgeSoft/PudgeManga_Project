@@ -14,7 +14,7 @@ namespace PudgeManga_Project.Models.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Manga>> GetAll()
+        public async Task<IEnumerable<Manga>> GetAllAsync()
         {
             return await _context.Mangas.ToListAsync();
         }
