@@ -13,7 +13,7 @@ namespace PudgeManga_Project.Models.Repositories
         }
         public async Task<List<Genre>> GetAllGenres()
         {
-            return await _context.Genres.ToListAsync();
+            return await _context.Genres.OrderBy(g => g.Name).ToListAsync();
         }
         public async Task AddGenre(Genre genre)
         {

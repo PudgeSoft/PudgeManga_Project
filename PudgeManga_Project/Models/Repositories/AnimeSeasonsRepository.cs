@@ -20,7 +20,7 @@ namespace PudgeManga_Project.Models.Repositories
             return seasons;
         }
 
-        public Task<int> GetTotalAnimeSeasonsAsync(int mangaId)
+        public Task<int> GetTotalAnimeSeasonsAsync(int animeId)
         {
             throw new NotImplementedException();
         }
