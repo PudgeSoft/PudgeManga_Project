@@ -96,6 +96,7 @@ namespace PudgeManga_Project.Controllers
                         Value = genre.AnimeGenreId.ToString(),
                         Text = genre.Name
                     }).OrderBy(item => item.Text).ToList(),
+                    SearchType = searchType,
                 };
                 return View(searchViewModel);
             }
