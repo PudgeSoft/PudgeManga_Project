@@ -1,8 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model PudgeManga_Project.ViewModels.AnimeViewModels.AnimeDetailsViewModel
 <head>
     <link rel="stylesheet" href="~/css/anime.css" asp-append-version="true">
     <link href="https://vjs.zencdn.net/8.6.1/video-js.css" rel="stylesheet" /> <!-- player link-->
@@ -12,11 +8,11 @@
     <div class="container py-5">
         <div class="row d-flex justify-content-center pb-5 pt-2 pages">
             <div class="col-12 col-md-11 py-2">
-                <h2>Назва аніме</h2>
+                <h2>@Model.Anime.Title</h2>
                 <p>колись буде рейтинг (*****)</p>
                 <div class="row justify-content-center">
                     <div class="col-9 col-sm-5 manga-image">
-                        <img src="../src/img/manga_example.jpg">
+                        <img src="@Model.Anime.ImageUrl">
 
                     </div>
                     <div class="col-12 col-sm-7 ">
@@ -24,33 +20,28 @@
                             <tbody>
                                 <tr>
                                     <th scope="col">Рік виходу</th>
-                                    <td scope="col">2013</td>
+                                    <td scope="col">@Model.Anime.ReleaseYear</td>
                                 </tr>
                                 <tr>
-                                    <th scope="row">Країна</th>
-                                    <td>Японія</td>
-
-                                </tr>
-                                <tr>
-                                    <th scope="row">Жанр</th>
-                                    <td>а хуй його зна</td>
+                                    <th scope="row">Жанри</th>
+                                    <td> @string.Join(", ", Model.Anime.AnimeGenres.Select(mg => mg.GenreForAnime.Name)) </td>
 
                                 </tr>
                                 <tr>
                                     <th scope="row">Режисер</th>
-                                    <td colspan="2">о вау, так само</td>
+                                    <td colspan="2">@Model.Anime.Director</td>
 
                                 </tr>
                                 <tr>
-                                    <th scope="col">Рік виходу</th>
-                                    <td scope="col">2013</td>
+                                    <th scope="row">Озвучка</th>
+                                    <td>@Model.Anime.Dubbing</td>
+
                                 </tr>
                                 <tr>
-                                    <th scope="row">Країна</th>
-                                    <td>Японія</td>
+                                    <th scope="row">Студія</th>
+                                    <td>@Model.Anime.Studio</td>
 
                                 </tr>
-
                             </tbody>
 
                         </table>
@@ -59,13 +50,7 @@
                 <div class="description mt-5">
                     <h2>Опис</h2>
                     <p>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate error vel quia deleniti
-                        quas nisi quod suscipit officia delectus! Ipsa, enim? Nobis quae rerum qui! Temporibus
-                        doloremque similique error modi voluptas illo fugit iure assumenda tempore et facere cumque
-                        officia asperiores quisquam consequuntur sit, incidunt quidem consequatur placeat. Odio
-                        reprehenderit voluptas quam voluptatum nesciunt quia ex a ratione ab accusamus cupiditate
-                        quasi iure adipisci repudiandae quidem repellendus odit obcaecati velit voluptates nihil
-                        consequatur, ea praesentium!
+                        @Model.Anime.Description
                     </p>
                 </div>
                 <div class="player d-flex ">
@@ -75,7 +60,7 @@
                     </div>
                     <div class="video mb-2">
                         <video id="my-video" class="video-js" controls preload="auto">
-                            <source src="https://cs07.spac.me/v/013153191228173071204047127096095034030130087207012183154031/1701471602/382723/x0/7d953377a584411869180d40ef9aaed7/file.mp4" type="" />
+                            <source src="" type="" />
                             <p class="vjs-no-js">
                                 To view this video please enable JavaScript, and consider upgrading to a
                                 web browser that
