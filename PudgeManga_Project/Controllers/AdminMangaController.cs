@@ -54,13 +54,10 @@ namespace PudgeManga_Project.Controllers
         }
 
         // GET: Mangas/Create
-
-
         // [Authorize(Roles = "admin")]
-
         public async Task<IActionResult> Create()
         {
-            var allGenres = await _genreRepository.GetAllGenres();
+            var allGenres = await _genreRepository.GetAllGenresAsync();
 
             var createMangaViewModel = new CreateMangaViewModel
             {
@@ -98,7 +95,7 @@ namespace PudgeManga_Project.Controllers
             await _AdminMangaRepository.Add(manga);
 
 
-            var allGenres = await _genreRepository.GetAllGenres();
+            var allGenres = await _genreRepository.GetAllGenresAsync();
             mangaViewModel.AllGenres = allGenres.Select(genre => new SelectListItem
             {
                 Value = genre.GenreId.ToString(),
@@ -116,7 +113,7 @@ namespace PudgeManga_Project.Controllers
         public async Task<IActionResult> CreateGenre(Genre genre)
         {
            
-            await _genreRepository.AddGenre(genre);
+            await _genreRepository.AddGenreAsync(genre);
 
             return RedirectToAction("Index");
         }
@@ -129,7 +126,7 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
-            var allGenres = await _genreRepository.GetAllGenres();
+            var allGenres = await _genreRepository.GetAllGenresAsync();
 
             var editMangaViewModel = new EditMangaViewModel
             {

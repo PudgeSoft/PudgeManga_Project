@@ -3,7 +3,6 @@
     public enum SearchType
     {
         Manga,
-        Anime,
-        Both
+        Anime
     }
 }
