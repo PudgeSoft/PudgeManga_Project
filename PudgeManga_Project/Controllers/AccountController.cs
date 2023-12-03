@@ -81,7 +81,7 @@ namespace PudgeManga_Project.Controllers
             var newUser = new User()
             {
                 Email = registerViewModel.EmailAddress,
-                UserName = registerViewModel.EmailAddress
+                UserName = registerViewModel.UserName
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 

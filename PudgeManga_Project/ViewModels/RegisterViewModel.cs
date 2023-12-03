@@ -4,6 +4,9 @@ namespace PudgeManga_Project.ViewModels
 {
     public class RegisterViewModel
     {
+        [Display(Name = "UserName")]
+        [Required(ErrorMessage = "UserName address is required")]
+        public string UserName { get; set; }
 
         [Display(Name = "Email address")]
         [Required(ErrorMessage = "Email address is required")]
