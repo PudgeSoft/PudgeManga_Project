@@ -12,7 +12,7 @@ namespace PudgeManga_Project.Models.Repositories
         {
             _context = context;
         }
-        public async Task AddFileLinksToPagesWithChaptersAsync(IEnumerable<string> modifiedPhotoLinks, int chapterId)
+        public async Task AddFileLinksToPagesWithChapters(IEnumerable<string> modifiedPhotoLinks, int chapterId)
         {
             var chapter = await _context.Chapters
                 .Include(p => p.Pages)
@@ -30,35 +30,70 @@ namespace PudgeManga_Project.Models.Repositories
             }
         }
 
-        public async Task<List<string>> GetModifiedFileLinksAsync(string folderId)
+        public List<string> GetModifiedFileLinks(string folderId)
         {
-            List<string> photoLinks = await GoogleDriveAPIHelper.GetPhotoLinksInFolderAsync(folderId);
+            List<string> photoLinks = GoogleDriveAPIHelper.GetPhotoLinksInFolder(folderId);
 
-            List<string> modifiedPhotoLinks = await GoogleDriveAPIHelper.ModifyDriveUrlsAsync(photoLinks);
+            List<string> modifiedPhotoLinks = GoogleDriveAPIHelper.ModifyDriveUrls(photoLinks);
 
             return modifiedPhotoLinks;
         }
 
-        public async Task<string> UploadFileToGoogleDriveAsync(IFormFile file, string folderName)
+        public string UploadFileToGoogleDrive(IFormFile file, string folderId)
         {
-            var service = await GoogleDriveAPIHelper.GetServiceAsync();
-
-            var folderId = await GoogleDriveAPIHelper.GetOrCreateFolderIdAsync(folderName);
+            var service = GoogleDriveAPIHelper.GetService();
 
             var driveFile = new Google.Apis.Drive.v3.Data.File
             {
                 Name = file.FileName,
-                Parents = new List<string> { folderId }
+                Parents = new List<string> { folderId } // Використовуйте тут ідентифікатор загальної теки
             };
 
             using (var stream = file.OpenReadStream())
             {
                 var request = service.Files.Create(driveFile, stream, file.ContentType);
 
-                var uploadResponse = await request.UploadAsync();
+                var uploadResponse = request.Upload();
             }
 
             return folderId;
+        }
+        public string GetOrCreateFolder(string folderName)
+        {
+            try
+            {
+                var service = GoogleDriveAPIHelper.GetService();
+
+                // Перевірте, чи тека вже існує
+                var existingFolder = service.Files.List().Execute().Files.FirstOrDefault(f => f.Name == folderName && f.MimeType == "application/vnd.google-apps.folder");
+
+                if (existingFolder != null)
+                {
+                    // Тека вже існує, поверніть її ідентифікатор
+                    return existingFolder.Id;
+                }
+                else
+                {
+                    // Тека не існує, створіть нову
+                    var driveFolder = new Google.Apis.Drive.v3.Data.File
+                    {
+                        Name = folderName,
+                        MimeType = "application/vnd.google-apps.folder",
+                        Parents = new List<string> { null }
+                    };
+
+                    var createFolderRequest = service.Files.Create(driveFolder);
+
+                    var createdFolder = createFolderRequest.Execute();
+
+                    return createdFolder.Id;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Помилка при створенні/отриманні теки: {ex.Message}");
+                return null;
+            }
         }
 
 

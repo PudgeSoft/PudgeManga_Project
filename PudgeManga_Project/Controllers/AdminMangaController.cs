@@ -322,18 +322,19 @@ namespace PudgeManga_Project.Controllers
         }
 
         [HttpPost, ActionName("AddPages")]
-        public async Task<IActionResult> Upload(IFormFile file, int chapterId)
+        public IActionResult Upload(IFormFile file, int chapterId)
         {
             try
             {
                 var folderName = $"{chapterId}";
+                string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
 
-                var folderIdTask = _googleDriveAPIRepository.UploadFileToGoogleDriveAsync(file, folderName);
-                var folderId = await folderIdTask;
-                var modifiedPhotoLinks = await _googleDriveAPIRepository.GetModifiedFileLinksAsync(folderId);
+                _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderId);
+
+                var modifiedPhotoLinks =  _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
 
 
-                await _googleDriveAPIRepository.AddFileLinksToPagesWithChaptersAsync(modifiedPhotoLinks, chapterId);
+                 _googleDriveAPIRepository.AddFileLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
 
                 return RedirectToAction("Index");
             }
