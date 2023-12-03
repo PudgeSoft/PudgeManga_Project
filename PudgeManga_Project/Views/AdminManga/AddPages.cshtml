@@ -20,6 +20,10 @@
             </div>
         </div>
     </div>
+    <form asp-controller="AdminManga" asp-action="ButtonClick" asp-route-chapterId="@ViewData["ChapterId"]" method="post">
+        <input type="submit" value="Button Click" />
+    </form>
+
 
 	<script src="~/js/admin-drop-zone.js"></script>
 </body>

@@ -319,19 +319,15 @@ namespace PudgeManga_Project.Controllers
         }
 
         [HttpPost, ActionName("AddPages")]
-        public IActionResult Upload(IFormFile file, int chapterId)
+        public async Task< IActionResult> Upload(IFormFile file, int chapterId)
         {
             try
             {
-                var folderName = $"{chapterId}";
+                var chapter = await _AdminChapterRepository.GetById(chapterId);
+                var folderName = $"{chapterId}{chapter.Title}";
                 string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
 
                 _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderId);
-
-                var modifiedPhotoLinks =  _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
-
-
-                 _googleDriveAPIRepository.AddFileLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
 
                 return RedirectToAction("Index");
             }
@@ -340,6 +336,18 @@ namespace PudgeManga_Project.Controllers
                 Console.WriteLine($"Помилка при завантаженні файлу на Google Drive: {ex.Message}");
                 return RedirectToAction("Index");
             }
+        }
+        [HttpPost]
+        public async Task<IActionResult> ButtonClick(int chapterId)
+        {
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            string folderName = $"{chapterId}{chapter.Title}";
+
+            string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
+            var modifiedPhotoLinks =  _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
+            await  _googleDriveAPIRepository.AddFileLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
+
+            return RedirectToAction("Index");
         }
 
 
