@@ -10,7 +10,7 @@ namespace PudgeManga_Project.Helpers
 {
     public class GoogleDriveAPIHelper
     {
-        public static async Task<DriveService> GetServiceAsync()
+        public static DriveService GetService()
         {
             var tokenResponse = new TokenResponse
             {
@@ -47,11 +47,11 @@ namespace PudgeManga_Project.Helpers
             return service;
         }
 
-        public static async Task<string> CreateFolderAsync(string folderName)
+        public static string CreateFolder(string folderName)
         {
             try
             {
-                var service = await GetServiceAsync();
+                var service = GetService();
 
                 var driveFolder = new Google.Apis.Drive.v3.Data.File
                 {
@@ -62,7 +62,7 @@ namespace PudgeManga_Project.Helpers
 
                 var createFolderRequest = service.Files.Create(driveFolder);
 
-                var createdFolder = await createFolderRequest.ExecuteAsync();
+                var createdFolder =  createFolderRequest.Execute();
 
                 return createdFolder.Id;
             }
@@ -73,17 +73,17 @@ namespace PudgeManga_Project.Helpers
             }
         }
 
-        public static async Task<List<string>> GetPhotoLinksInFolderAsync(string folderId)
+        public static List<string> GetPhotoLinksInFolder(string folderId)
         {
             try
             {
-                var service = await GetServiceAsync();
+                var service = GetService();
 
                 FilesResource.ListRequest listRequest = service.Files.List();
                 listRequest.Q = $"'{folderId}' in parents";
                 listRequest.Fields = "files(id, name, webViewLink)";
 
-                FileList fileList = await listRequest.ExecuteAsync();
+                FileList fileList = listRequest.Execute();
 
                 List<string> photoLinks = new List<string>();
 
@@ -106,7 +106,7 @@ namespace PudgeManga_Project.Helpers
 
 
 
-        public static async Task<List<string>> ModifyDriveUrlsAsync(List<string> originalUrls)
+        public static List<string> ModifyDriveUrls(List<string> originalUrls)
         {
             try
             {
@@ -133,35 +133,7 @@ namespace PudgeManga_Project.Helpers
             }
         }
 
-        public static async Task<string> GetOrCreateFolderIdAsync(string folderName)
-        {
-            try
-            {
-                var service = await GetServiceAsync();
-
-                // Пошук папки за ім'ям та батьківським ID
-                FilesResource.ListRequest listRequest = service.Files.List();
-                listRequest.Q = $"name='{folderName}' and mimeType='application/vnd.google-apps.folder'";
-                listRequest.Fields = "files(id)";
-                FileList fileList = await listRequest.ExecuteAsync();
-
-                if (fileList.Files.Count > 0)
-                {
-                    // Папка знайдена, повертаємо ідентифікатор
-                    return fileList.Files[0].Id;
-                }
-                else
-                {
-                    // Папка не знайдена, створюємо нову
-                    return await CreateFolderAsync(folderName);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error getting/creating folder: {ex.Message}");
-                return null;
-            }
-        }
+       
 
         public static string GetFileIdFromUrl(Uri uri)
         {
