@@ -67,13 +67,12 @@ namespace PudgeManga_Project.Controllers
         [HttpGet]
         public async Task<IActionResult> Search(string searchString, List<int> genres, SearchType searchType)
         {
-            var searchMangaAndFilters = await _searchRepository.SearchMangaAsync(searchString, genres, searchType);
-            var searchAnimeAndFilters = await _searchRepository.SearchAnimeAsync(searchString, genres, searchType);
-            var allGenresMangas = await _genreRepository.GetAllGenresAsync();
-            var allGenresAnimes = await _animeGenreRepository.GetAllGenresAsync();
 
             if (searchType == SearchType.Manga)
             {
+                var searchMangaAndFilters = await _searchRepository.SearchMangaAsync(searchString, genres, searchType);
+                var allGenresMangas = await _genreRepository.GetAllGenresAsync();
+
                 var searchViewModel = new SearchMangaAndAnimeViewModel
                 {
                     Mangas = searchMangaAndFilters.ToList(),
@@ -88,6 +87,9 @@ namespace PudgeManga_Project.Controllers
             }
             else
             {
+                var searchAnimeAndFilters = await _searchRepository.SearchAnimeAsync(searchString, genres, searchType);
+                var allGenresAnimes = await _animeGenreRepository.GetAllGenresAsync();
+
                 var searchViewModel = new SearchMangaAndAnimeViewModel
                 {
                     Animes = searchAnimeAndFilters.ToList(),
