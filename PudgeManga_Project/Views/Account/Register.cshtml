@@ -37,6 +37,11 @@
             <div class="form p-3 text-start">
                 <h2 class="fs-4">SIGN UP</h2>
                 <div class="mb-3">
+                    <label asp-for="UserName" class="control-label"></label>
+                    <input asp-for="UserName" class="form-control" style="width: 120%;" />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
                     <label asp-for="EmailAddress" class="control-label"></label>
                     <input asp-for="EmailAddress" class="form-control" style="width: 120%;" />
                     <span asp-validation-for="EmailAddress" class="text-danger"></span>
