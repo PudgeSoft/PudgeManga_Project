@@ -93,9 +93,11 @@ namespace PudgeManga_Project.Helpers
                     {
                         photoLinks.Add(file.WebViewLink);
                     }
+                    photoLinks.Reverse();
                 }
 
                 return photoLinks;
+
             }
             catch (Exception ex)
             {
