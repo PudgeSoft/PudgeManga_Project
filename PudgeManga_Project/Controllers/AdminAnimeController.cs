@@ -269,6 +269,52 @@ namespace PudgeManga_Project.Controllers
             await _adminSeasonRepository.DeleteAsync(season);
             return RedirectToAction("Seasons", new { AnimeId = season.AnimeId });
         }
+        public async Task<IActionResult> AddSeries(int seasonId)
+        {
+            var episode = await _adminSeasonRepository.GetByIdAsync(seasonId);
+            if (episode == null)
+            {
+                return NotFound();
+            }
+            ViewData["seasonId"] = seasonId;
+            return View();
+        }
+
+        [HttpPost, ActionName("AddSeries")]
+        public async Task<IActionResult> Upload(IFormFile file, int seasonId)
+        {
+            try
+            {
+                var season = await _adminSeasonRepository.GetByIdAsync(seasonId);
+                if (season == null)
+                {
+                    return NotFound();
+                }
+                var folderName = $"{seasonId}{season.Title}";
+                string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
+
+                _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderId);
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Помилка при завантаженні файлу на Google Drive: {ex.Message}");
+                return RedirectToAction("Index");
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> ButtonClick(int seasonId)
+        {
+            var season = await _adminSeasonRepository.GetByIdAsync(seasonId);
+            string folderName = $"{seasonId}{season.Title}";
+
+            string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
+            var modifiedPhotoLinks = _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
+            await _googleDriveAPIRepository.AddFileLinksToAnimeEpisodesWithSeasons(modifiedPhotoLinks, seasonId);
+
+            return RedirectToAction("Index");
+        }
 
     }
 }
