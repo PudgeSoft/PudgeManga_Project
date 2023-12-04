@@ -14,6 +14,9 @@ function mangaButtonSwitch() {
     element.classList.remove("btn-warning");
     element.classList.add("btn-outline-warning");
 }
+if (window.location.href.includes('Anime')) {
+    animeButtonSwitch();
+}
 function clearInput() {
     var getValue = document.getElementById("inputName");
     if (getValue.value != "") {
