@@ -30,6 +30,24 @@ namespace PudgeManga_Project.Models.Repositories
             }
         }
 
+        public async Task AddFileLinksToAnimeEpisodesWithSeasons(IEnumerable<string> modifiedPhotoLinks, int seasonId)
+        {
+            var season = await _context.AnimeSeasons
+                .Include(ep => ep.AnimeEpisodes)
+                .FirstOrDefaultAsync(p => p.AnimeSeasonId == seasonId);
+            if (season != null)
+            {
+                int episodeNumberCounter = 1;
+                foreach (var fileLink in modifiedPhotoLinks)
+                {
+                    var newEpisode = new AnimeEpisode { EpisodeUrl = fileLink, SeasonId = seasonId, EpisodeNumber = episodeNumberCounter };
+                    season.AnimeEpisodes.Add(newEpisode);
+                    episodeNumberCounter++;
+                }
+                await _context.SaveChangesAsync();
+            }
+        }
+
         public List<string> GetModifiedFileLinks(string folderId)
         {
             List<string> photoLinks = GoogleDriveAPIHelper.GetPhotoLinksInFolder(folderId);

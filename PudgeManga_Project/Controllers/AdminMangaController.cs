@@ -324,6 +324,10 @@ namespace PudgeManga_Project.Controllers
             try
             {
                 var chapter = await _AdminChapterRepository.GetById(chapterId);
+                if (chapter == null)
+            {
+                return NotFound();
+            }
                 var folderName = $"{chapterId}{chapter.Title}";
                 string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
 
