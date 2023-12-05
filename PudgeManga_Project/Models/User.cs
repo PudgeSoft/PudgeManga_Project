@@ -10,8 +10,9 @@ namespace PudgeManga_Project.Models
         [Key]
         public string Description { get; set; }
         public string? Image { get; set; }
+        public int Age { get; set; }
         public string? State { get; set; }
-
+        public string? Aboutme { get; set; }
         public ICollection<Comment> Comments { get; set; }
 
     }
