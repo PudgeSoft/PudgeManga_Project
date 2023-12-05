@@ -28,5 +28,10 @@ namespace PudgeManga_Project.Models.Repositories
 
             return totalChapters;
         }
+        public async Task<List<Chapter>> GetAllAsync()
+        {
+            var allChapters = await _context.Chapters.ToListAsync();
+            return allChapters;
+        }
     }
 }

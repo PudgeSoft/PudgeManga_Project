@@ -19,13 +19,26 @@ namespace PudgeManga_Project.Models.Repositories
             return await _context.Animes.ToListAsync();
         }
 
-        public async Task<Anime> GetByIdAsync(int id)
+        public async Task<Anime> GetAnimeByIdAsync(int animeId)
         {
             return await _context.Animes
-            .Include(m => m.AnimeGenres)
+                .Include(m => m.AnimeGenres)
                 .ThenInclude(ag => ag.GenreForAnime)
-            .Include(ch => ch.AnimeSeasons)
-            .FirstOrDefaultAsync(i => i.AnimeId == id);
+                .FirstOrDefaultAsync(a => a.AnimeId == animeId);
+        }
+
+        public async Task< List<AnimeSeason>> GetSeasonsByAnimeIdAsync(int animeId)
+        {
+            return await _context.AnimeSeasons
+                .Where(s => s.AnimeId == animeId)
+                .ToListAsync();
+        }
+
+        public async Task<List<AnimeEpisode>> GetEpisodesBySeasonIdAsync(int seasonId)
+        {
+            return await  _context.AnimesEpisodes
+                .Where(e => e.SeasonId == seasonId)
+                .ToListAsync();
         }
 
     }
