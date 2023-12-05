@@ -68,8 +68,6 @@
         </script>
 
         <div class="row justify-content-center justify-content-sm-start">
-            DateTime firstDayOfMonth = new DateTime(currentMonth.Year, currentMonth.Month, 1);
-            DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
             @* @foreach (DateTime date in Enumerable.Range(0, (int)(lastDayOfMonth - firstDayOfMonth).TotalDays + 1)
             .Select(offset => firstDayOfMonth.AddDays(offset))))
             {
@@ -92,36 +90,6 @@
             </div>
             </div>
             }*@
-            @*@{
-                List<DateTime> GetDates(int year, int month)
-                {
-                    return Enumerable.Range(1, DateTime.DaysInMonth(year, month))
-                    .Select(day => new DateTime(year, month, day))
-                    .ToList();
-                }
-                DateTime dateNow = DateTime.Now;
-                var dates = GetDates(dateNow.Year, dateNow.Month); // Змініть це на ваші значення year та month
-
-                foreach (var date in dates)
-                {
-                    <div class="image-container d-flex col-8 col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4 mx-2">
-                        <img src="@item.Url" class="img-fluid img-fit">
-
-                        if (itemTime.Year == date.Year && itemTime.Month == date.Month && itemTime.Day == date.Day)
-                        {
-                        <a href="@item.Url">Database Link</a>
-                        }
-                        else
-                        {
-                        <a href="https://img.championat.com/c/1200x900/news/big/z/e/ign-25-luchshih-anime-v-istorii_1672055411452433690.jpg">Regular Link</a>
-                        }
-
-                        <div class="day-number-box">@date.Day</div>
-                    </div>
-                }
-            }*@
-
-
         </div>
     </div>
 
