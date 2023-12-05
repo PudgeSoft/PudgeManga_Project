@@ -4,6 +4,7 @@ using PudgeManga_Project.Models;
 using PudgeManga_Project.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.ConstrainedExecution;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -58,8 +59,9 @@ namespace PudgeManga_Project.Controllers
         [HttpGet]
         public IActionResult Register()
         {
+          
             var response = new RegisterViewModel();
-            return View(response);
+            return PartialView(response);
         }
 
         [HttpPost]

@@ -7,6 +7,7 @@ using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.Models.Repositories;
+using RunGroopWebApp.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
        .AddCookie();
-
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
 builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
