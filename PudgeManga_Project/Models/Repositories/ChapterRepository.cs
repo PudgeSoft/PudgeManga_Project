@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
+using PudgeManga_Project.ViewModels;
 
 namespace PudgeManga_Project.Models.Repositories
 {
@@ -32,6 +33,62 @@ namespace PudgeManga_Project.Models.Repositories
         {
             var allChapters = await _context.Chapters.ToListAsync();
             return allChapters;
+        }
+
+        public async Task<List<CalendarViewModel>> GetViewModelForCalendarAsync()
+        {
+            List<Chapter> chapters = await _context.Chapters.ToListAsync();
+
+            Dictionary<DateTime, List<Chapter>> chaptersByDate = new Dictionary<DateTime, List<Chapter>>();
+
+            foreach (var chapter in chapters)
+            {
+                DateTime publicationDate = chapter.PublicationDate.Date;
+
+                if (!chaptersByDate.ContainsKey(publicationDate))
+                {
+                    chaptersByDate[publicationDate] = new List<Chapter>();
+                }
+
+                chaptersByDate[publicationDate].Add(chapter);
+            }
+            List<CalendarViewModel> calendarViewModelList = new List<CalendarViewModel>();
+
+            for (int day = 1; day <= DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month); day++)
+            {
+                DateTime currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, day);
+
+                if (chaptersByDate.ContainsKey(currentDate))
+                {
+                    CalendarViewModel calendarViewModel = new CalendarViewModel
+                    {
+                        PublicationDate = currentDate,
+                        Chapters = chaptersByDate[currentDate]
+                    };
+
+                    calendarViewModelList.Add(calendarViewModel);
+                }
+                else
+                {
+
+                    CalendarViewModel calendarViewModel = new CalendarViewModel
+                    {
+                        PublicationDate = currentDate,
+                        Chapters = new List<Chapter>()
+                        {
+                            new Chapter()
+                            {
+                                Title = "Відсутні глави",
+                                Url = "https://img.championat.com/c/1200x900/news/big/z/e/ign-25-luchshih-anime-v-istorii_1672055411452433690.jpg"
+                            }
+                        } 
+                    };
+
+                    calendarViewModelList.Add(calendarViewModel);
+                }
+            }
+
+            return calendarViewModelList;
         }
     }
 }
