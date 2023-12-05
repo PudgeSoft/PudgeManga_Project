@@ -6,5 +6,6 @@ namespace PudgeManga_Project.Interfaces
     {
         Task<IEnumerable<T1>> GetChaptersForManga(int T2);
         Task<int> GetTotalChapters(int mangaId);
+        Task<List<T1>> GetAllAsync();
     }
 }

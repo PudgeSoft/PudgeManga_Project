@@ -1,5 +1,128 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<PudgeManga_Project.Models.Chapter>
+@using Azure.Core;
+@using Microsoft.AspNetCore.Mvc.RazorPages;
+@using System.Globalization;
+
 @{
+    // поточний час
+    DateTime currentDate = DateTime.Now;
+    // місяць
+    DateTime currentMonth = currentDate;
+
+    string monthName = currentDate.ToString("MMMM", CultureInfo.CurrentCulture);
+
+    // Перетворити першу літеру великою
+    monthName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(monthName);
+
+
+    string action = Context.Request.RouteValues["action"]?.ToString(); // Use route parameter
+
+    // для зміни місяця
+    if (!string.IsNullOrEmpty(action))
+    {
+        if (action == "prev")
+        {
+            currentMonth = currentMonth.AddMonths(-1);
+        }
+        else if (action == "next")
+        {
+            currentMonth = currentMonth.AddMonths(1);
+        }
+    }
+
+    DateTime firstDayOfMonth = new DateTime(currentMonth.Year, currentMonth.Month, 1);
+    DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
 }
+
+<head>
+    <link rel="stylesheet" href="~/css/calendar.css" asp-append-version="true">
+</head>
+
+
+<body>
+    <div class="container main-container pt-3 calendar rounded-4 my-5 ">
+
+        <div class="row text-center mb-4">
+            <h2>Дата виходу аніме/манги</h2>
+        </div>
+
+
+        <div class="row d-flex justify-content-center flex-row mb-4">
+
+            <button class="col-1 prev text-end" asp-route-action="prev">
+                <i class="btn fa fa-chevron-left border  rounded-4"></i>
+            </button>
+
+            <div class="col-2 text-center">
+                <h4>@monthName</h4>
+            </div>
+
+            <button class="col-1 next text-start" asp-route-action="next">
+                <i class="btn fa fa-chevron-right border rounded-4"></i>
+            </button>
+
+        </div>
+
+        <script>
+
+        </script>
+
+        <div class="row justify-content-center justify-content-sm-start">
+            DateTime firstDayOfMonth = new DateTime(currentMonth.Year, currentMonth.Month, 1);
+            DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
+            @* @foreach (DateTime date in Enumerable.Range(0, (int)(lastDayOfMonth - firstDayOfMonth).TotalDays + 1)
+            .Select(offset => firstDayOfMonth.AddDays(offset))))
+            {
+            <div class="image-container d-flex col-8 col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4 mx-2">
+            <img src="@item.Url" class="img-fluid img-fit">
+            <div class="day-number-box">
+            @{
+            DateTime itemTime = item.PublicationDate;
+            DateTime currentTime = DateTime.Now;
+            if (itemTime.Year == currentTime.Year && itemTime.Month == currentTime.Month && itemTime.Day == currentTime.Day)
+            {
+            <a href="@item.Url">Database Link</a>
+            }
+            else
+            {
+            <a href="https://img.championat.com/c/1200x900/news/big/z/e/ign-25-luchshih-anime-v-istorii_1672055411452433690.jpg">Regular Link</a>
+            }
+            }
+            <h3 class="day-number">@DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month)</h3>
+            </div>
+            </div>
+            }*@
+            @*@{
+                List<DateTime> GetDates(int year, int month)
+                {
+                    return Enumerable.Range(1, DateTime.DaysInMonth(year, month))
+                    .Select(day => new DateTime(year, month, day))
+                    .ToList();
+                }
+                DateTime dateNow = DateTime.Now;
+                var dates = GetDates(dateNow.Year, dateNow.Month); // Змініть це на ваші значення year та month
+
+                foreach (var date in dates)
+                {
+                    <div class="image-container d-flex col-8 col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4 mx-2">
+                        <img src="@item.Url" class="img-fluid img-fit">
+
+                        if (itemTime.Year == date.Year && itemTime.Month == date.Month && itemTime.Day == date.Day)
+                        {
+                        <a href="@item.Url">Database Link</a>
+                        }
+                        else
+                        {
+                        <a href="https://img.championat.com/c/1200x900/news/big/z/e/ign-25-luchshih-anime-v-istorii_1672055411452433690.jpg">Regular Link</a>
+                        }
+
+                        <div class="day-number-box">@date.Day</div>
+                    </div>
+                }
+            }*@
+
+
+        </div>
+    </div>
+
+</body>

@@ -27,20 +27,43 @@ namespace PudgeManga_Project.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> AnimeDetails(int animeId)
+        public async Task<IActionResult> AnimeDetails(int animeId, int seasonId)
         {
-            var anime = await _animeRepository.GetByIdAsync(animeId);
+            var anime = await _animeRepository.GetAnimeByIdAsync(animeId);
+
             if (anime == null)
             {
                 return NotFound();
             }
-            var seasons = await _seasonsRepository.GetSeasonsForAnimeAsync(animeId);
+
+            var seasons = await _animeRepository.GetSeasonsByAnimeIdAsync(animeId);
+
+            if (seasons == null || !seasons.Any())
+            {
+                return NotFound();
+            }
+
+            var selectedSeason = seasons.FirstOrDefault(s => s.AnimeSeasonId == seasonId);
+
+            if (selectedSeason == null)
+            {
+                // Якщо seasonId не знайдено серед сезонів аніме, ви можете повернутися до дефолтного сезону чи обробити по-іншому
+                selectedSeason = seasons.First();
+                // або return NotFound();
+            }
+
+            var episodes = await _animeRepository.GetEpisodesBySeasonIdAsync(selectedSeason.AnimeSeasonId);
+
             var viewModel = new AnimeDetailsViewModel
             {
                 Anime = anime,
-                AnimeSeasons = seasons
+                Seasons = seasons,
+                SelectedSeason = selectedSeason,
+                Episodes = episodes
             };
+
             return View(viewModel);
         }
+
     }
 }
