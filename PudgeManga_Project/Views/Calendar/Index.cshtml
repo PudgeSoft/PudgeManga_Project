@@ -22,20 +22,42 @@
             </div>
         </div>
 
+
+
         <div class="row justify-content-center justify-content-sm-start">
+            @{
+                var i = 0;
+            }
             @foreach (var item in Model)
             {
-                <div class=" image-container d-flex col-8 col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4 ">
-
+                <div class="image-container d-flex col-8 col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4 ">
                     <h3 class="day-number-box day-number">@item.PublicationDate.Day</h3>
-                    
-                    @foreach (var chapter in item.Chapters)
-                    {
-                        <img src="@chapter.Url" class="img-fluid img-fit ">
+                    <div id="carouselExampleAutoplaying@(i)" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            @foreach (var chapter in item.Chapters.Select((Value, Index) => new { Value, Index }))
+                            {
+                                <div class="carousel-item @(chapter.Index == 0 ? "active" : "")">
+                                    <img src="@chapter.Value.Url" class="img-fluid img-fit ">
+                                </div>
 
-                    }
+                            }
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying@(i)"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying@(i)"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
                 </div>
+                i++;
             }
         </div>
+
+
     </div>
 </body>

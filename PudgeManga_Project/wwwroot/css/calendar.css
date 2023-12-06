@@ -28,7 +28,7 @@
 	position: absolute;
 	top: 8px;
 	left: 14px;
-
+	z-index: 2;
 	background-color: #262020;/*?*/
 	height: 35px;
 	width: 35px;
