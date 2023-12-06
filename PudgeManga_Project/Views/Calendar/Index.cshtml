@@ -12,9 +12,9 @@
             <h2>Дата виходу манги</h2>
         </div>
         <div class="row text-center">
-            <h4 >Грудень</h4>
+            <h4>Грудень</h4>
         </div>
-        
+
         <div class="row d-flex justify-content-center flex-row mb-4">
 
             <div class="col-2 text-center">
@@ -26,12 +26,14 @@
             @foreach (var item in Model)
             {
                 <div class=" image-container d-flex col-8 col-xl-2 col-lg-3 col-md-4 col-sm-6 mb-4 ">
+
+                    <h3 class="day-number-box day-number">@item.PublicationDate.Day</h3>
                     
-                        <h3 class="day-number-box day-number">@item.PublicationDate.Day</h3>
-                            @foreach (var chapter in item.Chapters)
-                            {
-                                <img src="@chapter.Url" class="img-fluid img-fit ">
-                            }
+                    @foreach (var chapter in item.Chapters)
+                    {
+                        <img src="@chapter.Url" class="img-fluid img-fit ">
+
+                    }
                 </div>
             }
         </div>
