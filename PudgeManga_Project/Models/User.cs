@@ -12,7 +12,7 @@ namespace PudgeManga_Project.Models
         public string? Image { get; set; }
         public string? State { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<UserComment> UserComments { get; set; } = new List<UserComment>();
 
     }
 }

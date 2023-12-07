@@ -25,18 +25,11 @@ namespace PudgeManga_Project.Models.Repositories
                 .Include(m => m.MangaGenres)
                     .ThenInclude(mg => mg.Genre)
                 .Include(ch => ch.Chapters)
-                .Include(comm => comm.Comments)
                 .Include(popul => popul.Popularity)
                 .FirstOrDefaultAsync(i => i.MangaId == id);
         }
 
 
-        public async Task<Manga> GetByIdComments(int id)
-        {
-            return await _context.Mangas
-                .Include(comm => comm.Comments)
-                .FirstOrDefaultAsync(i => i.MangaId == id);
-        }
         public async Task<Manga> GetByIdReading(int id, int chapterNumber)
         {
             return await _context.Mangas

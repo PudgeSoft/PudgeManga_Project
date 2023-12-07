@@ -7,14 +7,16 @@ namespace PudgeManga_Project.Models
     {
         [Key]
         public int CommentId { get; set; }
+        public string CommentText { get; set; }
+        public DateTime CommentDate { get; set; }
 
-        [ForeignKey("Manga")]
-        public int MangaId { get; set; }
-        public string Text { get; set; }
-        public int Rating { get; set; }
-        public Manga Manga { get; set; }
+        public int? ParentId { get; set; }
+        public Comment ParentComment { get; set; }
 
-        [ForeignKey("User")]
-        public User Id { get; set; }
+        public ICollection<UserComment> UserComments { get; set; } 
+        public ICollection<MangaComment> MangaComments { get; set; } 
+        public ICollection<AnimeSeasonComment> AnimeSeasonComments { get; set; }
+        public ICollection<PageComment> PageComments { get; set; } 
     }
+
 }
