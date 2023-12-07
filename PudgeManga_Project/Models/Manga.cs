@@ -19,7 +19,7 @@ namespace PudgeManga_Project.Models
         public ICollection<MangaGenre> MangaGenres { get; set; }
         public ICollection<Chapter> Chapters { get; set; }
         public ICollection<Comment> Comments { get; set; }
-        public Popularity Popularity { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
     }
 
 }

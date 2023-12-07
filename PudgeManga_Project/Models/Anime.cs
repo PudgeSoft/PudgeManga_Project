@@ -17,6 +17,7 @@ namespace PudgeManga_Project.Models
 
         public ICollection<AnimeSeason> AnimeSeasons { get; set; }
         public ICollection<AnimeGenre> AnimeGenres { get; set; }
+        public ICollection<Rating> Ratings { get; set; }
 
     }
 }

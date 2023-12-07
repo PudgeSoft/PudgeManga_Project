@@ -60,7 +60,9 @@
                     </div>
                     <div class="video mb-2">
                         <video id="my-video" class="video-js" controls preload="auto">
-                            <source src="" type="" />
+                            @foreach(var item in Model.Episodes){
+                            <source src="@item.EpisodeUrl" type="" />
+                            }
                             <p class="vjs-no-js">
                                 To view this video please enable JavaScript, and consider upgrading to a
                                 web browser that
