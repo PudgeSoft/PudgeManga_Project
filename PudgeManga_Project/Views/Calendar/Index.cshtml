@@ -36,9 +36,11 @@
                         <div class="carousel-inner">
                             @foreach (var chapter in item.Chapters.Select((Value, Index) => new { Value, Index }))
                             {
-                                <div class="carousel-item @(chapter.Index == 0 ? "active" : "")">
-                                    <img src="@chapter.Value.Url" class="img-fluid img-fit ">
-                                </div>
+                                <a asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@chapter.Value.MangaID">
+                                    <div class="carousel-item @(chapter.Index == 0 ? "active" : "")">
+                                        <img src="@chapter.Value.Url" class="img-fluid img-fit ">
+                                    </div>
+                                </a>
 
                             }
                         </div>

@@ -16,7 +16,7 @@ main {
 }
 
 	.splide__slide img {
-		max-width: 100%;
+		width: 80%;
 		display: block;
 		height: 100%;
 	}
