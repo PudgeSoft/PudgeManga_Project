@@ -13,6 +13,6 @@ namespace PudgeManga_Project.Models
         public string? State { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
-
+        public ICollection<Rating> Ratings { get; set; }
     }
 }

@@ -746,7 +746,7 @@ namespace PudgeManga_Project.Data.migrations
                         .IsRequired();
 
                     b.HasOne("PudgeManga_Project.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Ratings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -801,6 +801,8 @@ namespace PudgeManga_Project.Data.migrations
             modelBuilder.Entity("PudgeManga_Project.Models.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

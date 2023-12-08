@@ -14,11 +14,14 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly IAnimeRepository<Anime, int> _animeRepository;
         private readonly IAnimeSeasonsRepository<AnimeSeason, int> _seasonsRepository;
+        private readonly IRatingRepository _ratingRepository;
         public AnimeController(IAnimeRepository<Anime, int> animeRepository,
-            IAnimeSeasonsRepository<AnimeSeason, int> seasonsRepository)
+            IAnimeSeasonsRepository<AnimeSeason, int> seasonsRepository,
+            IRatingRepository ratingRepository)
         {
             _animeRepository = animeRepository;
             _seasonsRepository = seasonsRepository;
+            _ratingRepository = ratingRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -54,12 +57,15 @@ namespace PudgeManga_Project.Controllers
 
             var episodes = await _animeRepository.GetEpisodesBySeasonIdAsync(selectedSeason.AnimeSeasonId);
 
+            var averageRating = await _ratingRepository.GetAnimeAverageRatingAsync(animeId);
+
             var viewModel = new AnimeDetailsViewModel
             {
                 Anime = anime,
                 Seasons = seasons,
                 SelectedSeason = selectedSeason,
-                Episodes = episodes
+                Episodes = episodes,
+                AverageRating = averageRating
             };
 
             return View(viewModel);

@@ -12,7 +12,7 @@ using PudgeManga_Project.Data;
 namespace PudgeManga_Project.Data.migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20231206092808_Add_Rating_Model")]
+    [Migration("20231208120304_Add_Rating_Model")]
     partial class Add_Rating_Model
     {
         /// <inheritdoc />
@@ -749,7 +749,7 @@ namespace PudgeManga_Project.Data.migrations
                         .IsRequired();
 
                     b.HasOne("PudgeManga_Project.Models.User", "User")
-                        .WithMany()
+                        .WithMany("Ratings")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -804,6 +804,8 @@ namespace PudgeManga_Project.Data.migrations
             modelBuilder.Entity("PudgeManga_Project.Models.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Ratings");
                 });
 #pragma warning restore 612, 618
         }

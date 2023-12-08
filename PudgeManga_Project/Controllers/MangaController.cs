@@ -17,13 +17,16 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly IMangaRepository<Manga, int> _mangaRepository;
-        private readonly IChapterRepository<Chapter,int> _chapterRepository; 
+        private readonly IChapterRepository<Chapter,int> _chapterRepository;
+        private readonly IRatingRepository _ratingRepository;
 
         public MangaController(IMangaRepository<Manga, int> mangaRepository,
-            IChapterRepository<Chapter,int> chapterRepository) 
+            IChapterRepository<Chapter,int> chapterRepository, 
+            IRatingRepository ratingRepository) 
         {
             _mangaRepository = mangaRepository;
-            _chapterRepository = chapterRepository; 
+            _chapterRepository = chapterRepository;
+            _ratingRepository = ratingRepository;
         }
 
         // GET: Mangas
@@ -41,10 +44,12 @@ namespace PudgeManga_Project.Controllers
                 return NotFound();
             }
             var chapters = await _chapterRepository.GetChaptersForManga(mangaId);
+            var averageRating = await _ratingRepository.GetMangaAverageRatingAsync(mangaId);
             var viewModel = new MangaChaptersViewModel
             {
                 Manga = manga,
-                Chapters = chapters
+                Chapters = chapters,
+                AverageRating = averageRating
             };
             return View(viewModel);
         }
