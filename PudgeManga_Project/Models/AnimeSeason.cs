@@ -11,6 +11,7 @@ namespace PudgeManga_Project.Models
         public string Title { get; set; }
 
         public ICollection<AnimeEpisode> AnimeEpisodes { get; set; }
+        public ICollection<AnimeSeasonComment> AnimeSeasonComments { get; set; }
         public Anime Anime { get; set; }
 
     }
