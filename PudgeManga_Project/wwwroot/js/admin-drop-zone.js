@@ -7,6 +7,7 @@ $(document).ready(function () {
         addRemoveLinks: true,
         autoProcessQueue: true
         parallelUploads: 1
+        maxFilesize: 500
         init: function () {
             this.on("success", function (file, response) {
                 var imgName = response;
