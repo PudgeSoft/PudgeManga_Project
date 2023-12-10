@@ -1,5 +1,5 @@
-.main-container{
-	background-color: #363636;
+.main-container {
+	background-color: #161313;
 	height: auto;
 }
 
@@ -12,12 +12,13 @@
 	width: 30px;
 }
 
+
 .img-fluid {
 	aspect-ratio: 1/1;
 	object-fit: cover;
-	display: block;
 	border-radius: 10%;
 }
+
 .card{
 	padding: 0 1em;
 
@@ -29,11 +30,11 @@
 	top: 8px;
 	left: 14px;
 
-	background-color: #262020;/*?*/
+	background-color: #262020;
 	height: 35px;
 	width: 35px;
 	border-radius: 40%;
-	opacity: 80%;/*???*/
+	opacity: 80%; /*???*/
 }
 
 .image-container {
