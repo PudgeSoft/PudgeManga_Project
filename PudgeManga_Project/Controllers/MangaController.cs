@@ -15,10 +15,9 @@ namespace PudgeManga_Project.Controllers
 {
     public class MangaController : Controller
     {
-        private readonly ApplicationDBContext _context;
+
         private readonly IMangaRepository<Manga, int> _mangaRepository;
         private readonly IChapterRepository<Chapter,int> _chapterRepository; 
-
         public MangaController(IMangaRepository<Manga, int> mangaRepository,
             IChapterRepository<Chapter,int> chapterRepository) 
         {
@@ -75,6 +74,30 @@ namespace PudgeManga_Project.Controllers
 
             return View(manga);
         }
+        //public PartialViewResult CommentPartial()
+        //{
+        //    var comments = repo.GetAll();
+        //    return PartialView("_CommentPartial", comments);
+        //}
+
+        //[HttpPost]
+        //public JsonResult AddNewComment(CommentDTO comment)
+        //{
+        //    try
+        //    {
+        //        var model = repo.AddComment(comment);
+
+        //        return Json(new { error = false, result = model });
+
+        //    }
+        //    catch (Exception)
+        //    {
+        //        // Обробляйте помилку тут.
+        //    }
+
+        //    return Json(new { error = true });
+        //}
+
 
     }
 }
