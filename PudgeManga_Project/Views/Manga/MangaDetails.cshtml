@@ -138,6 +138,12 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="p-5 tabcontent" id="Comment">
+                            <h3 class="page-title">User Comment</h3>
+                            @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
+
+                        </div>
+
                     </div>
                 </div>
             </div>

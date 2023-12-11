@@ -9,6 +9,7 @@ using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.Models.Repositories;
+using PudgeManga_Project.ViewModels;
 using PudgeManga_Project.ViewModels.MangaViewModels;
 
 namespace PudgeManga_Project.Controllers
@@ -17,12 +18,15 @@ namespace PudgeManga_Project.Controllers
     {
 
         private readonly IMangaRepository<Manga, int> _mangaRepository;
-        private readonly IChapterRepository<Chapter,int> _chapterRepository; 
+        private readonly IChapterRepository<Chapter,int> _chapterRepository;
+        private readonly ICommentRepository _commentRepository;
         public MangaController(IMangaRepository<Manga, int> mangaRepository,
-            IChapterRepository<Chapter,int> chapterRepository) 
+            IChapterRepository<Chapter,int> chapterRepository,
+            ICommentRepository commentRepository) 
         {
             _mangaRepository = mangaRepository;
-            _chapterRepository = chapterRepository; 
+            _chapterRepository = chapterRepository;
+            _commentRepository = commentRepository;
         }
 
         // GET: Mangas
@@ -44,6 +48,7 @@ namespace PudgeManga_Project.Controllers
             {
                 Manga = manga,
                 Chapters = chapters
+                
             };
             return View(viewModel);
         }
@@ -76,23 +81,23 @@ namespace PudgeManga_Project.Controllers
         }
         //public PartialViewResult CommentPartial()
         //{
-        //    var comments = repo.GetAll();
+        //    var comments = _commentRepository.GetAll();
         //    return PartialView("_CommentPartial", comments);
         //}
 
         //[HttpPost]
-        //public JsonResult AddNewComment(CommentDTO comment)
+        //public JsonResult AddNewComment(CommentViewModel comment)
         //{
         //    try
         //    {
-        //        var model = repo.AddComment(comment);
+        //        var model = _commentRepository.AddComment(comment);
 
         //        return Json(new { error = false, result = model });
 
         //    }
-        //    catch (Exception)
+        //    catch (Exception ex)
         //    {
-        //        // Обробляйте помилку тут.
+        //        Console.WriteLine(ex.Message);
         //    }
 
         //    return Json(new { error = true });
