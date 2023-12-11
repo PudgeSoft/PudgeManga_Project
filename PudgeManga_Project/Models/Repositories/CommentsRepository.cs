@@ -1,4 +1,5 @@
-﻿using PudgeManga_Project.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.ViewModels;
 
@@ -39,13 +40,26 @@ namespace PudgeManga_Project.Models.Repositories
 
                     }).FirstOrDefault();
         }
-        //public async Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId)
-        //{
-        //    // Отримати коментарі для заданої манги
-        //    return await _context.Comments
-        //        .Where(c => c.MangaId == mangaId)
-        //        .ToListAsync();
-        //}
+        public async Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId)
+        {
+            try
+            {
+                var comments = await _context.CommentsForManga
+                    .Where(mc => mc.MangaId == mangaId)
+                    .Select(mc => mc.Comment)
+                    .ToListAsync();
+
+                return comments;
+            }
+            catch (Exception ex)
+            {
+                // Обробити помилку
+                Console.WriteLine($"Помилка отримання коментарів для манги {mangaId}: {ex.Message}");
+                return null; // або повернути пустий список або власну логіку обробки помилок
+            }
+        }
+
+
 
     }
 }

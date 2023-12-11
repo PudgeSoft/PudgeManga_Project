@@ -6,6 +6,7 @@ namespace PudgeManga_Project.Interfaces
     {
         IQueryable<Comment> GetAll();
         CommentViewModel AddComment(CommentViewModel comment);
+        Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId);
     }
 
 }
