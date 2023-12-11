@@ -11,7 +11,7 @@ namespace PudgeManga_Project.Models
         public int AnimeId { get; set; }
         [ForeignKey("User")]
         public string UserId { get; set; }
-        public int Value { get; set; }
+        public double Value { get; set; }
 
         public Manga Manga { get; set; }
         public Anime Anime { get; set; }

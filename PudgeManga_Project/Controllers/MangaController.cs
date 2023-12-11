@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,16 +19,19 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly ApplicationDBContext _context;
         private readonly IMangaRepository<Manga, int> _mangaRepository;
-        private readonly IChapterRepository<Chapter,int> _chapterRepository;
+        private readonly IChapterRepository<Chapter, int> _chapterRepository;
         private readonly IRatingRepository _ratingRepository;
+        private readonly IUserRepository _userRepository;
 
         public MangaController(IMangaRepository<Manga, int> mangaRepository,
-            IChapterRepository<Chapter,int> chapterRepository, 
-            IRatingRepository ratingRepository) 
+            IChapterRepository<Chapter, int> chapterRepository,
+            IRatingRepository ratingRepository,
+            IUserRepository userRepository)
         {
             _mangaRepository = mangaRepository;
             _chapterRepository = chapterRepository;
             _ratingRepository = ratingRepository;
+            _userRepository = userRepository;
         }
 
         // GET: Mangas
@@ -53,9 +58,9 @@ namespace PudgeManga_Project.Controllers
             };
             return View(viewModel);
         }
-        public async Task<IActionResult> Reading(int mangaId,int chapter)
+        public async Task<IActionResult> Reading(int mangaId, int chapter)
         {
-            var manga = await _mangaRepository.GetByIdReading(mangaId,chapter);
+            var manga = await _mangaRepository.GetByIdReading(mangaId, chapter);
             if (manga == null)
             {
                 return NotFound();
@@ -79,6 +84,31 @@ namespace PudgeManga_Project.Controllers
             }
 
             return View(manga);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RateManga(string userId, int mangaId, double value)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+
+                var userRating = new Rating
+                {
+                    UserId = userId,
+                    MangaId = mangaId,
+                    Value = value
+                };
+
+                await _ratingRepository.AddRatingAsync(userRating);
+                return View();
+            }
+            else
+            {
+
+                return RedirectToAction("Login", "Account");
+            }
+
         }
 
     }

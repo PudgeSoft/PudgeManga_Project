@@ -39,22 +39,10 @@ namespace PudgeManga_Project.Models.Repositories
             return await ratings.AverageAsync(r => r.Value);
         }
 
-        //public async Task<int> GetAnimeRating(string userId, int animeId)
-        //{
-        //    var rating = await _context.Ratings
-        //    .Where(r => r.AnimeId == animeId)
-        //    .FirstOrDefaultAsync();
-
-        //    return rating.Value;
-        //}
-
-        //public async Task<int> GetMangaRating(string userId, int mangaId)
-        //{
-        //    var rating = await _context.Ratings
-        //    .Where(r => r.MangaId == mangaId)
-        //    .FirstOrDefaultAsync();
-
-        //    return rating.Value;
-        //}
+        public async Task AddRatingAsync(Rating rating)
+        {
+            _context.Ratings.Add(rating);
+            await _context.SaveChangesAsync();
+        }
     }
 }

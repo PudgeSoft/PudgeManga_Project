@@ -12,7 +12,7 @@ using PudgeManga_Project.Data;
 namespace PudgeManga_Project.Data.migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20231208120304_Add_Rating_Model")]
+    [Migration("20231211131442_Add_Rating_Model")]
     partial class Add_Rating_Model
     {
         /// <inheritdoc />
@@ -485,8 +485,8 @@ namespace PudgeManga_Project.Data.migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("Value")
-                        .HasColumnType("int");
+                    b.Property<double>("Value")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

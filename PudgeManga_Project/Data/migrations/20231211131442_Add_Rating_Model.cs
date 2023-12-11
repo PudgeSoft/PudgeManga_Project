@@ -19,7 +19,7 @@ namespace PudgeManga_Project.Data.migrations
                     MangaId = table.Column<int>(type: "int", nullable: false),
                     AnimeId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<int>(type: "int", nullable: false)
+                    Value = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -14,31 +14,39 @@ namespace PudgeManga_Project.Controllers
             _dbContext = dBContext;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> SetRating(string userId, int animeId, int value)
-        {
-            var rating = await _dbContext.Ratings
-                .Where(r => r.UserId.Equals(userId) && r.AnimeId == animeId)
-                .FirstOrDefaultAsync();
+        //[HttpPost]
+        //public async Task<IActionResult> SetMangaRating(string userId, int mangaId, double value)
+        //{
+        //    if (User.Identity.IsAuthenticated)
+        //    {
 
-            if (rating == null)
-            {
-                rating = new Rating
-                {
-                    UserId = userId,
-                    AnimeId = animeId,
-                    Value = value
-                };
-                _dbContext.Ratings.Add(rating);
-            }
-            else
-            {
-                rating.Value = value;
-            }
+        //        var rating = await _dbContext.Ratings
+        //            .Where(r => r.UserId == userId && r.AnimeId == mangaId)
+        //            .FirstOrDefaultAsync();
 
-            await _dbContext.SaveChangesAsync();
+        //        if (rating == null)
+        //        {
+        //            rating = new Rating
+        //            {
+        //                UserId = userId,
+        //                MangaId = mangaId,
+        //                Value = value
+        //            };
+        //            _dbContext.Ratings.Add(rating);
+        //        }
+        //        else
+        //        {
+        //            rating.Value = value;
+        //        }
 
-            return Ok(rating.Value);
-        }
+        //        await _dbContext.SaveChangesAsync();
+
+        //        return Ok(rating.Value);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Login", "Account");
+        //    }
+        //}
     }
 }
