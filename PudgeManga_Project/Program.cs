@@ -21,6 +21,9 @@ builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 
 builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+
+
 
 builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeRepository>();
 builder.Services.AddScoped<IAnimeGenreRepository, AnimeGenreRepository>();

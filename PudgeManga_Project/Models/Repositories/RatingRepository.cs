@@ -16,19 +16,30 @@ namespace PudgeManga_Project.Models.Repositories
 
         public async Task<double> GetAnimeAverageRatingAsync(int animeId)
         {
-            return await _context.Ratings
-                .Where(r => r.AnimeId == animeId)
-                .AverageAsync(r => r.Value);
+
+            var ratings = _context.Ratings.Where(r => r.AnimeId == animeId);
+
+            if (!ratings.Any())
+            {
+                return 0;
+            }
+
+            return await ratings.AverageAsync(r => r.Value);
         }
 
         public async Task<double> GetMangaAverageRatingAsync(int mangaId)
         {
-            return await _context.Ratings
-                .Where(r => r.MangaId == mangaId)
-                .AverageAsync(r => r.Value);
+            var ratings = _context.Ratings.Where(r => r.MangaId == mangaId);
+
+            if (!ratings.Any())
+            {
+                return 0;
+            }
+
+            return await ratings.AverageAsync(r => r.Value);
         }
 
-        //public async Task<int> GetAnimeRating(int userId, int animeId)
+        //public async Task<int> GetAnimeRating(string userId, int animeId)
         //{
         //    var rating = await _context.Ratings
         //    .Where(r => r.AnimeId == animeId)
@@ -37,7 +48,7 @@ namespace PudgeManga_Project.Models.Repositories
         //    return rating.Value;
         //}
 
-        //public async Task<int> GetMangaRating(int userId, int mangaId)
+        //public async Task<int> GetMangaRating(string userId, int mangaId)
         //{
         //    var rating = await _context.Ratings
         //    .Where(r => r.MangaId == mangaId)

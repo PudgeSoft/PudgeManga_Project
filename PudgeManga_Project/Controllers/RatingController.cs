@@ -14,31 +14,31 @@ namespace PudgeManga_Project.Controllers
             _dbContext = dBContext;
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> SetRating(string userId, int animeId, int value)
-        //{
-        //    var rating = await _dbContext.Ratings
-        //        .Where(r => r.UserId.Equals(userId) && r.AnimeId == animeId)
-        //        .FirstOrDefaultAsync();
+        [HttpPost]
+        public async Task<IActionResult> SetRating(string userId, int animeId, int value)
+        {
+            var rating = await _dbContext.Ratings
+                .Where(r => r.UserId.Equals(userId) && r.AnimeId == animeId)
+                .FirstOrDefaultAsync();
 
-        //    if (rating == null)
-        //    {
-        //        rating = new Rating
-        //        {
-        //            UserId = userId,
-        //            AnimeId = animeId,
-        //            Value = value
-        //        };
-        //        _dbContext.Ratings.Add(rating);
-        //    }
-        //    else
-        //    {
-        //        rating.Value = value;
-        //    }
+            if (rating == null)
+            {
+                rating = new Rating
+                {
+                    UserId = userId,
+                    AnimeId = animeId,
+                    Value = value
+                };
+                _dbContext.Ratings.Add(rating);
+            }
+            else
+            {
+                rating.Value = value;
+            }
 
-        //    await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
 
-        //    return Ok(rating.Value);
-        //}
+            return Ok(rating.Value);
+        }
     }
 }
