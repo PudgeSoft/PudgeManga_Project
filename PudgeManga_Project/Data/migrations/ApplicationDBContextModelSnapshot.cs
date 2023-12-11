@@ -472,10 +472,12 @@ namespace PudgeManga_Project.Data.migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AnimeId")
+                    b.Property<int?>("AnimeId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("MangaId")
+                    b.Property<int?>("MangaId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")

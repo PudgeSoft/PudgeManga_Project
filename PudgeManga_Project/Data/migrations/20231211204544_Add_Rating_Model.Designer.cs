@@ -12,7 +12,7 @@ using PudgeManga_Project.Data;
 namespace PudgeManga_Project.Data.migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20231211131442_Add_Rating_Model")]
+    [Migration("20231211204544_Add_Rating_Model")]
     partial class Add_Rating_Model
     {
         /// <inheritdoc />
@@ -475,10 +475,12 @@ namespace PudgeManga_Project.Data.migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("AnimeId")
+                    b.Property<int?>("AnimeId")
+                        .IsRequired()
                         .HasColumnType("int");
 
-                    b.Property<int>("MangaId")
+                    b.Property<int?>("MangaId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
