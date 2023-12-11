@@ -11,7 +11,7 @@ namespace PudgeManga_Project.Models.Repositories
         {
             _context = context;
         }
-        public IQueryable GetAll()
+        public IQueryable<Comment> GetAll()
         {
             return _context.Comments.OrderBy(x => x.CommentDate);
         }
@@ -23,10 +23,12 @@ namespace PudgeManga_Project.Models.Repositories
                 ParentId = comment.ParentId,
                 CommentText = comment.CommentText,
                 CommentDate = DateTime.Now
+                
             };
 
             _context.Comments.Add(_comment);
             _context.SaveChanges();
+
             return _context.Comments.Where(x => x.CommentId == _comment.CommentId)
                     .Select(x => new CommentViewModel
                     {
@@ -37,10 +39,13 @@ namespace PudgeManga_Project.Models.Repositories
 
                     }).FirstOrDefault();
         }
+        //public async Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId)
+        //{
+        //    // Отримати коментарі для заданої манги
+        //    return await _context.Comments
+        //        .Where(c => c.MangaId == mangaId)
+        //        .ToListAsync();
+        //}
 
-        IQueryable<Comment> ICommentRepository.GetAll()
-        {
-            throw new NotImplementedException();
-        }
     }
 }

@@ -38,6 +38,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
        .AddCookie();
 
 builder.Services.AddScoped<ISearchRepository, SearchRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 builder.Services.AddSingleton<Seed>();
 
@@ -46,9 +47,10 @@ builder.Services.AddDbContext<ApplicationDBContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
 });
 
-builder.Services.Configure<FormOptions>(options =>
+builder.Services.Configure<FormOptions>(x =>
 {
-    options.MultipartBodyLengthLimit = long.MaxValue;
+    x.ValueLengthLimit = int.MaxValue;
+    x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
 });
 
 var app = builder.Build();
