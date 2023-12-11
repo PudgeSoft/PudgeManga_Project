@@ -76,6 +76,22 @@ namespace PudgeManga_Project.Models.Repositories
 
             return folderId;
         }
+        public string UploadFileStreamToGoogleDrive(Stream fileStream, string fileName, string folderId)
+        {
+            var service = GoogleDriveAPIHelper.GetService();
+
+            var driveFile = new Google.Apis.Drive.v3.Data.File
+            {
+                Name = fileName,
+                Parents = new List<string> { folderId } // Використовуйте тут ідентифікатор загальної теки
+            };
+
+            var request = service.Files.Create(driveFile, fileStream, "application/octet-stream");
+
+            var uploadResponse = request.Upload();
+
+            return folderId;
+        }
         public string GetOrCreateFolder(string folderName)
         {
             try

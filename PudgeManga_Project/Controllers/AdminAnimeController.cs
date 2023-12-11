@@ -281,7 +281,7 @@ namespace PudgeManga_Project.Controllers
         }
 
         [HttpPost, ActionName("AddSeries")]
-        public async Task<IActionResult> Upload( int seasonId)
+        public async Task<IActionResult> Upload(IFormFile file, int seasonId)
         {
             try
             {
@@ -292,9 +292,11 @@ namespace PudgeManga_Project.Controllers
                 }
                 var folderName = $"{seasonId}{season.Title}";
                 string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
-                var file = Request.Form.Files[0];
-                _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderId);
-
+                using (var fileStream = file.OpenReadStream())
+                {
+                    // Завантажити файл на Google Drive
+                    _googleDriveAPIRepository.UploadFileStreamToGoogleDrive(fileStream, "test",folderId);
+                }
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
