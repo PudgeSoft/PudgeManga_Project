@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -16,19 +18,23 @@ namespace PudgeManga_Project.Controllers
 {
     public class MangaController : Controller
     {
-
         private readonly IMangaRepository<Manga, int> _mangaRepository;
-        private readonly IChapterRepository<Chapter,int> _chapterRepository;
+        private readonly IChapterRepository<Chapter, int> _chapterRepository;
+        private readonly IRatingRepository _ratingRepository;
+        private readonly IUserRepository _userRepository;
         private readonly ICommentRepository _commentRepository;
         public MangaController(IMangaRepository<Manga, int> mangaRepository,
-            IChapterRepository<Chapter,int> chapterRepository,
-            ICommentRepository commentRepository) 
+            IChapterRepository<Chapter, int> chapterRepository,
+            IRatingRepository ratingRepository,
+            IUserRepository userRepository,
+            ICommentRepository commentRepository)
         {
             _mangaRepository = mangaRepository;
             _chapterRepository = chapterRepository;
+            _ratingRepository = ratingRepository;
+            _userRepository = userRepository;
             _commentRepository = commentRepository;
         }
-
         // GET: Mangas
         public async Task<IActionResult> Index()
         {
@@ -45,22 +51,22 @@ namespace PudgeManga_Project.Controllers
             }
 
             var chapters = await _chapterRepository.GetChaptersForManga(mangaId);
-
+            var averageRating = await _ratingRepository.GetMangaAverageRatingAsync(mangaId);
             var comments = await _commentRepository.GetCommentsByMangaId(mangaId);
 
             var viewModel = new MangaChaptersViewModel
             {
                 Manga = manga,
                 Chapters = chapters,
+                AverageRating = averageRating,
                 Comments = comments
             };
-
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Reading(int mangaId,int chapter)
+        public async Task<IActionResult> Reading(int mangaId, int chapter)
         {
-            var manga = await _mangaRepository.GetByIdReading(mangaId,chapter);
+            var manga = await _mangaRepository.GetByIdReading(mangaId, chapter);
             if (manga == null)
             {
                 return NotFound();
@@ -75,6 +81,7 @@ namespace PudgeManga_Project.Controllers
 
             return View(viewModel);
         }
+
         public async Task<IActionResult> Comments(int mangaId)
         {
             var manga = await _mangaRepository.GetById(mangaId);
@@ -82,33 +89,27 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
-
             return View(manga);
         }
-        //public PartialViewResult CommentPartial()
-        //{
-        //    var comments = _commentRepository.GetAll();
-        //    return PartialView("_CommentPartial", comments);
-        //}
 
-        //[HttpPost]
-        //public JsonResult AddNewComment(CommentViewModel comment)
-        //{
-        //    try
-        //    {
-        //        var model = _commentRepository.AddComment(comment);
-
-        //        return Json(new { error = false, result = model });
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine(ex.Message);
-        //    }
-
-        //    return Json(new { error = true });
-        //}
-
-
+        [HttpPost]
+        public async Task<IActionResult> RateManga(string userId, int mangaId, double value)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var userRating = new Rating
+                {
+                    UserId = userId,
+                    MangaId = mangaId,
+                    Value = value
+                };
+                await _ratingRepository.AddRatingAsync(userRating);
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
+        }
     }
 }
