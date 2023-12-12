@@ -25,7 +25,9 @@ namespace PudgeManga_Project.Data
         public DbSet<AnimeEpisode> AnimesEpisodes => Set<AnimeEpisode>();
         public DbSet<AnimeSeason> AnimeSeasons => Set<AnimeSeason>();
         public DbSet<GenreForAnime> GenresForAnimes => Set<GenreForAnime>();
+        public DbSet<Rating> Ratings => Set<Rating>();
         public DbSet<MangaComment> CommentsForManga => Set<MangaComment>();
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MangaGenre>()
@@ -114,7 +116,5 @@ namespace PudgeManga_Project.Data
 
             base.OnModelCreating(modelBuilder);
         }
-
-
     }
 }

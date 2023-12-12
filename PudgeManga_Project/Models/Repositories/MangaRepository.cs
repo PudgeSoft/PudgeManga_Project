@@ -25,7 +25,7 @@ namespace PudgeManga_Project.Models.Repositories
                 .Include(m => m.MangaGenres)
                     .ThenInclude(mg => mg.Genre)
                 .Include(ch => ch.Chapters)
-                .Include(popul => popul.Popularity)
+                .Include(rat => rat.Ratings)
                 .FirstOrDefaultAsync(i => i.MangaId == id);
         }
 
