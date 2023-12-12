@@ -32,8 +32,7 @@ namespace PudgeManga_Project.Models.Repositories
                 .Include(m => m.MangaGenres)
                     .ThenInclude(mg => mg.Genre)
                 .Include(ch => ch.Chapters)
-                .Include(comm => comm.Comments)
-                .Include(popul => popul.Popularity)
+                .Include(rat => rat.Ratings)
                 .FirstOrDefaultAsync(i => i.MangaId == id);
         }
 
@@ -63,7 +62,7 @@ namespace PudgeManga_Project.Models.Repositories
 
             _context.Entry(existingEntity).CurrentValues.SetValues(entity);
 
-            existingEntity.MangaGenres.Clear(); 
+            existingEntity.MangaGenres.Clear();
 
             foreach (var genreId in entity.MangaGenres.Select(mg => mg.GenreId))
             {

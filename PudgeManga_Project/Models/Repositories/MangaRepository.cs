@@ -14,7 +14,7 @@ namespace PudgeManga_Project.Models.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<Manga>> GetAll()
+        public async Task<IEnumerable<Manga>> GetAllAsync()
         {
             return await _context.Mangas.ToListAsync();
         }
@@ -25,18 +25,11 @@ namespace PudgeManga_Project.Models.Repositories
                 .Include(m => m.MangaGenres)
                     .ThenInclude(mg => mg.Genre)
                 .Include(ch => ch.Chapters)
-                .Include(comm => comm.Comments)
-                .Include(popul => popul.Popularity)
+                .Include(rat => rat.Ratings)
                 .FirstOrDefaultAsync(i => i.MangaId == id);
         }
 
 
-        public async Task<Manga> GetByIdComments(int id)
-        {
-            return await _context.Mangas
-                .Include(comm => comm.Comments)
-                .FirstOrDefaultAsync(i => i.MangaId == id);
-        }
         public async Task<Manga> GetByIdReading(int id, int chapterNumber)
         {
             return await _context.Mangas

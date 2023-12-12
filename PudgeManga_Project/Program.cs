@@ -1,6 +1,7 @@
 
 using FluentAssertions.Common;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
@@ -17,9 +18,27 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<IAdminMangaRepository<Manga, int>, AdminMangaRepository>();
 builder.Services.AddScoped<IAdminChapterRepository<Chapter, int>, AdminChapterRepository>();
 builder.Services.AddScoped<IMangaRepository<Manga, int>, MangaRepository>();
+builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
+builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDBContext>();
+
+builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
+
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
+builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeRepository>();
+builder.Services.AddScoped<IAnimeGenreRepository, AnimeGenreRepository>();
+builder.Services.AddScoped<IAnimeRepository<Anime, int>, AnimeRepository>();
+builder.Services.AddScoped<IAdminSeasonRepository<AnimeSeason, int>, AdminSeasonRepository>();
+builder.Services.AddScoped<IAnimeSeasonsRepository<AnimeSeason, int>, AnimeSeasonsRepository>();
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDBContext>()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
@@ -29,12 +48,22 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
 builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
 builder.Services.AddScoped<IGenreRepository, GenreRepository>();
+
+builder.Services.AddScoped<ISearchRepository, SearchRepository>();
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
+
 builder.Services.AddSingleton<Seed>();
+
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
 });
 
+builder.Services.Configure<FormOptions>(x =>
+{
+    x.ValueLengthLimit = int.MaxValue;
+    x.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
+});
 
 var app = builder.Build();
 

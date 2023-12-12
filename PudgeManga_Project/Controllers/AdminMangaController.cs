@@ -39,6 +39,9 @@ namespace PudgeManga_Project.Controllers
 
 
         // GET: Mangas/Details/5
+
+        //[Authorize(Roles = "admin")]
+
         public async Task<IActionResult> Details(int id)
         {
             var manga = await _AdminMangaRepository.GetById(id);
@@ -54,7 +57,7 @@ namespace PudgeManga_Project.Controllers
        // [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create()
         {
-            var allGenres = await _genreRepository.GetAllGenres();
+            var allGenres = await _genreRepository.GetAllGenresAsync();
 
             var createMangaViewModel = new CreateMangaViewModel
             {
@@ -92,7 +95,7 @@ namespace PudgeManga_Project.Controllers
             await _AdminMangaRepository.Add(manga);
 
 
-            var allGenres = await _genreRepository.GetAllGenres();
+            var allGenres = await _genreRepository.GetAllGenresAsync();
             mangaViewModel.AllGenres = allGenres.Select(genre => new SelectListItem
             {
                 Value = genre.GenreId.ToString(),
@@ -100,7 +103,20 @@ namespace PudgeManga_Project.Controllers
             }).ToList();
             return RedirectToAction("Index");
         }
+        public async Task<IActionResult> CreateGenre()
+        {
+            return View();
+        }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateGenre(Genre genre)
+        {
+           
+            await _genreRepository.AddGenreAsync(genre);
+
+            return RedirectToAction("Index");
+        }
 
         // GET: Mangas/Edit/5
         public async Task<IActionResult> Edit(int id)
@@ -110,7 +126,7 @@ namespace PudgeManga_Project.Controllers
             {
                 return NotFound();
             }
-            var allGenres = await _genreRepository.GetAllGenres();
+            var allGenres = await _genreRepository.GetAllGenresAsync();
 
             var editMangaViewModel = new EditMangaViewModel
             {
@@ -303,25 +319,41 @@ namespace PudgeManga_Project.Controllers
         }
 
         [HttpPost, ActionName("AddPages")]
-        public async Task<IActionResult> Upload(IFormFile file, int chapterId)
+        public async Task< IActionResult> Upload(IFormFile file, int chapterId)
         {
             try
             {
-                var folderName = $"{chapterId}";
-                var folderId = _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderName);
+                var chapter = await _AdminChapterRepository.GetById(chapterId);
+                if (chapter == null)
+            {
+                return NotFound();
+            }
+                var folderName = $"{chapterId}{chapter.Title}";
+                string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
 
-                var modifiedPhotoLinks = await _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
-                await _googleDriveAPIRepository.AddFileLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
+                _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderId);
 
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-
-                Console.WriteLine($"Error uploading file to Google Drive: {ex.Message}");
+                Console.WriteLine($"Помилка при завантаженні файлу на Google Drive: {ex.Message}");
                 return RedirectToAction("Index");
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> ButtonClick(int chapterId)
+        {
+            var chapter = await _AdminChapterRepository.GetById(chapterId);
+            string folderName = $"{chapterId}{chapter.Title}";
+
+            string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
+            var modifiedPhotoLinks =  _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
+            await  _googleDriveAPIRepository.AddFileLinksToPagesWithChapters(modifiedPhotoLinks, chapterId);
+
+            return RedirectToAction("Index");
+        }
+
 
 
     }

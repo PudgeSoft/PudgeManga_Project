@@ -1,9 +1,6 @@
 ﻿<!DOCTYPE html>
 <html html lang="en" data-bs-theme="dark">
 
-<!DOCTYPE html>
-<html html lang="en" data-bs-theme="dark">
-
 <head runat="server">
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -45,15 +42,15 @@
 							<div class="dropdown">
 								<button class="nav-link dropdown-toggle text-white fs-5 pb-0 px-2" type="button"
 										data-bs-toggle="dropdown" aria-expanded="false">
-									Аніме
+									Тип контенту
 								</button>
 								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" asp-controller="Anime" asp-action="Index">Аніме?</a></li>
-									<li><a class="dropdown-item" asp-controller="Manga" asp-action="Index">Манга?</a></li>
+									<li><a class="dropdown-item" asp-controller="Anime" asp-action="Index">Аніме</a></li>
+									<li><a class="dropdown-item" asp-controller="Manga" asp-action="Index">Манга</a></li>
 								</ul>
 							</div>
 						</li><!--anime button-->
-						<li><a class="nav-link px-2 pb-0 text-white fs-5">Пошук</a></li>
+						<li><a class="nav-link px-2 pb-0 text-white fs-5" asp-area="" asp-controller="Search" asp-action="Index"> Пошук</a></li>
 						<li><a class="nav-link px-2 pb-0 text-white fs-5" asp-area="" asp-controller="Forum" asp-action="Index">Форум</a></li>
 						<li><a class="nav-link px-2 pb-0 text-white fs-5" asp-area="" asp-controller="Calendar" asp-action="Index">Календар</a></li>
 						<li><a class="nav-link px-2 pb-0 text-white fs-5" asp-area="" asp-controller="Reviews" asp-action="Index">Рецензії</a></li>
@@ -65,11 +62,11 @@
 						<div class="dropdown">
 							<button class="nav-link dropdown-toggle text-white fs-5 pb-0 px-2" type="button"
 									data-bs-toggle="dropdown" aria-expanded="false">
-								Аніме
+								Тип контенту
 							</button>
 							<ul class="dropdown-menu">
-								<li><a class="dropdown-item" href="#">Аніме?</a></li>
-								<li><a class="dropdown-item" href="#">Манга?</a></li>
+									<li><a class="dropdown-item" asp-controller="Anime" asp-action="Index">Аніме</a></li>
+									<li><a class="dropdown-item" asp-controller="Manga" asp-action="Index">Манга</a></li>
 							</ul>
 						</div>
 					</li><!--anime button-->

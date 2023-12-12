@@ -1,15 +1,21 @@
-﻿@model PudgeManga_Project.ViewModels.MangaViewModels.MangaChaptersViewModel
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<IdentityUser> UserManager
+@model PudgeManga_Project.ViewModels.MangaViewModels.MangaChaptersViewModel
 
 <!--last version-->
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/manga.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>pudge soft corporation</title> <!--change title-->
 
 </head>
 
 <body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
     <main class="py-5">
         <div class="container py-5">
@@ -17,25 +23,75 @@
                 <div class="manga-title col-md-4 col-12 d-flex justify-content-center align-items-center flex-column">
                     <img src="@Model.Manga.CoverUrl">
                     <h1 class="fs-4 d-block d-md-none pt-2">@Model.Manga.Title</h1>
-                    <a class="nav-link" asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="1">
-                    <div class="pt-2">
-                        <button type="button" class="btn btn-warning text-white fs-4">Читати мангу з початку</button>
+                    <a class="nav-link" asp-controller="Manga" asp-action="Reading"
+                        asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="1">
+                        <div class="pt-2">
+                            <button type="button" class="btn btn-warning text-white fs-4">Читати мангу з
+                                початку</button>
                         </div>
                     </a>
                     <div class="stars d-flex d-md-none d-flex align-items-center justify-content-center">
-                        <img src="~/src/img/Artboard_1.png">
-                        <div class="fs-2">5/5</div>
+                        <form method="post" action="/Manga/RateManga">
+                            <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
+                            <input type="hidden" name="mangaId" value="@Model.Manga.MangaId" />
+                        </form>
+                        <div class="rating d-flex align-items-center" data-vote="0">
+
+                            <div class="star hidden d-none">
+                                <span class="full" data-value="0"></span>
+                                <span class="half" data-value="0"></span>
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="1"></span>
+                                <span class="half" data-value="0.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="2"></span>
+                                <span class="half" data-value="1.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="3"></span>
+                                <span class="half" data-value="2.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="4"></span>
+                                <span class="half" data-value="3.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="star">
+
+                                <span class="full" data-value="5"></span>
+                                <span class="half" data-value="4.5"></span>
+                                <span class="selected"></span>
+
+                            </div>
+
+                            <div class="score fs-3 ms-3">
+                                <span class="score-rating js-score">0</span>
+                                <span>/</span>
+                                <span class="total">5</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="genres d-flex flex-wrap justify-content-center mt-1">
-                        <button type="button" class="btn m-1 px-4 btn-secondary">Жанр</button>
-                        <button type="button" class="btn m-1 px-4 btn-secondary">Жанр</button>
-                        <button type="button" class="btn m-1 px-4 btn-secondary">Жанр</button>
-                        <button type="button" class="btn m-1 px-4 btn-secondary">Жанр</button>
-                        <button type="button" class="btn m-1 px-4 btn-secondary">Жанр</button>
-                        <button type="button" class="btn m-1 px-4 btn-secondary">Жанр</button>
-                        <button type="button" class="btn m-1 px-4 btn-secondary">Жанр</button>
-                    </div>
-                    <div class="other-info mt-3 p-3 d-flex flex-row justify-content-md-start justify-content-between flex-md-column flex-wrap">
+
+                    <div
+                        class="other-info mt-3 ms-4 px-5 py-2 d-flex flex-row justify-content-md-start justify-content-between flex-column flex-wrap">
                         <div class="info-block mb-3">
                             <h4 class="text-secondary fs-5">Тип</h4>
                             <p>@Model.Manga.Type</p>
@@ -56,6 +112,10 @@
                             <h4 class="text-secondary fs-5">Видавництво</h4>
                             <p>@Model.Manga.Publish</p>
                         </div>
+                        <div class="info-block mb-3">
+                            <h4 class="text-secondary fs-5">Перекладач</h4>
+                            <p>@Model.Manga.Translator</p>
+                        </div>
                     </div>
 
 
@@ -66,8 +126,59 @@
                     <div class="top-text-block d-flex justify-content-between flex-wrap">
                         <h1 class="fs-3 d-none pt-2 d-md-block">@Model.Manga.Title</h1>
                         <div class="stars d-flex align-items-center justify-content-end d-none d-md-flex">
-                            <img src="~/src/img/Artboard_1.png">
-                            <div class="fs-2">5/5</div>
+                            <div class="rating d-flex align-items-center" data-vote="0">
+
+                                <div class="star hidden d-none">
+                                    <span class="full" data-value="0"></span>
+                                    <span class="half" data-value="0"></span>
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="1"></span>
+                                    <span class="half" data-value="0.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="2"></span>
+                                    <span class="half" data-value="1.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="3"></span>
+                                    <span class="half" data-value="2.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="4"></span>
+                                    <span class="half" data-value="3.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="star">
+
+                                    <span class="full" data-value="5"></span>
+                                    <span class="half" data-value="4.5"></span>
+                                    <span class="selected"></span>
+
+                                </div>
+
+                                <div class="score fs-3 ms-3">
+                                    <span class="score-rating js-score">0</span>
+                                    <span>/</span>
+                                    <span class="total">5</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="bottom-text-block mt-4">
@@ -98,10 +209,12 @@
                                 <p>Назва</p>
                                 <p>дата виходу</p>
                             </div>
-                            @foreach (var chapter in Model.Manga.Chapters.Where(ch => ch.MangaID == Model.Manga.MangaId).OrderByDescending(ch => ch.ChapterNumber))
+                            @foreach (var chapter in Model.Manga.Chapters.Where(ch => ch.MangaID ==
+                            Model.Manga.MangaId).OrderByDescending(ch => ch.ChapterNumber))
                             {
                                 <div class="stroke d-flex mt-2">
-                                    <a class="nav-link" asp-controller="Manga" asp-action="Reading" asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
+                                    <a class="nav-link" asp-controller="Manga" asp-action="Reading"
+                                        asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
                                         <p class="fs-6">Глава @chapter.ChapterNumber - @chapter.Title</p>
                                     </a>
                                     <p class="fs-6 text-white-50">@chapter.PublicationDate</p>
@@ -110,17 +223,189 @@
                         </div>
 
                         <div class="p-5 tabcontent" id="Comment">
+                            <div class="row">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3 class="page-title">User Comment</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <div class="thumbnail">
+                                                <img class="img-responsive user-photo"
+                                                     src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <textarea class="form-control"
+                                                              cols="15"
+                                                              id="commentInput"></textarea>
+                                                </div>
+                                                <div class="panel-heading comment-action">
+                                                    <div class="submit-comment">
+                                                        <a href="https://www.blogger.com/null" id="addNewCommentBtn">Submit</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-5 tabcontent" id="Comment">
+                            <h3 class="page-title">User Comment</h3>
+                            @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
+
+
+                            <div class="row">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h3 class="page-title">User Comment</h3>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <div class="thumbnail">
+                                                <img class="img-responsive user-photo"
+                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-body">
+                                                    <textarea class="form-control" cols="15"
+                                                        id="commentInput"></textarea>
+                                                </div>
+                                                <div class="panel-heading comment-action">
+                                                    <div class="submit-comment">
+                                                        <a href="https://www.blogger.com/null"
+                                                            id="addNewCommentBtn">Submit</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-5 tabcontent" id="Comment">
+                            <h3 class="page-title">User Comment</h3>
+                            @* @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments) *@
 
                         </div>
 
-
-
-
                     </div>
-
                 </div>
             </div>
         </div>
     </main>
     <script src="~/js/manga-tabs.js"></script>
+    <script>
+        var starClicked = false;
+
+
+
+        var storedRating = localStorage.getItem('rating');
+
+        // If the rating value is not stored, set a default value
+        var defaultRating = @Model.AverageRating;
+
+        // Use the stored rating value if available, otherwise use the default value
+        var currentRating = storedRating !== null ? parseFloat(storedRating) : defaultRating;
+
+        // Set the initial rating display
+        $('.score-rating').text(currentRating);
+
+
+
+
+
+
+        $(function () {
+
+            $('.star').click(function () {
+
+                $(this).children('.selected').addClass('is-animated');
+                $(this).children('.selected').addClass('pulse');
+
+                var target = this;
+
+                setTimeout(function () {
+                    $(target).children('.selected').removeClass('is-animated');
+                    $(target).children('.selected').removeClass('pulse');
+                }, 1000);
+
+                starClicked = true;
+            })
+
+            $('.half').click(function () {
+                if (starClicked == true) {
+                    setHalfStarState(this)
+                }
+                $(this).closest('.rating').find('.js-score').text($(this).data('value'));
+
+                $(this).closest('.rating').data('vote', $(this).data('value'));
+                calculateAverage()
+                console.log(parseInt($(this).data('value')));
+
+            })
+
+            $('.full').click(function () {
+                if (starClicked == true) {
+                    setFullStarState(this)
+                }
+                $(this).closest('.rating').find('.js-score').text($(this).data('value'));
+
+                $(this).find('js-average').text(parseInt($(this).data('value')));
+
+                $(this).closest('.rating').data('vote', $(this).data('value'));
+                calculateAverage()
+
+                console.log(parseInt($(this).data('value')));
+            })
+
+            $('.half').hover(function () {
+                if (starClicked == false) {
+                    setHalfStarState(this)
+                }
+
+            })
+
+            $('.full').hover(function () {
+                if (starClicked == false) {
+                    setFullStarState(this)
+                }
+            })
+
+        })
+
+        function updateStarState(target) {
+            $(target).parent().prevAll().addClass('animate');
+            $(target).parent().prevAll().children().addClass('star-colour');
+
+            $(target).parent().nextAll().removeClass('animate');
+            $(target).parent().nextAll().children().removeClass('star-colour');
+        }
+
+        function setHalfStarState(target) {
+            $(target).addClass('star-colour');
+            $(target).siblings('.full').removeClass('star-colour');
+            updateStarState(target)
+        }
+
+        function setFullStarState(target) {
+            $(target).addClass('star-colour');
+            $(target).parent().addClass('animate');
+            $(target).siblings('.half').addClass('star-colour');
+
+            updateStarState(target)
+        }
+
+
+    </script>
+
 </body>
