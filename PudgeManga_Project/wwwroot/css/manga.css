@@ -1,3 +1,7 @@
+.main {
+	background-color: rgba(0, 0, 0, 0.89);
+}
+
 main .container {
     background-color: #161313 !important;
     border-radius: 5px;
