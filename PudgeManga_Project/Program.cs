@@ -28,14 +28,16 @@ builder.Services.AddScoped<IRatingRepository, RatingRepository>();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+builder.Services.AddScoped<ISearchRepository, SearchRepository>();
+
+builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeRepository>();
 builder.Services.AddScoped<IAnimeGenreRepository, AnimeGenreRepository>();
 builder.Services.AddScoped<IAnimeRepository<Anime, int>, AnimeRepository>();
 builder.Services.AddScoped<IAdminSeasonRepository<AnimeSeason, int>, AdminSeasonRepository>();
 builder.Services.AddScoped<IAnimeSeasonsRepository<AnimeSeason, int>, AnimeSeasonsRepository>();
-
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDBContext>()
     .AddDefaultTokenProviders();
 
@@ -44,13 +46,7 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
        .AddCookie();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IChapterRepository<Chapter, int>, ChapterRepository>();
-builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
-builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
-builder.Services.AddScoped<ISearchRepository, SearchRepository>();
-builder.Services.AddScoped<ICommentRepository, CommentRepository>();
 
 builder.Services.AddSingleton<Seed>();
 

@@ -51,7 +51,7 @@ namespace PudgeManga_Project.Controllers
             }
 
             return View(manga);
-        }
+        }   
 
         // GET: Mangas/Create
        // [Authorize(Roles = "admin")]

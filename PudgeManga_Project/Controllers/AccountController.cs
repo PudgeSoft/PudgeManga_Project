@@ -124,17 +124,5 @@ namespace PudgeManga_Project.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [HttpGet]
-        [Route("Account/Welcome")]
-        public async Task<IActionResult> Welcome(int page = 0)
-        {
-            if (page == 0)
-            {
-                return View();
-            }
-            return View();
-
-        }
-
     }
 }
