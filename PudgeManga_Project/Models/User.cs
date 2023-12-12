@@ -5,14 +5,14 @@ using System.Diagnostics;
 
 namespace PudgeManga_Project.Models
 {
-    public class User: IdentityUser
+    public class User : IdentityUser
     {
         [Key]
         public string Description { get; set; }
         public string? Image { get; set; }
         public string? State { get; set; }
 
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<UserComment> UserComments { get; set; } = new List<UserComment>();
         public ICollection<Rating> Ratings { get; set; }
     }
 }

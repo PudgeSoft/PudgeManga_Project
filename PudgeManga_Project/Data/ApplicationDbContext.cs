@@ -26,6 +26,7 @@ namespace PudgeManga_Project.Data
         public DbSet<AnimeSeason> AnimeSeasons => Set<AnimeSeason>();
         public DbSet<GenreForAnime> GenresForAnimes => Set<GenreForAnime>();
         public DbSet<Rating> Ratings => Set<Rating>();
+        public DbSet<MangaComment> CommentsForManga => Set<MangaComment>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -54,9 +55,66 @@ namespace PudgeManga_Project.Data
                 .HasOne(ag => ag.GenreForAnime)
                 .WithMany(g => g.AnimeGenres)
                 .HasForeignKey(ag => ag.GenreId);
+
+            modelBuilder.Entity<AnimeSeasonComment>()
+                .HasKey(x => new { x.AnimeSeasonId, x.CommentId });
+
+            modelBuilder.Entity<AnimeSeasonComment>()
+                .HasOne(ac => ac.AnimeSeason)
+                .WithMany(an => an.AnimeSeasonComments)
+                .HasForeignKey(ac => ac.AnimeSeasonId);
+
+            modelBuilder.Entity<AnimeSeasonComment>()
+                .HasOne(ac => ac.Comment)
+                .WithMany(c => c.AnimeSeasonComments)
+                .HasForeignKey(ac => ac.CommentId);
+
+            modelBuilder.Entity<MangaComment>()
+                .HasKey(x => new { x.MangaId, x.CommentId });
+
+            modelBuilder.Entity<MangaComment>()
+                .HasOne(mc => mc.Manga)
+                .WithMany(m => m.MangaComments)
+                .HasForeignKey(mc => mc.MangaId);
+
+            modelBuilder.Entity<MangaComment>()
+                .HasOne(mc => mc.Comment)
+                .WithMany(c => c.MangaComments)
+                .HasForeignKey(mc => mc.CommentId);
+
+            modelBuilder.Entity<PageComment>()
+                .HasKey(x => new { x.PageId, x.CommentId });
+
+            modelBuilder.Entity<PageComment>()
+                .HasOne(pc => pc.Page)
+                .WithMany(p => p.PageComments)
+                .HasForeignKey(pc => pc.PageId);
+
+            modelBuilder.Entity<PageComment>()
+                .HasOne(pc => pc.Comment)
+                .WithMany(c => c.PageComments)
+                .HasForeignKey(pc => pc.CommentId);
+
+            modelBuilder.Entity<UserComment>()
+                .HasKey(x => new { x.UserId, x.CommentId });
+
+            modelBuilder.Entity<UserComment>()
+                .HasOne(uc => uc.User)
+                .WithMany(u => u.UserComments)
+                .HasForeignKey(uc => uc.UserId);
+
+            modelBuilder.Entity<UserComment>()
+                .HasOne(uc => uc.Comment)
+                .WithMany(c => c.UserComments)
+                .HasForeignKey(uc => uc.CommentId);
+
+            modelBuilder.Entity<Comment>()
+                .HasOne(c => c.ParentComment)
+                .WithMany()
+                .HasForeignKey(c => c.ParentId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             base.OnModelCreating(modelBuilder);
         }
-
-
     }
 }

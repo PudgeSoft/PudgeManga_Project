@@ -7,6 +7,7 @@
         List<string> GetModifiedFileLinks(string folderId);
         string UploadFileToGoogleDrive(T1 file, string folderName);
         string GetOrCreateFolder(string folderName);
+        string UploadFileStreamToGoogleDrive(Stream fileStream, string fileName, string folderId);
     }
 
 }

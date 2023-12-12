@@ -30,12 +30,6 @@ namespace PudgeManga_Project.Models.Repositories
         }
 
 
-        public async Task<Manga> GetByIdComments(int id)
-        {
-            return await _context.Mangas
-                .Include(comm => comm.Comments)
-                .FirstOrDefaultAsync(i => i.MangaId == id);
-        }
         public async Task<Manga> GetByIdReading(int id, int chapterNumber)
         {
             return await _context.Mangas
