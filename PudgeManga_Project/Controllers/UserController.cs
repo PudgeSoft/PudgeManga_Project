@@ -31,9 +31,6 @@ namespace PudgeManga_Project.Controllers
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    State = user.State,
-                    //Pace = user.Pace,
-                    //Mileage = user.Mileage,
                     //ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
                 };
                 result.Add(userViewModel);
@@ -55,8 +52,8 @@ namespace PudgeManga_Project.Controllers
                 Id = user.Id,
                 State = user.State,
                 UserName = user.UserName,
-                //Pace = user.Pace,
-                //Mileage = user.Mileage,
+                Age = user.Age,
+                Aboutme = user.Aboutme,
                 //ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
             };
             return View(userDetailViewModel);
@@ -75,10 +72,7 @@ namespace PudgeManga_Project.Controllers
 
             var editMV = new EditProfileViewModel()
             {
-            //    City = user.City,
-            //    State = user.State,
-            //    Pace = user.Pace,
-            //    Mileage = user.Mileage,
+                  //City = User.City,
             //    ProfileImageUrl = user.ProfileImageUrl,
             };
 
@@ -126,11 +120,11 @@ namespace PudgeManga_Project.Controllers
             //}
 
             //user.City = editVM.City;
-            //user.State = editVM.State;
-            ////user.Pace = editVM.Pace;
-            ////user.Mileage = editVM.Mileage;
+            user.State = editVM.State;
+            user.Age = editVM.Age;
+            user.Aboutme = editVM.Aboutme;
 
-            //await _userManager.UpdateAsync(user);
+            await _userManager.UpdateAsync(user);
 
             return RedirectToAction("Detail", "User", new { user.Id });
         }
