@@ -8,6 +8,7 @@ using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.Models.Repositories;
+using RunGroopWebApp.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,14 +24,21 @@ builder.Services.AddScoped<IGenreRepository, GenreRepository>();
 
 builder.Services.AddScoped<IGoogleDriveAPIRepository<IFormFile>, GoogleDriveAPIRepository>();
 
+builder.Services.AddScoped<IRatingRepository, RatingRepository>();
+
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+
 builder.Services.AddScoped<IAdminAnimeRepository<Anime, int>, AdminAnimeRepository>();
 builder.Services.AddScoped<IAnimeGenreRepository, AnimeGenreRepository>();
 builder.Services.AddScoped<IAnimeRepository<Anime, int>, AnimeRepository>();
 builder.Services.AddScoped<IAdminSeasonRepository<AnimeSeason, int>, AdminSeasonRepository>();
 builder.Services.AddScoped<IAnimeSeasonsRepository<AnimeSeason, int>, AnimeSeasonsRepository>();
 
-builder.Services.AddIdentity<User, IdentityRole>()
-    .AddEntityFrameworkStores<ApplicationDBContext>();
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<ApplicationDBContext>()
+    .AddDefaultTokenProviders();
+
 builder.Services.AddControllersWithViews();
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
@@ -44,7 +52,7 @@ builder.Services.AddSingleton<Seed>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
 builder.Services.Configure<FormOptions>(x =>
