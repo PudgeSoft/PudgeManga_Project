@@ -2,10 +2,10 @@ main {
 	background-color: rgba(0, 0, 0, 0.89);
 }
 
-	main .pages {
-		background-color: #161313;
-		border-radius: 5px;
-	}
+main .pages {
+	background-color: #161313;
+	border-radius: 5px;
+}
 
 
 .splide__slide {
@@ -15,24 +15,20 @@ main {
 	overflow: auto;
 }
 
-	.splide__slide img {
-		max-width: 100%;
-		display: block;
-		height: 100%;
-	}
+.splide__slide img {
+	width: 90%;
+	display: block;
+	height: 100%;
+}
 
 .splide__list {
 	align-items: flex-start;
 }
 
-/*.splide__slide:not(.is-active, .is-next) {
-	height: auto;
-}*/
-
 .splide__list {
 	transition: all 300ms ease;
 }
 
-.splide__pagination{
-	bottom: -2em!important;
+.splide__pagination {
+	bottom: -2em !important;
 }

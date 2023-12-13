@@ -1,0 +1,12 @@
+main {
+    color: var(--bs-secondary-color) !important;
+}
+
+.container-box {
+    border-radius: 5px;
+    background-color: #161313;
+}
+
+.img-fluid {
+    object-fit: cover;
+}

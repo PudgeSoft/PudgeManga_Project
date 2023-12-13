@@ -1,5 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<User> UserManager
 @model PudgeManga_Project.ViewModels.MangaViewModels.MangaChaptersViewModel
 
 <!--last version-->
@@ -17,7 +17,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
-    <main class="py-5">
+    <main class="py-5 main">
         <div class="container py-5">
             <div class="row">
                 <div class="manga-title col-md-4 col-12 d-flex justify-content-center align-items-center flex-column">
@@ -26,7 +26,8 @@
                     <a class="nav-link" asp-controller="Manga" asp-action="Reading"
                         asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="1">
                         <div class="pt-2">
-                            <button type="button" class="btn btn-warning text-white fs-4">Читати мангу з
+                            <button type="button" id="clickButton" class="btn btn-warning text-white fs-4">Читати мангу
+                                з
                                 початку</button>
                         </div>
                     </a>
@@ -127,7 +128,10 @@
                         <h1 class="fs-3 d-none pt-2 d-md-block">@Model.Manga.Title</h1>
                         <div class="stars d-flex align-items-center justify-content-end d-none d-md-flex">
                             <div class="rating d-flex align-items-center" data-vote="0">
-
+                                <form method="post" action="/Manga/RateManga">
+                                    <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
+                                    <input type="hidden" name="mangaId" value="@Model.Manga.MangaId" />
+                                </form>
                                 <div class="star hidden d-none">
                                     <span class="full" data-value="0"></span>
                                     <span class="half" data-value="0"></span>
@@ -234,19 +238,19 @@
                                         <div class="col-sm-1">
                                             <div class="thumbnail">
                                                 <img class="img-responsive user-photo"
-                                                     src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
-                                                    <textarea class="form-control"
-                                                              cols="15"
-                                                              id="commentInput"></textarea>
+                                                    <textarea class="form-control" cols="15"
+                                                        id="commentInput"></textarea>
                                                 </div>
                                                 <div class="panel-heading comment-action">
                                                     <div class="submit-comment">
-                                                        <a href="https://www.blogger.com/null" id="addNewCommentBtn">Submit</a>
+                                                        <a href="https://www.blogger.com/null"
+                                                            id="addNewCommentBtn">Submit</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -338,13 +342,14 @@
                     $(target).children('.selected').removeClass('is-animated');
                     $(target).children('.selected').removeClass('pulse');
                 }, 1000);
-
+                document.getElementById("clickButton").click();
                 starClicked = true;
             })
 
             $('.half').click(function () {
                 if (starClicked == true) {
                     setHalfStarState(this)
+                    document.getElementById("clickButton").click();
                 }
                 $(this).closest('.rating').find('.js-score').text($(this).data('value'));
 
@@ -357,6 +362,7 @@
             $('.full').click(function () {
                 if (starClicked == true) {
                     setFullStarState(this)
+                    document.getElementById("clickButton").click();
                 }
                 $(this).closest('.rating').find('.js-score').text($(this).data('value'));
 
