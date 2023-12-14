@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PudgeManga_Project.Data;
 
@@ -11,9 +12,11 @@ using PudgeManga_Project.Data;
 namespace PudgeManga_Project.Data.migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    partial class ApplicationDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231204181518_user-upd2")]
+    partial class userupd2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -196,7 +199,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasKey("AnimeId");
 
-                    b.ToTable("Animes", (string)null);
+                    b.ToTable("Animes");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.AnimeEpisode", b =>
@@ -221,7 +224,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("SeasonId");
 
-                    b.ToTable("AnimesEpisodes", (string)null);
+                    b.ToTable("AnimesEpisodes");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.AnimeGenre", b =>
@@ -236,7 +239,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("AnimeGenre", (string)null);
+                    b.ToTable("AnimeGenre");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.AnimeSeason", b =>
@@ -261,22 +264,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("AnimeId");
 
-                    b.ToTable("AnimeSeasons", (string)null);
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeSeasonComment", b =>
-                {
-                    b.Property<int>("AnimeSeasonId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("AnimeSeasonId", "CommentId");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("AnimeSeasonComment");
+                    b.ToTable("AnimeSeasons");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Chapter", b =>
@@ -308,7 +296,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("MangaID");
 
-                    b.ToTable("Chapters", (string)null);
+                    b.ToTable("Chapters");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Comment", b =>
@@ -319,21 +307,26 @@ namespace PudgeManga_Project.Data.migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"));
 
-                    b.Property<DateTime>("CommentDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("MangaId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("CommentText")
+                    b.Property<int>("Rating")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("ParentId")
-                        .HasColumnType("int");
+                    b.Property<string>("User")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("ParentId");
+                    b.HasIndex("MangaId");
 
-                    b.ToTable("Comments", (string)null);
+                    b.HasIndex("User");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Genre", b =>
@@ -350,7 +343,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasKey("GenreId");
 
-                    b.ToTable("Genres", (string)null);
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.GenreForAnime", b =>
@@ -367,7 +360,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasKey("AnimeGenreId");
 
-                    b.ToTable("GenresForAnimes", (string)null);
+                    b.ToTable("GenresForAnimes");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Manga", b =>
@@ -412,22 +405,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasKey("MangaId");
 
-                    b.ToTable("Mangas", (string)null);
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.MangaComment", b =>
-                {
-                    b.Property<int>("MangaId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("MangaId", "CommentId");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("CommentsForManga");
+                    b.ToTable("Mangas");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.MangaGenre", b =>
@@ -442,7 +420,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("GenreId");
 
-                    b.ToTable("MangaGenre", (string)null);
+                    b.ToTable("MangaGenre");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Page", b =>
@@ -467,22 +445,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasIndex("ChapterId");
 
-                    b.ToTable("Pages", (string)null);
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.PageComment", b =>
-                {
-                    b.Property<int>("PageId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PageId", "CommentId");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("PageComment");
+                    b.ToTable("Pages");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Popularity", b =>
@@ -501,41 +464,7 @@ namespace PudgeManga_Project.Data.migrations
 
                     b.HasKey("MangaId");
 
-                    b.ToTable("Popularities", (string)null);
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.Rating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("AnimeId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<int?>("MangaId")
-                        .IsRequired()
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("Value")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AnimeId");
-
-                    b.HasIndex("MangaId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Ratings");
+                    b.ToTable("Popularities");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.User", b =>
@@ -616,21 +545,6 @@ namespace PudgeManga_Project.Data.migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.UserComment", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CommentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "CommentId");
-
-                    b.HasIndex("CommentId");
-
-                    b.ToTable("UserComment");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -725,25 +639,6 @@ namespace PudgeManga_Project.Data.migrations
                     b.Navigation("Anime");
                 });
 
-            modelBuilder.Entity("PudgeManga_Project.Models.AnimeSeasonComment", b =>
-                {
-                    b.HasOne("PudgeManga_Project.Models.AnimeSeason", "AnimeSeason")
-                        .WithMany("AnimeSeasonComments")
-                        .HasForeignKey("AnimeSeasonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PudgeManga_Project.Models.Comment", "Comment")
-                        .WithMany("AnimeSeasonComments")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AnimeSeason");
-
-                    b.Navigation("Comment");
-                });
-
             modelBuilder.Entity("PudgeManga_Project.Models.Chapter", b =>
                 {
                     b.HasOne("PudgeManga_Project.Models.Manga", "Manga")
@@ -757,29 +652,17 @@ namespace PudgeManga_Project.Data.migrations
 
             modelBuilder.Entity("PudgeManga_Project.Models.Comment", b =>
                 {
-                    b.HasOne("PudgeManga_Project.Models.Comment", "ParentComment")
-                        .WithMany()
-                        .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.Navigation("ParentComment");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.MangaComment", b =>
-                {
-                    b.HasOne("PudgeManga_Project.Models.Comment", "Comment")
-                        .WithMany("MangaComments")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("PudgeManga_Project.Models.Manga", "Manga")
-                        .WithMany("MangaComments")
+                        .WithMany("Comments")
                         .HasForeignKey("MangaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Comment");
+                    b.HasOne("PudgeManga_Project.Models.User", "Id")
+                        .WithMany("Comments")
+                        .HasForeignKey("User");
+
+                    b.Navigation("Id");
 
                     b.Navigation("Manga");
                 });
@@ -814,80 +697,15 @@ namespace PudgeManga_Project.Data.migrations
                     b.Navigation("Chapter");
                 });
 
-            modelBuilder.Entity("PudgeManga_Project.Models.PageComment", b =>
-                {
-                    b.HasOne("PudgeManga_Project.Models.Comment", "Comment")
-                        .WithMany("PageComments")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PudgeManga_Project.Models.Page", "Page")
-                        .WithMany("PageComments")
-                        .HasForeignKey("PageId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("Page");
-                });
-
             modelBuilder.Entity("PudgeManga_Project.Models.Popularity", b =>
                 {
                     b.HasOne("PudgeManga_Project.Models.Manga", "Manga")
-                        .WithMany()
-                        .HasForeignKey("MangaId")
+                        .WithOne("Popularity")
+                        .HasForeignKey("PudgeManga_Project.Models.Popularity", "MangaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Manga");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.Rating", b =>
-                {
-                    b.HasOne("PudgeManga_Project.Models.Anime", "Anime")
-                        .WithMany("Ratings")
-                        .HasForeignKey("AnimeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PudgeManga_Project.Models.Manga", "Manga")
-                        .WithMany("Ratings")
-                        .HasForeignKey("MangaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PudgeManga_Project.Models.User", "User")
-                        .WithMany("Ratings")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Anime");
-
-                    b.Navigation("Manga");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.UserComment", b =>
-                {
-                    b.HasOne("PudgeManga_Project.Models.Comment", "Comment")
-                        .WithMany("UserComments")
-                        .HasForeignKey("CommentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("PudgeManga_Project.Models.User", "User")
-                        .WithMany("UserComments")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Comment");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Anime", b =>
@@ -895,31 +713,16 @@ namespace PudgeManga_Project.Data.migrations
                     b.Navigation("AnimeGenres");
 
                     b.Navigation("AnimeSeasons");
-
-                    b.Navigation("Ratings");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.AnimeSeason", b =>
                 {
                     b.Navigation("AnimeEpisodes");
-
-                    b.Navigation("AnimeSeasonComments");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Chapter", b =>
                 {
                     b.Navigation("Pages");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.Comment", b =>
-                {
-                    b.Navigation("AnimeSeasonComments");
-
-                    b.Navigation("MangaComments");
-
-                    b.Navigation("PageComments");
-
-                    b.Navigation("UserComments");
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.Genre", b =>
@@ -936,21 +739,17 @@ namespace PudgeManga_Project.Data.migrations
                 {
                     b.Navigation("Chapters");
 
-                    b.Navigation("MangaComments");
+                    b.Navigation("Comments");
 
                     b.Navigation("MangaGenres");
 
-                    b.Navigation("Ratings");
-                });
-
-            modelBuilder.Entity("PudgeManga_Project.Models.Page", b =>
-                {
-                    b.Navigation("PageComments");
+                    b.Navigation("Popularity")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("PudgeManga_Project.Models.User", b =>
                 {
-                    b.Navigation("UserComments");
+                    b.Navigation("Comments");
                 });
 #pragma warning restore 612, 618
         }

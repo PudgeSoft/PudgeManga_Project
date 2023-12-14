@@ -38,6 +38,7 @@ main {
 }
 
 .control-buttons .btn,
+.season-buttons .btn,
 .control-buttons h4 {
     margin: 5px 1%;
     flex: 0 1 18%;
@@ -45,10 +46,12 @@ main {
 
 .player {
     background-color: #1f2123;
-    flex-direction: column;
     border-radius: 5px;
 }
-
+.video-top{
+    width: 90%;
+    margin: auto;
+}
 #videoIframe {
     width: 90%;
     aspect-ratio: 16/9;

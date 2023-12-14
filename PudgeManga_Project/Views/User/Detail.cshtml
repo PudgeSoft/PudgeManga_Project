@@ -1,0 +1,141 @@
+﻿@using PudgeManga_Project.ViewModels
+@model UserDetailViewModel
+
+
+<div class="main-container">
+    <nav aria-label="breadcrumb" role="navigation" class="bg-primary text-white">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="#">Home</a>
+                        </li>
+                        <li class="breadcrumb-item">
+                            <a href="@Url.Action("EditProfile", "user")">EditProfile</a>
+                        </li>
+
+                        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+                    </ol>
+                </div>
+                <!--end of col-->
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </nav>
+    <section class="">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12 col-md-8">
+                    <div class="media">
+                        <img alt="Image" src="@Model.ProfileImageUrl" class="mr-md-5 avatar avatar-xlg">
+                        <div class="media-body">
+                            <div class="mb-3">
+                                <h1 class="h2 mb-2">@Model.UserName</h1>
+                            </div>
+                            <p class="">Age: @Model.Age</p>
+                            <p class="">City: @Model.State</p>
+                            <p class="">AboutMe:@Model.Aboutme</p>
+                            <div>
+                                <button class="btn btn-outline-primary" data-toggle="button"><i class="icon-add-user"></i> CoppyMangaList   </button>
+                                <button class="btn btn-outline-primary">
+                                    <i class="icon-mail"></i>
+                                </button>
+                                <div class="dropdown d-inline-block">
+                                    <button class="btn btn-outline-primary dropdown-toggle dropdown-toggle-no-arrow" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="icon-dots-three-horizontal"></i>
+                                    </button>
+                                    <div class="dropdown-menu dropdown-menu-sm" aria-labelledby="dropdownMenuButton" x-placement="bottom-start" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 36px, 0px);">
+                                        <a class="dropdown-item" href="#">Add to group</a>
+                                        <a class="dropdown-item" href="#">Share Profile</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Block</a>
+                                        <a class="dropdown-item" href="#">Report</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--end of col-->
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </section>
+    <!--end of section-->
+    <section class="flush-with-above space-0">
+        <div class="">
+            <div class="container">
+                <div class="row">
+                    <div class="col">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="mangas-tab" data-toggle="tab" href="#mangas" role="tab" aria-controls="mangas" aria-selected="true">Mangas</a>
+@*                             </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="groups-tab" data-toggle="tab" href="#clubs" role="tab" aria-controls="clubs" aria-selected="false">Clubs</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="followers-tab" data-toggle="tab" href="#followers" role="tab" aria-controls="followers" aria-selected="false">Followers</a>
+                            </li> *@
+                        </ul>
+                    </div>
+                    <!--end of col-->
+                </div>
+                <!--end of row-->
+            </div>
+            <!--end of container-->
+        </div>
+    </section>
+
+                       
+    <!--end of section-->
+    <footer class="footer-short">
+        <div class="container">
+            <hr>
+            <nav class="row justify-content-between align-items-center">
+                <div class="col-auto">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <a href="#">
+                                <img alt="Image" src="/img/logo-gray.svg">
+                            </a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">Overview</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">Documentation</a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#">Changelog</a>
+                        </li>
+                    </ul>
+                </div>
+                <!--end of col-->
+                <div class="col-auto text-sm-right">
+                    <ul class="list-inline">
+                        <li class="list-inline-item">
+                            <a href="#"><i class="socicon-twitter"></i></a>
+                        </li>
+                        <li class="list-inline-item">
+                            <a href="#"><i class="socicon-facebook"></i></a>
+                        </li>
+                    </ul>
+                </div>
+                <!--end of col-->
+            </nav>
+            <!--end of row-->
+            <div class="row">
+                <div class="col">
+                    <small>© 2019 Medium Rare All Rights Reserved</small>
+                </div>
+                <!--end of col-->
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </footer>
+</div>
