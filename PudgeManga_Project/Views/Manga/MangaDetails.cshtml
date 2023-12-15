@@ -339,9 +339,9 @@
                 $(this).closest('.rating').data('vote', value);
 
                 // Заміна крапки на кому
-                console.log(value + "vlog Matviya");
-                value = value.toString().replace('.', ',');
+                console.log(value + " do vlog Matviya");
                 document.getElementById("valueSubmit").value = value;
+                console.log(value + " pislya vlog Matviya");
 
                 // AJAX-запит
                 $.ajax({
