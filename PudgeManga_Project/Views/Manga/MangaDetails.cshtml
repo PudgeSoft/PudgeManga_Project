@@ -14,9 +14,7 @@
 </head>
 
 <body>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
     <main class="py-5 main">
         <div class="container py-5">
             <div class="row">
@@ -26,22 +24,14 @@
                     <a class="nav-link" asp-controller="Manga" asp-action="Reading"
                         asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="1">
                         <div class="pt-2">
-                            <button type="button" id="clickButton" class="btn btn-warning text-white fs-4">Читати мангу
+                            <button type="button" class="btn btn-warning text-white fs-4">Читати мангу
                                 з
                                 початку</button>
                         </div>
                     </a>
                     <div class="stars d-flex d-md-none d-flex align-items-center justify-content-center">
-                        <form method="post" action="/Manga/RateManga">
-                            <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
-                            <input type="hidden" name="mangaId" value="@Model.Manga.MangaId" />
-                        </form>
                         <div class="rating d-flex align-items-center" data-vote="0">
 
-                            <div class="star hidden d-none">
-                                <span class="full" data-value="0"></span>
-                                <span class="half" data-value="0"></span>
-                            </div>
 
                             <div class="star">
 
@@ -128,15 +118,12 @@
                         <h1 class="fs-3 d-none pt-2 d-md-block">@Model.Manga.Title</h1>
                         <div class="stars d-flex align-items-center justify-content-end d-none d-md-flex">
                             <div class="rating d-flex align-items-center" data-vote="0">
-                                <form method="post" action="/Manga/RateManga">
+                                <form method="post" asp-action="RateManga">
                                     <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
                                     <input type="hidden" name="mangaId" value="@Model.Manga.MangaId" />
+                                    <input type="hidden" id="valueSubmit" name="value" value="" />
+                                    <input type="submit" class="d-none" id="submitButtons">
                                 </form>
-                                <div class="star hidden d-none">
-                                    <span class="full" data-value="0"></span>
-                                    <span class="half" data-value="0"></span>
-                                </div>
-
                                 <div class="star">
 
                                     <span class="full" data-value="1"></span>
@@ -311,23 +298,19 @@
     <script>
         var starClicked = false;
 
-
-
         var storedRating = localStorage.getItem('rating');
 
         // If the rating value is not stored, set a default value
-        var defaultRating = @Model.AverageRating;
+        var ratingString = '@Model.AverageRating';
+        console.log(ratingString);
+        var defaultRating = parseFloat(ratingString);
+        console.log(defaultRating);
 
         // Use the stored rating value if available, otherwise use the default value
         var currentRating = storedRating !== null ? parseFloat(storedRating) : defaultRating;
 
         // Set the initial rating display
-        $('.score-rating').text(currentRating);
-
-
-
-
-
+        $('.score-rating').text(parseFloat(currentRating));
 
         $(function () {
 
@@ -342,43 +325,43 @@
                     $(target).children('.selected').removeClass('is-animated');
                     $(target).children('.selected').removeClass('pulse');
                 }, 1000);
-                document.getElementById("clickButton").click();
                 starClicked = true;
             })
 
-            $('.half').click(function () {
-                if (starClicked == true) {
-                    setHalfStarState(this)
-                    document.getElementById("clickButton").click();
+            $('.half, .full').click(function () {
+                if ($(this).hasClass('half')) {
+                    setHalfStarState(this);
+                } else {
+                    setFullStarState(this);
                 }
-                $(this).closest('.rating').find('.js-score').text($(this).data('value'));
+                var value = $(this).data('value');
+                $('.score-rating').text(value); // Змінено тут
+                $(this).closest('.rating').data('vote', value);
 
-                $(this).closest('.rating').data('vote', $(this).data('value'));
-                calculateAverage()
-                console.log(parseInt($(this).data('value')));
+                // Заміна крапки на кому
+                value = value.toString().replace('.', ',');
+                document.getElementById("valueSubmit").value = value;
 
+                // AJAX-запит
+                $.ajax({
+                    url: '@Url.Action("RateManga", "Manga")', // Замініть "ControllerName" на ім'я вашого контролера
+                    type: 'POST',
+                    data: {
+                        userId: $('input[name="userId"]').val(),
+                        mangaId: $('input[name="mangaId"]').val(),
+                        value: $('input[name="value"]').val()
+                    },
+                    success: function (response) {
+                        // Обробіть відповідь тут
+                    }
+                });
             })
 
-            $('.full').click(function () {
-                if (starClicked == true) {
-                    setFullStarState(this)
-                    document.getElementById("clickButton").click();
-                }
-                $(this).closest('.rating').find('.js-score').text($(this).data('value'));
-
-                $(this).find('js-average').text(parseInt($(this).data('value')));
-
-                $(this).closest('.rating').data('vote', $(this).data('value'));
-                calculateAverage()
-
-                console.log(parseInt($(this).data('value')));
-            })
 
             $('.half').hover(function () {
                 if (starClicked == false) {
                     setHalfStarState(this)
                 }
-
             })
 
             $('.full').hover(function () {
@@ -386,7 +369,6 @@
                     setFullStarState(this)
                 }
             })
-
         })
 
         function updateStarState(target) {
@@ -410,8 +392,7 @@
 
             updateStarState(target)
         }
-
-
     </script>
+
 
 </body>
