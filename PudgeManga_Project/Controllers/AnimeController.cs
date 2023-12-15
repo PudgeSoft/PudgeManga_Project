@@ -14,14 +14,14 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly IAnimeRepository<Anime, int> _animeRepository;
         private readonly IAnimeSeasonsRepository<AnimeSeason, int> _seasonsRepository;
-        private readonly IRatingRepository _ratingRepository;
+        private readonly IRatingForAnimeRepository _ratingForAnimeRepository;
         public AnimeController(IAnimeRepository<Anime, int> animeRepository,
             IAnimeSeasonsRepository<AnimeSeason, int> seasonsRepository,
-            IRatingRepository ratingRepository)
+            IRatingForAnimeRepository ratingForAnimeRepository)
         {
             _animeRepository = animeRepository;
             _seasonsRepository = seasonsRepository;
-            _ratingRepository = ratingRepository;
+            _ratingForAnimeRepository = ratingForAnimeRepository;
         }
 
         public async Task<IActionResult> Index()
@@ -57,7 +57,7 @@ namespace PudgeManga_Project.Controllers
 
             var episodes = await _animeRepository.GetEpisodesBySeasonIdAsync(selectedSeason.AnimeSeasonId);
 
-            var averageRating = await _ratingRepository.GetAnimeAverageRatingAsync(animeId);
+
 
             var viewModel = new AnimeDetailsViewModel
             {
@@ -65,10 +65,42 @@ namespace PudgeManga_Project.Controllers
                 Seasons = seasons,
                 SelectedSeason = selectedSeason,
                 Episodes = episodes,
-                AverageRating = averageRating
+
             };
 
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> RateAnime(string userId, int animeId, double value)
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var existingRating = await _ratingForAnimeRepository.GetRatingAsync(animeId, userId);
+
+                if (existingRating != null)
+                {
+                    existingRating.Value = value;
+                    await _ratingForAnimeRepository.UpdateRatingAsync(existingRating);
+                }
+                else
+                {
+                    var userRating = new RatingForAnime
+                    {
+                        UserId = userId,
+                        AnimeId = animeId,
+                        Value = value
+                    };
+
+                    await _ratingForAnimeRepository.AddRatingAsync(userRating);
+
+                }
+                return Ok();
+            }
+            else
+            {
+                return RedirectToAction("Login", "Account");
+            }
         }
 
     }
