@@ -20,18 +20,18 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly IMangaRepository<Manga, int> _mangaRepository;
         private readonly IChapterRepository<Chapter, int> _chapterRepository;
-        private readonly IRatingRepository _ratingRepository;
+        private readonly IRatingForMangaRepository _ratingForMangaRepository;
         private readonly IUserRepository _userRepository;
         private readonly ICommentRepository _commentRepository;
         public MangaController(IMangaRepository<Manga, int> mangaRepository,
             IChapterRepository<Chapter, int> chapterRepository,
-            IRatingRepository ratingRepository,
+            IRatingForMangaRepository ratingForMangaRepository,
             IUserRepository userRepository,
             ICommentRepository commentRepository)
         {
             _mangaRepository = mangaRepository;
             _chapterRepository = chapterRepository;
-            _ratingRepository = ratingRepository;
+            _ratingForMangaRepository = ratingForMangaRepository;
             _userRepository = userRepository;
             _commentRepository = commentRepository;
         }
@@ -51,7 +51,7 @@ namespace PudgeManga_Project.Controllers
             }
 
             var chapters = await _chapterRepository.GetChaptersForManga(mangaId);
-            var averageRating = await _ratingRepository.GetMangaAverageRatingAsync(mangaId);
+            var averageRating = await _ratingForMangaRepository.GetMangaAverageRatingAsync(mangaId);
             var comments = await _commentRepository.GetCommentsByMangaId(mangaId);
 
             var viewModel = new MangaChaptersViewModel
@@ -97,14 +97,26 @@ namespace PudgeManga_Project.Controllers
         {
             if (User.Identity.IsAuthenticated)
             {
-                var userRating = new Rating
+                var existingRating = await _ratingForMangaRepository.GetRatingAsync(mangaId, userId);
+                
+                if (existingRating != null)
                 {
-                    UserId = userId,
-                    MangaId = mangaId,
-                    Value = value
-                };
-                await _ratingRepository.AddRatingAsync(userRating);
-                return View();
+                    existingRating.Value = value;
+                    await _ratingForMangaRepository.UpdateRatingAsync(existingRating);
+                }
+                else
+                {
+                    var userRating = new RatingForManga
+                    {
+                        UserId = userId,
+                        MangaId = mangaId,
+                        Value = value
+                    };
+
+                    await _ratingForMangaRepository.AddRatingAsync(userRating);
+
+                }
+                    return Ok();
             }
             else
             {
