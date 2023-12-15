@@ -302,7 +302,8 @@
 
         // If the rating value is not stored, set a default value
         var ratingString = '@Model.AverageRating';
-        var defaultRating = parseFloat(ratingString.replace(',', '.'));
+        console.log(ratingString);
+        var defaultRating = parseFloat(ratingString);
         console.log(defaultRating);
 
         // Use the stored rating value if available, otherwise use the default value
