@@ -82,14 +82,27 @@ namespace PudgeManga_Project.Controllers
             return View(viewModel);
         }
 
-        public async Task<IActionResult> Comments(int mangaId)
+        [HttpPost]
+        public IActionResult CreateComment(int mangaId, string commentText)
         {
-            var manga = await _mangaRepository.GetById(mangaId);
-            if (manga == null)
+            mangaId = 1;
+            // Створення нового коментаря за допомогою вашого методу AddComment
+            var commentViewModel = new CommentViewModel
             {
-                return NotFound();
-            }
-            return View(manga);
+                
+                ParentId = null,  // Ваш ParentId, якщо необхідно
+                CommentText = commentText,
+                CommentDate = DateTime.Now
+            };
+
+            var addedComment = _commentRepository.AddComment(commentViewModel);
+
+            // Отримання оновленого списку коментарів
+            var updatedComments = _commentRepository.GetAll()
+                .ToList();
+
+            // Повертаємо частковий перегляд для оновлення
+            return PartialView("_CommentPartial", updatedComments);
         }
 
         [HttpPost]

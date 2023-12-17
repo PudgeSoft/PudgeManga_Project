@@ -213,7 +213,16 @@
                             }
                         </div>
 
+                       
                         <div class="p-5 tabcontent" id="Comment">
+                            <h3 class="page-title">User Comment</h3>
+
+                            <!-- Контейнер для відображення коментарів -->
+                            <div id="comments-container">
+                                @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
+                            </div>
+
+                            <!-- Форма для додавання нового коментаря -->
                             <div class="row">
                                 <div class="container">
                                     <div class="row">
@@ -224,20 +233,18 @@
                                     <div class="row">
                                         <div class="col-sm-1">
                                             <div class="thumbnail">
-                                                <img class="img-responsive user-photo"
-                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
-                                                    <textarea class="form-control" cols="15"
-                                                        id="commentInput"></textarea>
+                                                    <textarea class="form-control" id="commentInput" cols="15"></textarea>
                                                 </div>
                                                 <div class="panel-heading comment-action">
                                                     <div class="submit-comment">
-                                                        <a href="https://www.blogger.com/null"
-                                                            id="addNewCommentBtn">Submit</a>
+                                                        <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
+                                                        <a href="javascript:void(0)" id="addNewCommentBtn" onclick="addComment()">Submit</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -246,48 +253,32 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="p-5 tabcontent" id="Comment">
-                            <h3 class="page-title">User Comment</h3>
-                            @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
 
+                        <!-- ... (інший ваш HTML-код) ... -->
 
-                            <div class="row">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h3 class="page-title">User Comment</h3>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-1">
-                                            <div class="thumbnail">
-                                                <img class="img-responsive user-photo"
-                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <textarea class="form-control" cols="15"
-                                                        id="commentInput"></textarea>
-                                                </div>
-                                                <div class="panel-heading comment-action">
-                                                    <div class="submit-comment">
-                                                        <a href="https://www.blogger.com/null"
-                                                            id="addNewCommentBtn">Submit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-5 tabcontent" id="Comment">
-                            <h3 class="page-title">User Comment</h3>
-                            @* @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments) *@
+                        <script>
+                            function addComment() {
+                                // Отримання значення коментаря з текстового поля
+                                var commentText = $('#commentInput').val();
 
-                        </div>
+                                // AJAX-запит для додавання нового коментаря
+                                $.ajax({
+                                    url: '@Url.Action("CreateComment", "Manga")',  // Замініть "YourControllerName" на ім'я вашого контролера
+                                    type: 'POST',
+                                    data: { commentText: commentText },
+                                    success: function (response) {
+                                        // Оновлення контейнера коментарів з отриманими даними
+                                        $('#comments-container').html(response);
+
+                                        // Очищення текстового поля
+                                        $('#commentInput').val('');
+                                    },
+                                    error: function (error) {
+                                        console.log(error);
+                                    }
+                                });
+                            }
+                        </script>
 
                     </div>
                 </div>
