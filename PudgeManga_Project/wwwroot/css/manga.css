@@ -180,3 +180,19 @@ main .container {
     color: #fff;
 
   }
+
+  .user-photo img{
+    width: 80%;
+    border: 5px solid #bdbdbd;
+    border-radius: 5px;
+  }
+  .form-control{
+    background-color: #fff!important;
+  }
+  ::placeholder {
+    color: #6c757d!important;
+    opacity: 1; /* Firefox */
+  }
+  .userlink {
+    text-decoration: none;
+  }

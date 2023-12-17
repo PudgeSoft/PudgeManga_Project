@@ -3,20 +3,21 @@
 
 @foreach (var comment in Model)
 {
-    <li class="comment" data-id="@comment.CommentId">
-        <div class="avatar">
+    <li class="comment row" data-id="@comment.CommentId">
+        <div class="avatar col-6 col-sm-4 col-lg-2 user-photo">
             <a href="javascript:void(0);">
                 <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" width="55" height="55">
             </a>
         </div>
-        <div data-id="@comment.CommentId" class="comment-body">
-            <header><a href="javascript:void(0);" class="userlink">USER</a> - <span class="pubdate">постed @comment.CommentDate.ToString("dd-MM-yyyy")</span></header>
+        <div data-id="@comment.CommentId" class="comment-body col-12 col-sm-8">
+            <a href="javascript:void(0);" class="userlink">USER</a> - <span class="pubdate text-white-50">опубліковано
+                @comment.CommentDate.ToString("dd-MM-yyyy")</span>
             <p>
                 @comment.CommentText
             </p>
-            <footer>
-                <a class="reply-link" href="@comment.CommentId">Reply</a>
-            </footer>
+
+            <a class="reply-link btn btn-outline-light" href="@comment.CommentId">Reply</a>
+
         </div>
 
         @{
@@ -30,6 +31,3 @@
         }
     </li>
 }
-
-
-

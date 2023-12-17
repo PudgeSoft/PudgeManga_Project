@@ -206,78 +206,59 @@
                                 <div class="stroke d-flex mt-2">
                                     <a class="nav-link" asp-controller="Manga" asp-action="Reading"
                                         asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
-                                        <p class="fs-6">Глава @chapter.ChapterNumber - @chapter.Title</p>
+                                        <p class="fs-6">Глава @chapter.ChapterNumber - @chapter. Title</p>
                                     </a>
                                     <p class="fs-6 text-white-50">@chapter.PublicationDate</p>
                                 </div>
                             }
                         </div>
 
-                       
-                        <div class="p-5 tabcontent" id="Comment">
-                            <h3 class="page-title">User Comment</h3>
 
-                            <!-- Контейнер для відображення коментарів -->
-                            <div id="comments-container">
-                                @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
-                            </div>
+                        <div class="p-5 tabcontent" id="Comment">
+
+
 
                             <!-- Форма для додавання нового коментаря -->
-                            <div class="row">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h3 class="page-title">User Comment</h3>
-                                        </div>
+
+                            <div class="row mt-4">
+                                <h3 class="page-title col-12">Додати коментар</h3>
+                                <div class="row">
+                                    <div class="col-6 col-sm-4 col-lg-2 user-photo">
+                                        <img class="" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-1">
-                                            <div class="thumbnail">
-                                                <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                    <div class="col-12 col-sm-8">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <textarea class="form-control text-secondary" id="commentInput"
+                                                    cols="15" placeholder="Напишіть ваш коментар"></textarea>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <textarea class="form-control" id="commentInput" cols="15"></textarea>
-                                                </div>
-                                                <div class="panel-heading comment-action">
-                                                    <div class="submit-comment">
-                                                        <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
-                                                        <a href="javascript:void(0)" id="addNewCommentBtn" onclick="addComment()">Submit</a>
-                                                    </div>
+                                            <div class="panel-heading comment-action">
+                                                <div class="submit-comment">
+                                                    <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
+                                                    <a href="javascript:void(0)" id="addNewCommentBtn"
+                                                        class="btn btn-secondary" onclick="addComment()">Submit</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+
+
+
+                            <!-- Контейнер для відображення коментарів -->
+                            <div id="comments-container">
+                                @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
+                            </div>
+
+
+
+
                         </div>
 
-                        <!-- ... (інший ваш HTML-код) ... -->
-
                         <script>
-                            function addComment() {
-                                // Отримання значення коментаря з текстового поля
-                                var commentText = $('#commentInput').val();
 
-                                // AJAX-запит для додавання нового коментаря
-                                $.ajax({
-                                    url: '@Url.Action("CreateComment", "Manga")',  // Замініть "YourControllerName" на ім'я вашого контролера
-                                    type: 'POST',
-                                    data: { commentText: commentText },
-                                    success: function (response) {
-                                        // Оновлення контейнера коментарів з отриманими даними
-                                        $('#comments-container').html(response);
-
-                                        // Очищення текстового поля
-                                        $('#commentInput').val('');
-                                    },
-                                    error: function (error) {
-                                        console.log(error);
-                                    }
-                                });
-                            }
                         </script>
 
                     </div>
@@ -287,6 +268,35 @@
     </main>
     <script src="~/js/manga-tabs.js"></script>
     <script>
+
+
+        function addComment() {
+            // Отримання значення коментаря з текстового поля
+            var commentText = $('#commentInput').val();
+
+            // AJAX-запит для додавання нового коментаря
+            $.ajax({
+                url: '@Url.Action("CreateComment", "Manga")',  // Замініть "YourControllerName" на ім'я вашого контролера
+                type: 'POST',
+                data: { commentText: commentText },
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+
+                    // Очищення текстового поля
+                    $('#commentInput').val('');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+
+
+
+
+
         var starClicked = false;
 
         var storedRating = localStorage.getItem('rating');
