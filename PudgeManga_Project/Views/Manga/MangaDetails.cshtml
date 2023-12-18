@@ -212,14 +212,8 @@
                                 </div>
                             }
                         </div>
-
-
                         <div class="p-5 tabcontent" id="Comment">
-
-
-
                             <!-- Форма для додавання нового коментаря -->
-
                             <div class="row mt-4">
                                 <h3 class="page-title col-12">Додати коментар</h3>
                                 <div class="row">
@@ -243,18 +237,10 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
-
                             <!-- Контейнер для відображення коментарів -->
                             <div id="comments-container">
                                 @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
                             </div>
-
-
-
-
                         </div>
 
                         <script>
@@ -274,11 +260,19 @@
             // Отримання значення коментаря з текстового поля
             var commentText = $('#commentInput').val();
 
-            // AJAX-запит для додавання нового коментаря
+            var parentId = null;
+
+            var mangaId = 1; 
+
             $.ajax({
-                url: '@Url.Action("CreateComment", "Manga")',  // Замініть "YourControllerName" на ім'я вашого контролера
+                url: '/Manga/CreateComment',
                 type: 'POST',
-                data: { commentText: commentText },
+                contentType: 'application/json',  // Встановіть правильний Content-Type
+                data: JSON.stringify({
+                    CommentText: commentText,
+                    ParentId: parentId,
+                    MangaId: mangaId
+                }),
                 success: function (response) {
                     // Оновлення контейнера коментарів з отриманими даними
                     $('#comments-container').html(response);

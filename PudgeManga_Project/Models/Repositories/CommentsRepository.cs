@@ -2,6 +2,7 @@
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.ViewModels;
+using System.Runtime.CompilerServices;
 
 namespace PudgeManga_Project.Models.Repositories
 {
@@ -12,38 +13,17 @@ namespace PudgeManga_Project.Models.Repositories
         {
             _context = context;
         }
-        public IQueryable<Comment> GetAll()
+        public async Task<IQueryable<Comment>> GetAllAsync()
         {
-            return _context.Comments.OrderBy(x => x.CommentDate);
+            return await Task.FromResult(_context.Comments.OrderBy(x => x.CommentDate));
         }
 
-        public CommentViewModel AddComment(CommentViewModel comment)
+        public async Task  AddCommentAsync(Comment comment)
         {
-            var newComment = new Comment
-            {
-                ParentId = comment.ParentId,
-                CommentText = comment.CommentText,
-                CommentDate = DateTime.Now
-                // Додайте інші необхідні властивості
-            };
 
-            _context.Comments.Add(newComment);
-            _context.SaveChanges();
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
 
-            // Повертаємо CommentViewModel на основі збереженого коментаря
-            var addedComment = _context.Comments
-                .Where(c => c.CommentId == newComment.CommentId)
-                .Select(c => new CommentViewModel
-                {
-                    CommentId = c.CommentId,
-                    ParentId = c.ParentId,
-                    CommentText = c.CommentText,
-                    CommentDate = c.CommentDate
-                    // Додайте інші необхідні властивості
-                })
-                .FirstOrDefault();
-
-            return addedComment;
         }
         public async Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId)
         {
