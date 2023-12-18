@@ -15,7 +15,7 @@
             <div class="col-12 col-md-11 py-2">
                 <h2>@Model.Anime.Title</h2>
                 <div class="rating d-flex align-items-center" data-vote="0">
-                    <form method="post" asp-action="RateAnime">
+                    <form method="post" asp-controller="Anime" asp-action="RateAnime">
                         <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
                         <input type="hidden" name="animeId" value="@Model.Anime.AnimeId" />
                         <input type="hidden" id="valueSubmit" name="value" value="" />
