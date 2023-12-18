@@ -85,16 +85,24 @@ namespace PudgeManga_Project.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] CommentViewModel model)
         {
+            
             var comment = new Comment
             {
                 CommentText = model.CommentText,
                 CommentDate = DateTime.Now,
                 ParentId = model.ParentId,
+                
             };
 
             await _commentRepository.AddCommentAsync(comment);
-
-            var updatedComments = await _commentRepository.GetAllAsync();
+            var manga = await _mangaRepository.GetById(model.MangaId);
+            var mangaComment = new MangaComment
+            {
+                Manga = manga,
+                Comment = comment
+            };
+            await _commentRepository.AddMangaCommentAsync(mangaComment);
+            var updatedComments = await _commentRepository.GetCommentsForMangaAsync(model.MangaId);
 
             return PartialView("_CommentPartial", updatedComments);
         }
@@ -102,7 +110,7 @@ namespace PudgeManga_Project.Controllers
         [HttpGet]
         public async Task<IActionResult> GetComments(int mangaId)
         {
-            var comments = await _commentRepository.GetAllAsync();
+            var comments = await _commentRepository.GetCommentsForMangaAsync(mangaId);
 
             return PartialView("_CommentPartial", comments);
         }

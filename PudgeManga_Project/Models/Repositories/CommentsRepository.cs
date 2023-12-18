@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Google.Apis.Drive.v3.Data;
+using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.ViewModels;
@@ -18,11 +19,23 @@ namespace PudgeManga_Project.Models.Repositories
             await _context.SaveChangesAsync();
             return comment;
         }
-
+        public async Task AddMangaCommentAsync(MangaComment mangaComment)
+        {
+            _context.CommentsForManga.Add(mangaComment);
+            await _context.SaveChangesAsync();
+        }
         public async Task<List<Comment>> GetAllAsync()
         {
             return await _context.Comments
                 .OrderBy(x => x.CommentDate)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Comment>> GetCommentsForMangaAsync(int mangaId)
+        {
+            return await _context.CommentsForManga
+                .Where(mc => mc.MangaId == mangaId)
+                .Select(mc => mc.Comment)
+                .Include(c => c.ParentComment)
                 .ToListAsync();
         }
 
