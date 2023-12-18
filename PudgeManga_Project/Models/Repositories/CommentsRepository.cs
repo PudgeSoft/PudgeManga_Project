@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.ViewModels;
+using System.Runtime.CompilerServices;
 
 namespace PudgeManga_Project.Models.Repositories
 {

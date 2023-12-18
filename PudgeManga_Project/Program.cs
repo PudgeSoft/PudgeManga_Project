@@ -9,6 +9,8 @@ using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
 using PudgeManga_Project.Models.Repositories;
 using RunGroopWebApp.Repository;
+using Newtonsoft.Json;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,7 +49,6 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
        .AddCookie();
-
 
 builder.Services.AddSingleton<Seed>();
 
