@@ -5,7 +5,6 @@
         public int MangaId { get; set; }
         public string CommentText { get; set; }
         public int? ParentId { get; set; }
-        public int MangaId { get; set; }
     }
 
 }
