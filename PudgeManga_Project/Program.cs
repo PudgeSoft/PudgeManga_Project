@@ -54,7 +54,7 @@ builder.Services.AddSingleton<Seed>();
 
 builder.Services.AddDbContext<ApplicationDBContext>(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("AzureConnection"));
 });
 
 builder.Services.Configure<FormOptions>(x =>
