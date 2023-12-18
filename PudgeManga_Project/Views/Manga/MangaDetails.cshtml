@@ -1,23 +1,16 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject UserManager<IdentityUser> UserManager
+@inject UserManager<User> UserManager
 @model PudgeManga_Project.ViewModels.MangaViewModels.MangaChaptersViewModel
 
-<!--last version-->
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/manga.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/rating.css" asp-append-version="true">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>pudge soft corporation</title> <!--change title-->
-
 </head>
 
 <body>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <main class="py-5">
+    <main class="py-5 main">
         <div class="container py-5">
             <div class="row">
                 <div class="manga-title col-md-4 col-12 d-flex justify-content-center align-items-center flex-column">
@@ -26,21 +19,14 @@
                     <a class="nav-link" asp-controller="Manga" asp-action="Reading"
                         asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="1">
                         <div class="pt-2">
-                            <button type="button" class="btn btn-warning text-white fs-4">Читати мангу з
+                            <button type="button" class="btn btn-warning text-white fs-4">Читати мангу
+                                з
                                 початку</button>
                         </div>
                     </a>
                     <div class="stars d-flex d-md-none d-flex align-items-center justify-content-center">
-                        <form method="post" action="/Manga/RateManga">
-                            <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
-                            <input type="hidden" name="mangaId" value="@Model.Manga.MangaId" />
-                        </form>
                         <div class="rating d-flex align-items-center" data-vote="0">
 
-                            <div class="star hidden d-none">
-                                <span class="full" data-value="0"></span>
-                                <span class="half" data-value="0"></span>
-                            </div>
 
                             <div class="star">
 
@@ -127,12 +113,12 @@
                         <h1 class="fs-3 d-none pt-2 d-md-block">@Model.Manga.Title</h1>
                         <div class="stars d-flex align-items-center justify-content-end d-none d-md-flex">
                             <div class="rating d-flex align-items-center" data-vote="0">
-
-                                <div class="star hidden d-none">
-                                    <span class="full" data-value="0"></span>
-                                    <span class="half" data-value="0"></span>
-                                </div>
-
+                                <form method="post" asp-action="RateManga">
+                                    <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
+                                    <input type="hidden" name="mangaId" value="@Model.Manga.MangaId" />
+                                    <input type="hidden" id="valueSubmit" name="value" value="" />
+                                    <input type="submit" class="d-none" id="submitButtons">
+                                </form>
                                 <div class="star">
 
                                     <span class="full" data-value="1"></span>
@@ -234,19 +220,19 @@
                                         <div class="col-sm-1">
                                             <div class="thumbnail">
                                                 <img class="img-responsive user-photo"
-                                                     src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                                             </div>
                                         </div>
                                         <div class="col-sm-6">
                                             <div class="panel panel-default">
                                                 <div class="panel-body">
-                                                    <textarea class="form-control"
-                                                              cols="15"
-                                                              id="commentInput"></textarea>
+                                                    <textarea class="form-control" cols="15"
+                                                        id="commentInput"></textarea>
                                                 </div>
                                                 <div class="panel-heading comment-action">
                                                     <div class="submit-comment">
-                                                        <a href="https://www.blogger.com/null" id="addNewCommentBtn">Submit</a>
+                                                        <a href="https://www.blogger.com/null"
+                                                            id="addNewCommentBtn">Submit</a>
                                                     </div>
                                                 </div>
                                             </div>
@@ -304,108 +290,41 @@
         </div>
     </main>
     <script src="~/js/manga-tabs.js"></script>
+    <script src="~/js/rating.js"></script>
     <script>
-        var starClicked = false;
-
-
-
-        var storedRating = localStorage.getItem('rating');
-
-        // If the rating value is not stored, set a default value
-        var defaultRating = @Model.AverageRating;
-
-        // Use the stored rating value if available, otherwise use the default value
-        var currentRating = storedRating !== null ? parseFloat(storedRating) : defaultRating;
-
+        var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
         // Set the initial rating display
-        $('.score-rating').text(currentRating);
+        $('.score-rating').text(parseFloat(currentRating));
 
+        $('.half, .full').click(function () {
+            if ($(this).hasClass('half')) {
+                setHalfStarState(this);
+            } else {
+                setFullStarState(this);
+            }
+            var value = $(this).data('value');
+            $('.score-rating').text(value); // Змінено тут
+            $(this).closest('.rating').data('vote', value);
 
+            // Заміна крапки на кому
+            document.getElementById("valueSubmit").value = value;
 
-
-
-
-        $(function () {
-
-            $('.star').click(function () {
-
-                $(this).children('.selected').addClass('is-animated');
-                $(this).children('.selected').addClass('pulse');
-
-                var target = this;
-
-                setTimeout(function () {
-                    $(target).children('.selected').removeClass('is-animated');
-                    $(target).children('.selected').removeClass('pulse');
-                }, 1000);
-
-                starClicked = true;
-            })
-
-            $('.half').click(function () {
-                if (starClicked == true) {
-                    setHalfStarState(this)
+            // AJAX-запит
+            $.ajax({
+                url: '@Url.Action("RateManga", "Manga")', // Замініть "ControllerName" на ім'я вашого контролера
+                type: 'POST',
+                data: {
+                    userId: $('input[name="userId"]').val(),
+                    mangaId: $('input[name="mangaId"]').val(),
+                    value: $('input[name="value"]').val()
+                },
+                success: function (response) {
+                    // Обробіть відповідь тут
                 }
-                $(this).closest('.rating').find('.js-score').text($(this).data('value'));
-
-                $(this).closest('.rating').data('vote', $(this).data('value'));
-                calculateAverage()
-                console.log(parseInt($(this).data('value')));
-
-            })
-
-            $('.full').click(function () {
-                if (starClicked == true) {
-                    setFullStarState(this)
-                }
-                $(this).closest('.rating').find('.js-score').text($(this).data('value'));
-
-                $(this).find('js-average').text(parseInt($(this).data('value')));
-
-                $(this).closest('.rating').data('vote', $(this).data('value'));
-                calculateAverage()
-
-                console.log(parseInt($(this).data('value')));
-            })
-
-            $('.half').hover(function () {
-                if (starClicked == false) {
-                    setHalfStarState(this)
-                }
-
-            })
-
-            $('.full').hover(function () {
-                if (starClicked == false) {
-                    setFullStarState(this)
-                }
-            })
-
+            });
         })
 
-        function updateStarState(target) {
-            $(target).parent().prevAll().addClass('animate');
-            $(target).parent().prevAll().children().addClass('star-colour');
-
-            $(target).parent().nextAll().removeClass('animate');
-            $(target).parent().nextAll().children().removeClass('star-colour');
-        }
-
-        function setHalfStarState(target) {
-            $(target).addClass('star-colour');
-            $(target).siblings('.full').removeClass('star-colour');
-            updateStarState(target)
-        }
-
-        function setFullStarState(target) {
-            $(target).addClass('star-colour');
-            $(target).parent().addClass('animate');
-            $(target).siblings('.half').addClass('star-colour');
-
-            updateStarState(target)
-        }
-
-
     </script>
+
 
 </body>

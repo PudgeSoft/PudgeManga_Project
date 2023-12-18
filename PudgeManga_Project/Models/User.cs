@@ -14,7 +14,7 @@ namespace PudgeManga_Project.Models
         public string? State { get; set; }
         public string? Aboutme { get; set; }
         public ICollection<UserComment> UserComments { get; set; } = new List<UserComment>();
-        public ICollection<Rating> Ratings { get; set; }
+        public ICollection<RatingForManga> Ratings { get; set; }
 
     }
 }
