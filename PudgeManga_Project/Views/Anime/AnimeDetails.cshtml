@@ -4,14 +4,69 @@
 
 <head>
     <link rel="stylesheet" href="~/css/anime.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/rating.css" asp-append-version="true">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <div class="container py-5">
         <div class="row d-flex justify-content-center pb-5 pt-2 pages">
             <div class="col-12 col-md-11 py-2">
                 <h2>@Model.Anime.Title</h2>
-                <p>колись буде рейтинг (*****)</p>
+                <div class="rating d-flex align-items-center" data-vote="0">
+                    <form method="post" asp-action="RateAnime">
+                        <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
+                        <input type="hidden" name="animeId" value="@Model.Anime.AnimeId" />
+                        <input type="hidden" id="valueSubmit" name="value" value="" />
+                        <input type="submit" class="d-none" id="submitButtons">
+                    </form>
+                    <div class="star">
+
+                        <span class="full" data-value="1"></span>
+                        <span class="half" data-value="0.5"></span>
+                        <span class="selected"></span>
+
+                    </div>
+
+                    <div class="star">
+
+                        <span class="full" data-value="2"></span>
+                        <span class="half" data-value="1.5"></span>
+                        <span class="selected"></span>
+
+                    </div>
+
+                    <div class="star">
+
+                        <span class="full" data-value="3"></span>
+                        <span class="half" data-value="2.5"></span>
+                        <span class="selected"></span>
+
+                    </div>
+
+                    <div class="star">
+
+                        <span class="full" data-value="4"></span>
+                        <span class="half" data-value="3.5"></span>
+                        <span class="selected"></span>
+
+                    </div>
+
+                    <div class="star">
+
+                        <span class="full" data-value="5"></span>
+                        <span class="half" data-value="4.5"></span>
+                        <span class="selected"></span>
+
+                    </div>
+
+                    <div class="score fs-3 ms-3">
+                        <span class="score-rating js-score">0</span>
+                        <span>/</span>
+                        <span class="total">5</span>
+                    </div>
+                </div>
                 <div class="row justify-content-center">
                     <div class="col-9 col-sm-5 manga-image d-flex justify-content-center d-sm-block">
                         <img src="@Model.Anime.ImageUrl">
@@ -99,7 +154,40 @@
         </div>
     </div>
 
+    <script src="~/js/rating.js"></script>
     <script>
+        var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
+        // Set the initial rating display
+        $('.score-rating').text(parseFloat(currentRating));
+
+        $('.half, .full').click(function () {
+            if ($(this).hasClass('half')) {
+                setHalfStarState(this);
+            } else {
+                setFullStarState(this);
+            }
+            var value = $(this).data('value');
+            $('.score-rating').text(value); // Змінено тут
+            $(this).closest('.rating').data('vote', value);
+
+            // Заміна крапки на кому
+            document.getElementById("valueSubmit").value = value;
+
+            // AJAX-запит
+            $.ajax({
+                url: '@Url.Action("RateAnime", "Anime")', // Замініть "ControllerName" на ім'я вашого контролера
+                type: 'POST',
+                data: {
+                    userId: $('input[name="userId"]').val(),
+                    animeId: $('input[name="animeId"]').val(),
+                    value: $('input[name="value"]').val()
+                },
+                success: function (response) {
+                    // Обробіть відповідь тут
+                }
+            });
+        })
+
         function playEpisode(episode, seriesNum) {
             var x = document.getElementById("videoIframe");
             x.src = episode;

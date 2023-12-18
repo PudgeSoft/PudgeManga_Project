@@ -13,12 +13,16 @@
 .card img {
     max-width:12em;
     width: 90%;
+    margin: auto;
     border-radius: 0px;
 }
 .card-img-top{
     aspect-ratio: 9/13;
     object-fit: cover;
-
+}
+.card-title{
+    width: 90%;
+    margin: auto;
 }
 
 .card-body {

@@ -25,7 +25,7 @@ namespace PudgeManga_Project.Controllers
         public IActionResult Login()
         {
             var response = new LoginViewModel();
-            return View(response);
+            return PartialView(response);
         }
 
         [HttpPost]
@@ -33,7 +33,7 @@ namespace PudgeManga_Project.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View(LoginViewModel);
+                return PartialView(LoginViewModel);
             }
 
             var user = await _userManager.FindByEmailAsync(LoginViewModel.EmailAddress);
@@ -44,22 +44,22 @@ namespace PudgeManga_Project.Controllers
                 if (passwordCheck)
                 {
                     var result = await _signInManager.PasswordSignInAsync(user, LoginViewModel.Password, false, false);
-                    if(result.Succeeded)
+                    if (result.Succeeded)
                     {
                         return RedirectToAction("Index", "Home");
                     }
                 }
                 TempData["Error"] = "Wrong credentials. Try again";
-                return View(LoginViewModel);
+                return PartialView(LoginViewModel);
             }
             TempData["Error"] = "Wrong credentials. Try again";
-            return View(LoginViewModel);
+            return PartialView(LoginViewModel);
         }
 
         [HttpGet]
         public IActionResult Register()
         {
-          
+
             var response = new RegisterViewModel();
             return PartialView(response);
         }
@@ -70,14 +70,14 @@ namespace PudgeManga_Project.Controllers
             if (!ModelState.IsValid)
             {
 
-                return View(registerViewModel);
+                return PartialView(registerViewModel);
             }
 
             var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
             if (user != null)
             {
                 TempData["Error"] = "This email address is already in use";
-                return View(registerViewModel);
+                return PartialView(registerViewModel);
             }
 
             var newUser = new User()
@@ -88,7 +88,7 @@ namespace PudgeManga_Project.Controllers
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
             if (newUserResponse.Succeeded)
-            { 
+            {
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
                 await _signInManager.SignInAsync(newUser, false);
                 return RedirectToAction("Index", "Home");
@@ -99,9 +99,9 @@ namespace PudgeManga_Project.Controllers
                 {
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
-                return View(registerViewModel);
+                return PartialView(registerViewModel);
             }
-            }
+        }
 
         [HttpGet]
         public async Task<IActionResult> Logout()
