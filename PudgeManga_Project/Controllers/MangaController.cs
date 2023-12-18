@@ -83,27 +83,22 @@ namespace PudgeManga_Project.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateComment(int mangaId, string commentText)
+        public async Task<IActionResult> CreateComment([FromBody] CommentViewModel model)
         {
-            mangaId = 1;
-            // Створення нового коментаря за допомогою вашого методу AddComment
-            var commentViewModel = new CommentViewModel
+            var comment = new Comment
             {
-                
-                ParentId = null,  // Ваш ParentId, якщо необхідно
-                CommentText = commentText,
-                CommentDate = DateTime.Now
+                CommentText = model.CommentText,
+                CommentDate = model.CommentDate,
+                ParentId = model.ParentId,
             };
 
-            var addedComment = _commentRepository.AddComment(commentViewModel);
+            await _commentRepository.AddCommentAsync(comment);
 
-            // Отримання оновленого списку коментарів
-            var updatedComments = _commentRepository.GetAll()
-                .ToList();
+            var updatedComments = await _commentRepository.GetAllAsync();
 
-            // Повертаємо частковий перегляд для оновлення
             return PartialView("_CommentPartial", updatedComments);
         }
+
 
         [HttpPost]
         public async Task<IActionResult> RateManga(string userId, int mangaId, double value)

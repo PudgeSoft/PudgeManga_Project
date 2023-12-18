@@ -4,8 +4,8 @@ namespace PudgeManga_Project.Interfaces
 {
     public interface ICommentRepository
     {
-        IQueryable<Comment> GetAll();
-        CommentViewModel AddComment(CommentViewModel comment);
+        Task<Comment> AddCommentAsync(Comment comment);
+        Task<List<Comment>> GetAllAsync();
         Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId);
     }
 

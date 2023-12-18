@@ -274,11 +274,22 @@
             // Отримання значення коментаря з текстового поля
             var commentText = $('#commentInput').val();
 
+            // Отримання значення ParentId (вказано як null)
+            var parentId = null;
+
+            // Отримання значення MangaId
+            var mangaId = 1; // Наприклад, якщо це фіксоване значення
+
             // AJAX-запит для додавання нового коментаря
             $.ajax({
-                url: '@Url.Action("CreateComment", "Manga")',  // Замініть "YourControllerName" на ім'я вашого контролера
+                url: '/Manga/CreateComment',
                 type: 'POST',
-                data: { commentText: commentText },
+                contentType: 'application/json',  // Встановіть правильний Content-Type
+                data: JSON.stringify({
+                    CommentText: commentText,
+                    ParentId: parentId,
+                    MangaId: mangaId
+                }),
                 success: function (response) {
                     // Оновлення контейнера коментарів з отриманими даними
                     $('#comments-container').html(response);
@@ -291,6 +302,7 @@
                 }
             });
         }
+
 
 
 

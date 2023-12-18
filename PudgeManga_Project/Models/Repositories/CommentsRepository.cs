@@ -12,39 +12,20 @@ namespace PudgeManga_Project.Models.Repositories
         {
             _context = context;
         }
-        public IQueryable<Comment> GetAll()
+        public async Task<Comment> AddCommentAsync(Comment comment)
         {
-            return _context.Comments.OrderBy(x => x.CommentDate);
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+            return comment;
         }
 
-        public CommentViewModel AddComment(CommentViewModel comment)
+        public async Task<List<Comment>> GetAllAsync()
         {
-            var newComment = new Comment
-            {
-                ParentId = comment.ParentId,
-                CommentText = comment.CommentText,
-                CommentDate = DateTime.Now
-                // Додайте інші необхідні властивості
-            };
-
-            _context.Comments.Add(newComment);
-            _context.SaveChanges();
-
-            // Повертаємо CommentViewModel на основі збереженого коментаря
-            var addedComment = _context.Comments
-                .Where(c => c.CommentId == newComment.CommentId)
-                .Select(c => new CommentViewModel
-                {
-                    CommentId = c.CommentId,
-                    ParentId = c.ParentId,
-                    CommentText = c.CommentText,
-                    CommentDate = c.CommentDate
-                    // Додайте інші необхідні властивості
-                })
-                .FirstOrDefault();
-
-            return addedComment;
+            return await _context.Comments
+                .OrderBy(x => x.CommentDate)
+                .ToListAsync();
         }
+
         public async Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId)
         {
             try
