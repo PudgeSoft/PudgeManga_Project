@@ -87,7 +87,9 @@
                             @if (User.Identity.IsAuthenticated)
                             {
                             <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Logout">Вийти</a></li>
-							<li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="EditProfile">Мій кабінет</a></li>
+
+									<a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Detail" asp-route-id="@User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value">Мій кабінет</a>
+
                             }
 							else{
 							<li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Login"> Увійти</a></li>

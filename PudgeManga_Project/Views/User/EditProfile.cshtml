@@ -120,12 +120,11 @@
                                 <div class="col-6">
                                     <div class="form-group">
                                         <label asp-for="Age">Age:</label>
-                                        <select asp-for="Age" asp-items="@(new SelectList(Enumerable.Range(1, 100)))" class="form-control">
-                                            <option value="">Виберіть свій вік</option>
-                                        </select>
+                                        <input asp-for="Age" type="text" class="form-control form-control-lg" />
                                         <span asp-validation-for="Age" class="text-danger"></span>
                                     </div>
                                 </div>
+
                                 <div class="col-12">
                                     <div class="form-group">
                                         <label asp-for="Aboutme">aboutme:</label>

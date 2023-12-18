@@ -72,8 +72,10 @@ namespace PudgeManga_Project.Controllers
 
             var editMV = new EditProfileViewModel()
             {
-                  //City = User.City,
-            //    ProfileImageUrl = user.ProfileImageUrl,
+                //City = User.City,
+                //    ProfileImageUrl = user.ProfileImageUrl,
+                Age = user.Age,
+                Aboutme = user.Aboutme
             };
 
             return View(editMV);
