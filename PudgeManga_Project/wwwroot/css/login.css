@@ -1,0 +1,30 @@
+body{
+    font-family: 'Roboto Condensed', sans-serif!important;
+    background-image: url("../src/img/1login-background.png");
+    background-position: left;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    
+}
+main{
+    min-height: 100dvh;
+    
+}
+.form{
+    background-color: #fff;
+    border-radius: 5px;
+    width: 25rem;
+}
+.btn-danger{
+    background-color: #9b0101!important;
+}
+.hr{
+    width: 100%;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.719);
+}
+.social img{
+    width: 3rem;
+    margin: 5px;
+}

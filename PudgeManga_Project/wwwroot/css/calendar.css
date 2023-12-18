@@ -1,5 +1,5 @@
 .main-container{
-	background-color: #363636;
+	background-color: #161313;
 	height: auto;
 }
 
@@ -91,10 +91,7 @@
 em, i, dfn {
     font-style: italic;
 }
-.main-container {
-	background-color: #363636;
-	height: auto;
-}
+
 
 .calendar-day-box {
 	height: 110px;
