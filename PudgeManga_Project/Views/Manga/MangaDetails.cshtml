@@ -13,7 +13,7 @@
     <main class="py-5 main">
         <div class="container py-5">
             <div class="row">
-                <div class="manga-title col-md-4 col-12 d-flex justify-content-center align-items-center flex-column">
+                <div class="manga-title col-md-4 col-12 d-flex align-items-center flex-column">
                     <img src="@Model.Manga.CoverUrl">
                     <h1 class="fs-4 d-block d-md-none pt-2">@Model.Manga.Title</h1>
                     <a class="nav-link" asp-controller="Manga" asp-action="Reading"
@@ -176,7 +176,7 @@
                             <button class="nav-link tablinks" onclick="openTab(event, 'Chapter')">
                                 <div class="text-body-secondary fs-5">Глави</div>
                             </button>
-                            <button class="nav-link tablinks" onclick="openTab(event, 'Comment')">
+                            <button class="nav-link tablinks" id="commentButton" onclick="openTab(event, 'Comment')">
                                 <div class="text-body-secondary fs-5">Коментарі</div>
                             </button>
                         </div>
@@ -201,88 +201,46 @@
                                 <div class="stroke d-flex mt-2">
                                     <a class="nav-link" asp-controller="Manga" asp-action="Reading"
                                         asp-route-mangaId="@Model.Manga.MangaId" asp-route-chapter="@chapter.ChapterNumber">
-                                        <p class="fs-6">Глава @chapter.ChapterNumber - @chapter.Title</p>
+                                        <p class="fs-6">Глава @chapter.ChapterNumber - @chapter. Title</p>
                                     </a>
                                     <p class="fs-6 text-white-50">@chapter.PublicationDate</p>
                                 </div>
                             }
                         </div>
-
                         <div class="p-5 tabcontent" id="Comment">
-                            <div class="row">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h3 class="page-title">User Comment</h3>
-                                        </div>
+                            <!-- Форма для додавання нового коментаря -->
+                            <div class="row mt-4">
+                                <h3 class="page-title col-12">Додати коментар</h3>
+                                <div class="row">
+                                    <div class="col-6 col-sm-4 col-lg-2 user-photo">
+                                        <img class="" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-1">
-                                            <div class="thumbnail">
-                                                <img class="img-responsive user-photo"
-                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                    <div class="col-12 col-sm-8">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <textarea class="form-control text-secondary" id="commentInput"
+                                                    cols="15" placeholder="Напишіть ваш коментар"></textarea>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <textarea class="form-control" cols="15"
-                                                        id="commentInput"></textarea>
-                                                </div>
-                                                <div class="panel-heading comment-action">
-                                                    <div class="submit-comment">
-                                                        <a href="https://www.blogger.com/null"
-                                                            id="addNewCommentBtn">Submit</a>
-                                                    </div>
+                                            <div class="panel-heading comment-action">
+                                                <div class="submit-comment">
+                                                    <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
+                                                    <a href="javascript:void(0)" id="addNewCommentBtn"
+                                                        class="btn btn-secondary" onclick="addComment()">Submit</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="p-5 tabcontent" id="Comment">
-                            <h3 class="page-title">User Comment</h3>
-                            @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
-
-
-                            <div class="row">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h3 class="page-title">User Comment</h3>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-1">
-                                            <div class="thumbnail">
-                                                <img class="img-responsive user-photo"
-                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <textarea class="form-control" cols="15"
-                                                        id="commentInput"></textarea>
-                                                </div>
-                                                <div class="panel-heading comment-action">
-                                                    <div class="submit-comment">
-                                                        <a href="https://www.blogger.com/null"
-                                                            id="addNewCommentBtn">Submit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                            <!-- Контейнер для відображення коментарів -->
+                            <div id="comments-container">
+                                @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
                             </div>
                         </div>
-                        <div class="p-5 tabcontent" id="Comment">
-                            <h3 class="page-title">User Comment</h3>
-                            @* @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments) *@
 
-                        </div>
+                        <script>
+
+                        </script>
 
                     </div>
                 </div>
@@ -292,7 +250,73 @@
     <script src="~/js/manga-tabs.js"></script>
     <script src="~/js/rating.js"></script>
     <script>
-        var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
+
+
+        function addComment() {
+            // Отримання значення коментаря з текстового поля
+            var commentText = $('#commentInput').val();
+
+            // Отримання значення ParentId (вказано як null)
+            var parentId = null;
+
+            // Отримання значення MangaId
+            var mangaId = @Model.Manga.MangaId; // Наприклад, якщо це фіксоване значення
+
+            // AJAX-запит для додавання нового коментаря
+            $.ajax({
+                url: '/Manga/CreateComment',
+                type: 'POST',
+                contentType: 'application/json',  // Встановіть правильний Content-Type
+                data: JSON.stringify({
+                    CommentText: commentText,
+                    ParentId: parentId,
+                    MangaId: mangaId
+                }),
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+
+                    // Очищення текстового поля
+                    $('#commentInput').val('');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        document.getElementById("commentButton").addEventListener("click", function () {
+            $.ajax({
+                url: '/Manga/GetComments/' + @Model.Manga.MangaId,
+                type: 'GET',
+                data: { mangaId: mangaId },
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+
+
+
+
+
+        var starClicked = false;
+
+        var storedRating = localStorage.getItem('rating');
+
+        // If the rating value is not stored, set a default value
+        var ratingString = '@Model.AverageRating';
+        console.log(ratingString);
+        var defaultRating = parseFloat(ratingString);
+        console.log(defaultRating);
+
+        // Use the stored rating value if available, otherwise use the default value
+        var currentRating = storedRating !== null ? parseFloat(storedRating) : defaultRating;
+
         // Set the initial rating display
         $('.score-rating').text(parseFloat(currentRating));
 
