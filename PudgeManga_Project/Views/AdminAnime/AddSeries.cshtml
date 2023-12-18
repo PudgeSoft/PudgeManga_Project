@@ -1,0 +1,31 @@
+﻿
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/admin-drop-zone.css" type="text/css" asp-append-version="true" />
+
+
+    <link rel="stylesheet" href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css" type="text/css" />
+</head>
+<body>
+    <script src="~/js/dropzone.min.js"></script>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div id="dropzone">
+                <form asp-controller="AdminAnime" asp-action="AddSeries" asp-route-seasonId="@ViewData["seasonId"]" class="dropzone needsclick dz-clickable" id="uploader">
+                    <input type="hidden" name="seasonId" value="@ViewData["seasonId"]" />
+                    <div class="dz-message needsclick">
+                        Drop files here or click to upload.<br>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <form asp-controller="AdminAnime" asp-action="ButtonClick" asp-route-seasonId="@ViewData["seasonId"]" method="post">
+        <input type="hidden" name="seasonId" value="@ViewData["seasonId"]" />
+        <input type="submit" value="Button Click" />
+    </form>
+
+
+    <script src="~/js/admin-drop-zone.js"></script>
+</body>

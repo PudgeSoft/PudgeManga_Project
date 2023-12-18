@@ -12,6 +12,7 @@ namespace PudgeManga_Project.Models
         public int PageNumber { get; set; }
         public string ImageUrl { get; set; }
 
+        public ICollection<PageComment> PageComments { get; set; }
         public Chapter Chapter { get; set; }
     }
 }

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<PudgeManga_Project.Models.AnimeSeason>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<head>
+    <link rel="stylesheet" href="~/css/admin.css" type="text/css" asp-append-version="true" />
+</head>
+
+<p>
+    <a asp-action="CreateSeason" asp-route-AnimeId="@ViewData["AnimeId"]">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.SeasonNumber)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SeasonNumber)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    <a asp-action="EditSeason" asp-route-SeasonId="@item.AnimeSeasonId">Edit</a>
+                    <a asp-action="AddSeries" asp-route-SeasonId="@item.AnimeSeasonId">Add series</a>
+                    <a asp-action="DeleteSeason" asp-route-SeasonId="@item.AnimeSeasonId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

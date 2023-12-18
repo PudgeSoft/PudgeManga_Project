@@ -4,6 +4,7 @@ namespace PudgeManga_Project.Interfaces
 {
     public interface IGenreRepository
     {
-        Task<List<Genre>> GetAllGenres();
+        Task<List<Genre>> GetAllGenresAsync();
+        Task AddGenreAsync(Genre genre);
     }
 }

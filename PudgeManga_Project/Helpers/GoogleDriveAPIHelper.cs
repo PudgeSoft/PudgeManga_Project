@@ -47,7 +47,7 @@ namespace PudgeManga_Project.Helpers
             return service;
         }
 
-        public static string CreateFolder(string parent, string folderName)
+        public static string CreateFolder(string folderName)
         {
             try
             {
@@ -57,20 +57,19 @@ namespace PudgeManga_Project.Helpers
                 {
                     Name = folderName,
                     MimeType = "application/vnd.google-apps.folder",
-                    Parents = new List<string> { parent }
+                    Parents = new List<string> { null }
                 };
 
                 var createFolderRequest = service.Files.Create(driveFolder);
 
-                var createdFolder = createFolderRequest.Execute();
+                var createdFolder =  createFolderRequest.Execute();
 
                 return createdFolder.Id;
             }
             catch (Exception ex)
             {
-
                 Console.WriteLine($"Error creating folder: {ex.Message}");
-                return null; 
+                return null;
             }
         }
 
@@ -80,10 +79,9 @@ namespace PudgeManga_Project.Helpers
             {
                 var service = GetService();
 
-
                 FilesResource.ListRequest listRequest = service.Files.List();
-                listRequest.Q = $"'{folderId}' in parents"; 
-                listRequest.Fields = "files(id, name, webViewLink)"; 
+                listRequest.Q = $"'{folderId}' in parents";
+                listRequest.Fields = "files(id, name, webViewLink)";
 
                 FileList fileList = listRequest.Execute();
 
@@ -95,23 +93,25 @@ namespace PudgeManga_Project.Helpers
                     {
                         photoLinks.Add(file.WebViewLink);
                     }
+                    photoLinks.Reverse();
                 }
 
                 return photoLinks;
+
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Помилка при отриманні файлів: {ex.Message}");
+                Console.WriteLine($"Error getting files: {ex.Message}");
                 return null;
             }
         }
+
 
 
         public static List<string> ModifyDriveUrls(List<string> originalUrls)
         {
             try
             {
-
                 List<string> modifiedUrls = new List<string>();
 
                 foreach (var originalUrl in originalUrls)
@@ -130,14 +130,15 @@ namespace PudgeManga_Project.Helpers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Помилка при модифікації посилань: {ex.Message}");
+                Console.WriteLine($"Error modifying URLs: {ex.Message}");
                 return originalUrls;
             }
         }
 
+       
+
         public static string GetFileIdFromUrl(Uri uri)
         {
-            // Отримання ідентифікатора файлу з URL
             string[] segments = uri.Segments;
             int indexOfD = Array.IndexOf(segments, "d/");
 
@@ -148,6 +149,7 @@ namespace PudgeManga_Project.Helpers
 
             throw new InvalidOperationException("Invalid Google Drive URL");
         }
+
     }
 }
 

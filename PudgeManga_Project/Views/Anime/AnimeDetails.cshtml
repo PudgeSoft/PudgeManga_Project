@@ -1,0 +1,113 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject UserManager<User> UserManager
+@model PudgeManga_Project.ViewModels.AnimeViewModels.AnimeDetailsViewModel
+
+<head>
+    <link rel="stylesheet" href="~/css/anime.css" asp-append-version="true">
+</head>
+
+<body>
+    <div class="container py-5">
+        <div class="row d-flex justify-content-center pb-5 pt-2 pages">
+            <div class="col-12 col-md-11 py-2">
+                <h2>@Model.Anime.Title</h2>
+                <p>колись буде рейтинг (*****)</p>
+                <div class="row justify-content-center">
+                    <div class="col-9 col-sm-5 manga-image d-flex justify-content-center d-sm-block">
+                        <img src="@Model.Anime.ImageUrl">
+
+                    </div>
+                    <div class="col-12 col-sm-7 ">
+                        <table class="table table-striped">
+                            <tbody>
+                                <tr>
+                                    <th scope="col">Рік виходу</th>
+                                    <td scope="col">@Model.Anime.ReleaseYear</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Жанри</th>
+                                    <td>
+                                        @string.Join(", ", Model.Anime.AnimeGenres.Select(mg => mg.GenreForAnime.Name))
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Режисер</th>
+                                    <td colspan="2">@Model.Anime.Director</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Озвучка</th>
+                                    <td>@Model.Anime.Dubbing</td>
+
+                                </tr>
+                                <tr>
+                                    <th scope="row">Студія</th>
+                                    <td>@Model.Anime.Studio</td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                </div>
+                <div class="description  my-5">
+                    <h2 class="">Опис</h2>
+                    <p>
+                        @Model.Anime.Description
+                    </p>
+                </div>
+                <div class="player p-2">
+                    <div class="d-flex video-top my-2">
+                        <h4 class="me-4">Дивитись онлайн</h4>
+                        <h4 class="me-4">Серія </h4>
+                        <h4 id="series-number"></h4>
+                    </div>
+                    <div class="video mb-2 d-flex justify-content-center">
+                        <iframe src="" allow="autoplay" id="videoIframe" allowfullscreen></iframe>
+                    </div>
+                </div>
+                <div class="control-buttons mt-2">
+
+                    <h4>Сезони</h4>
+                    <div class="season-buttons">
+                        @foreach (var season in Model.Seasons)
+                        {
+                            <a class="btn btn-danger" asp-controller="Anime" asp-action="AnimeDetails"
+                                asp-route-AnimeId="@season.AnimeId" asp-route-seasonId="@season.AnimeSeasonId">
+                                @season.Title
+                            </a>
+                        }
+                    </div>
+                    <h4 class="mt-3">Серії</h4>
+                    <div class="episode-buttons">
+                        @foreach (var episode in Model.Episodes)
+                        {
+                            <button class="btn btn-danger btn-episode"
+                                onclick="playEpisode('@episode.EpisodeUrl', '@episode.EpisodeNumber')">
+                                Серія
+                                @episode.EpisodeNumber
+                            </button>
+                        }
+
+                    </div>
+                </div>
+                <div class="comments pt-5">
+                    <h4>Коментарі</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function playEpisode(episode, seriesNum) {
+            var x = document.getElementById("videoIframe");
+            x.src = episode;
+            document.getElementById("series-number").innerHTML = seriesNum;
+        }
+        var buttons = document.getElementsByClassName("btn-episode");
+        for (var i = 0; i < 1; i++) {
+            buttons[i].click();
+        }
+    </script>
+</body>

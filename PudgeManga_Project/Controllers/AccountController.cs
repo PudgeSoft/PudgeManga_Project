@@ -4,6 +4,7 @@ using PudgeManga_Project.Models;
 using PudgeManga_Project.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using System.Runtime.ConstrainedExecution;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -54,11 +55,13 @@ namespace PudgeManga_Project.Controllers
             TempData["Error"] = "Wrong credentials. Try again";
             return View(LoginViewModel);
         }
+
         [HttpGet]
         public IActionResult Register()
         {
+          
             var response = new RegisterViewModel();
-            return View(response);
+            return PartialView(response);
         }
 
         [HttpPost]
@@ -80,12 +83,12 @@ namespace PudgeManga_Project.Controllers
             var newUser = new User()
             {
                 Email = registerViewModel.EmailAddress,
-                UserName = registerViewModel.EmailAddress
+                UserName = registerViewModel.UserName
             };
             var newUserResponse = await _userManager.CreateAsync(newUser, registerViewModel.Password);
 
             if (newUserResponse.Succeeded)
-            {
+            { 
                 await _userManager.AddToRoleAsync(newUser, UserRoles.User);
                 await _signInManager.SignInAsync(newUser, false);
                 return RedirectToAction("Index", "Home");
@@ -106,7 +109,6 @@ namespace PudgeManga_Project.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
-
         [HttpGet]
         [Route("Account/Welcome")]
         public async Task<IActionResult> Welcome(int page = 0)

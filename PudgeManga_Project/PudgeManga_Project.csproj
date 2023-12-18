@@ -34,6 +34,8 @@
   <ItemGroup>
 
     <PackageReference Include="FluentAssertions" Version="6.12.0" />
+
+    <PackageReference Include="MailKit" Version="4.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.25" />
 
     <PackageReference Include="Google.Apis.Drive.v3" Version="1.63.0.3155" />
@@ -45,10 +47,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.16" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Data\Enum\" />
+    <PackageReference Include="MimeKit" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>

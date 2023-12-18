@@ -1,0 +1,76 @@
+main {
+    background-color: rgba(0, 0, 0, 0.89);
+}
+
+    main .pages {
+        background-color: #161313;
+        border-radius: 5px;
+    }
+
+.manga-image img {
+    max-width: 80%;
+}
+
+.table {
+    max-width: 100%;
+}
+
+    .table th {
+        width: 9em !important;
+    }
+
+    .table th, td {
+        padding: 15px 0 !important;
+    }
+
+.control-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    flex-direction: column;
+}
+
+.episode-buttons, .season-buttons {
+    width: 80%;
+    display: flex;
+    justify-items: center;
+    flex-wrap: wrap;
+}
+
+.control-buttons .btn,
+.season-buttons .btn,
+.control-buttons h4 {
+    margin: 5px 1%;
+    flex: 0 1 18%;
+}
+
+.player {
+    background-color: #1f2123;
+    border-radius: 5px;
+}
+.video-top{
+    width: 90%;
+    margin: auto;
+}
+#videoIframe {
+    width: 90%;
+    aspect-ratio: 16/9;
+}
+
+@media only screen and (max-width : 800px) {
+    .episode-buttons, .season-buttons {
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width : 520px) {
+    .control-buttons .btn {
+        flex: 0 1 23%;
+    }
+}
+
+@media only screen and (max-width : 420px) {
+    .control-buttons .btn {
+        flex: 0 1 31%;
+    }
+}
