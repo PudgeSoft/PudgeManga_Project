@@ -88,7 +88,7 @@ namespace PudgeManga_Project.Controllers
             var comment = new Comment
             {
                 CommentText = model.CommentText,
-                CommentDate = model.CommentDate,
+                CommentDate = DateTime.Now,
                 ParentId = model.ParentId,
             };
 
@@ -99,6 +99,13 @@ namespace PudgeManga_Project.Controllers
             return PartialView("_CommentPartial", updatedComments);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetComments(int mangaId)
+        {
+            var comments = await _commentRepository.GetAllAsync();
+
+            return PartialView("_CommentPartial", comments);
+        }
 
         [HttpPost]
         public async Task<IActionResult> RateManga(string userId, int mangaId, double value)

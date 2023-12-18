@@ -181,7 +181,7 @@
                             <button class="nav-link tablinks" onclick="openTab(event, 'Chapter')">
                                 <div class="text-body-secondary fs-5">Глави</div>
                             </button>
-                            <button class="nav-link tablinks" onclick="openTab(event, 'Comment')">
+                            <button class="nav-link tablinks" id="commentButton" onclick="openTab(event, 'Comment')">
                                 <div class="text-body-secondary fs-5">Коментарі</div>
                             </button>
                         </div>
@@ -302,7 +302,19 @@
                 }
             });
         }
-
+        document.getElementById("commentButton").addEventListener("click", function () {
+            $.ajax({
+                url: '/Manga/GetComments/' + @Model.Manga.MangaId,
+                type: 'GET',
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
 
 
 
