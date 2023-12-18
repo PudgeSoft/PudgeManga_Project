@@ -17,7 +17,7 @@
                 <div class="rating d-flex align-items-center" data-vote="0">
                     <form method="post" asp-action="RateAnime">
                         <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
-                        <input type="hidden" name="mangaId" value="@Model.Anime.AnimeId" />
+                        <input type="hidden" name="animeId" value="@Model.Anime.AnimeId" />
                         <input type="hidden" id="valueSubmit" name="value" value="" />
                         <input type="submit" class="d-none" id="submitButtons">
                     </form>
@@ -159,6 +159,34 @@
         var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
         // Set the initial rating display
         $('.score-rating').text(parseFloat(currentRating));
+
+        $('.half, .full').click(function () {
+            if ($(this).hasClass('half')) {
+                setHalfStarState(this);
+            } else {
+                setFullStarState(this);
+            }
+            var value = $(this).data('value');
+            $('.score-rating').text(value); // Змінено тут
+            $(this).closest('.rating').data('vote', value);
+
+            // Заміна крапки на кому
+            document.getElementById("valueSubmit").value = value;
+
+            // AJAX-запит
+            $.ajax({
+                url: '@Url.Action("RateAnime", "Anime")', // Замініть "ControllerName" на ім'я вашого контролера
+                type: 'POST',
+                data: {
+                    userId: $('input[name="userId"]').val(),
+                    animeId: $('input[name="animeId"]').val(),
+                    value: $('input[name="value"]').val()
+                },
+                success: function (response) {
+                    // Обробіть відповідь тут
+                }
+            });
+        })
 
         function playEpisode(episode, seriesNum) {
             var x = document.getElementById("videoIframe");

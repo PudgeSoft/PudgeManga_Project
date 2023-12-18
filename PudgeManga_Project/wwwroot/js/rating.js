@@ -14,34 +14,6 @@ $(function () {
         starClicked = true;
     })
 
-    $('.half, .full').click(function () {
-        if ($(this).hasClass('half')) {
-            setHalfStarState(this);
-        } else {
-            setFullStarState(this);
-        }
-        var value = $(this).data('value');
-        $('.score-rating').text(value); // Змінено тут
-        $(this).closest('.rating').data('vote', value);
-
-        // Заміна крапки на кому
-        document.getElementById("valueSubmit").value = value;
-
-        // AJAX-запит
-        $.ajax({
-            url: '@Url.Action("RateManga", "Manga")', // Замініть "ControllerName" на ім'я вашого контролера
-            type: 'POST',
-            data: {
-                userId: $('input[name="userId"]').val(),
-                mangaId: $('input[name="mangaId"]').val(),
-                value: $('input[name="value"]').val()
-            },
-            success: function (response) {
-                // Обробіть відповідь тут
-            }
-        });
-    })
-
 
     $('.half').hover(function () {
         if (starClicked == false) {
