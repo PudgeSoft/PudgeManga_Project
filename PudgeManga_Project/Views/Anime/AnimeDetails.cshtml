@@ -17,7 +17,7 @@
                 <div class="rating d-flex align-items-center" data-vote="0">
                     <form method="post" asp-action="RateManga">
                         <input type="hidden" name="userId" value="@UserManager.GetUserId(User)" />
-                        <input type="hidden" name="mangaId" @*value="@Model.Manga.MangaId"*@ />
+                        <input type="hidden" name="mangaId" value="@Model.Anime.AnimeId" />
                         <input type="hidden" id="valueSubmit" name="value" value="" />
                         <input type="submit" class="d-none" id="submitButtons">
                     </form>
@@ -156,7 +156,7 @@
 
     <script src="~/js/rating.js"></script>
     <script>
-        var defaultRating = parseFloat('@Model.AverageRating');
+        var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
         // Set the initial rating display
         $('.score-rating').text(parseFloat(currentRating));
 
