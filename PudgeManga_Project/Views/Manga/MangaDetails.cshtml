@@ -292,7 +292,7 @@
     <script src="~/js/manga-tabs.js"></script>
     <script src="~/js/rating.js"></script>
     <script>
-        var currentRating = parseFloat('@Model.AverageRating');
+        var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
         // Set the initial rating display
         $('.score-rating').text(parseFloat(currentRating));
     </script>
