@@ -32,12 +32,18 @@ namespace PudgeManga_Project.Models.Repositories
         }
         public async Task<IEnumerable<Comment>> GetCommentsForMangaAsync(int mangaId)
         {
-            return await _context.CommentsForManga
+            var mangaComments = await _context.CommentsForManga
                 .Where(mc => mc.MangaId == mangaId)
-                .Select(mc => mc.Comment)
-                .Include(c => c.ParentComment)
+                .Include(mc => mc.Comment)  // Включаємо пов'язаний коментар
+                    .ThenInclude(c => c.ParentComment)  // Включаємо батьківський коментар
                 .ToListAsync();
+
+            // Отримання коментарів з колекції MangaComments
+            var commentsForManga = mangaComments.Select(mc => mc.Comment);
+
+            return commentsForManga;
         }
+
 
         public async Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId)
         {

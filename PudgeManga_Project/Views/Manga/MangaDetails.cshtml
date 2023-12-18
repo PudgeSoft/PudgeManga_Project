@@ -18,7 +18,7 @@
     <main class="py-5 main">
         <div class="container py-5">
             <div class="row">
-                <div class="manga-title col-md-4 col-12 d-flex justify-content-center align-items-center flex-column">
+                <div class="manga-title col-md-4 col-12 d-flex align-items-center flex-column">
                     <img src="@Model.Manga.CoverUrl">
                     <h1 class="fs-4 d-block d-md-none pt-2">@Model.Manga.Title</h1>
                     <a class="nav-link" asp-controller="Manga" asp-action="Reading"
@@ -306,6 +306,7 @@
             $.ajax({
                 url: '/Manga/GetComments/' + @Model.Manga.MangaId,
                 type: 'GET',
+                data: { mangaId: mangaId },
                 success: function (response) {
                     // Оновлення контейнера коментарів з отриманими даними
                     $('#comments-container').html(response);
