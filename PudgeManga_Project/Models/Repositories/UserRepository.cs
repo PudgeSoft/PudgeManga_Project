@@ -45,5 +45,16 @@ namespace RunGroopWebApp.Repository
             _context.Update(user);
             return Save();
         }
+
+        public async Task UpdateProfilePictureLink(string fileLink, string userId)
+        {
+            var user = await _context.Users.FindAsync(userId);
+            if (user != null)
+            {
+                user.Image = fileLink;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

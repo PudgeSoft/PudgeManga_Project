@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels;
+using RunGroopWebApp.Repository;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -11,13 +13,16 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<User> _userManager;
+        private readonly IGoogleDriveAPIRepository<IFormFile> _googleDriveAPIRepository;
 
 
-        public UserController(IUserRepository userRepository, UserManager<User> userManager)
+        public UserController(IUserRepository userRepository, 
+            UserManager<User> userManager,
+            IGoogleDriveAPIRepository<IFormFile> googleDriveAPIRepository)
         {
             _userRepository = userRepository;
             _userManager = userManager;
-
+            _googleDriveAPIRepository = googleDriveAPIRepository;
         }
 
         [HttpGet("users")]
@@ -130,5 +135,35 @@ namespace PudgeManga_Project.Controllers
 
             return RedirectToAction("Detail", "User", new { user.Id });
         }
+
+        [HttpPost, ActionName("UploadProfilePicture")]
+        public async Task<IActionResult> UploadProfilePicture(IFormFile file, string userId)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserById(userId);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                string folderName = $"User_{userId}_ProfilePictures";
+                string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
+                _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderId);
+
+                var fileLink = _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
+                await _userRepository.UpdateProfilePictureLink(fileLink[0], userId);
+
+                return RedirectToAction("Profile", new { id = userId });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Помилка при завантаженні фотографії профілю на Google Drive: {ex.Message}");
+                return RedirectToAction("Index");
+            }
+        }
+
+
+
     }
 }
