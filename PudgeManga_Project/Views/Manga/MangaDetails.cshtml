@@ -334,27 +334,9 @@
             });
         });
 
-
-
-
-
-
-        var starClicked = false;
-
-        var storedRating = localStorage.getItem('rating');
-
-        // If the rating value is not stored, set a default value
-        var ratingString = '@Model.AverageRating';
-        console.log(ratingString);
-        var defaultRating = parseFloat(ratingString);
-        console.log(defaultRating);
-
-        // Use the stored rating value if available, otherwise use the default value
-        var currentRating = storedRating !== null ? parseFloat(storedRating) : defaultRating;
-
+        var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
         // Set the initial rating display
         $('.score-rating').text(parseFloat(currentRating));
-
         $('.half, .full').click(function () {
             if ($(this).hasClass('half')) {
                 setHalfStarState(this);
@@ -364,10 +346,8 @@
             var value = $(this).data('value');
             $('.score-rating').text(value); // Змінено тут
             $(this).closest('.rating').data('vote', value);
-
             // Заміна крапки на кому
             document.getElementById("valueSubmit").value = value;
-
             // AJAX-запит
             $.ajax({
                 url: '@Url.Action("RateManga", "Manga")', // Замініть "ControllerName" на ім'я вашого контролера
