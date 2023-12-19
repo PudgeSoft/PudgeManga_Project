@@ -66,6 +66,7 @@ namespace PudgeManga_Project.Controllers
                 SelectedSeason = selectedSeason,
                 Episodes = episodes,
                 AverageRating = averageRating,
+                Comments = new List<Comment>(),
             };
 
             return View(viewModel);

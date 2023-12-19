@@ -9,6 +9,7 @@ namespace PudgeManga_Project.ViewModels.AnimeViewModels
         public AnimeSeason SelectedSeason { get; set; }
         public List<AnimeEpisode> Episodes { get; set; }
         public double AverageRating { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
     }
 
 }

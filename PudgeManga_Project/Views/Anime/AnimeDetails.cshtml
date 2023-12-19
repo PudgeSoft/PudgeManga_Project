@@ -147,8 +147,38 @@
 
                     </div>
                 </div>
-                <div class="comments pt-5">
-                    <h4>Коментарі</h4>
+                <div class="comments row pt-5">
+                    <div class="col-md-8 col-12">
+                        <h4>Коментарі</h4>
+                        <!-- Форма для додавання нового коментаря -->
+                        <div class="row mt-4">
+                            <h3 class="page-title col-12">Додати коментар</h3>
+                            <div class="row">
+                                <div class="col-4 col-sm-4 col-lg-2 user-photo">
+                                    <img class="" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                </div>
+                                <div class="col-12 col-sm-8">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <textarea class="form-control text-secondary" id="commentInput" cols="15"
+                                                placeholder="Напишіть ваш коментар"></textarea>
+                                        </div>
+                                        <div class="panel-heading comment-action">
+                                            <div class="submit-comment">
+                                                <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
+                                                <a href="javascript:void(0)" id="addNewCommentBtn"
+                                                    class="btn btn-secondary" onclick="addComment()">Submit</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Контейнер для відображення коментарів -->
+                        <div id="comments-container">
+                            @await Html.PartialAsync("~/Views/Shared/_CommentPartial.cshtml", Model.Comments)
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,6 +186,88 @@
 
     <script src="~/js/rating.js"></script>
     <script>
+        function addHTML(elementID, dataId) {
+            var html = `
+
+    <div class="row mt-4 ms-3">
+    <div class="row">
+        <div class="col-4 col-sm-4 col-lg-2 user-photo">
+            <img class="" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+        </div>
+        <div class="col-12 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <textarea class="form-control text-secondary" id="commentInput${dataId}"
+                        cols="15" placeholder="Напишіть ваш коментар"></textarea>
+                </div>
+                <div class="panel-heading comment-action">
+                    <div class="submit-comment">
+                        <a href="javascript:void(0)" id="addNewCommentBtn"
+                            class="btn btn-secondary" onclick="addComment(${dataId})">Submit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>`;
+            document.getElementById(elementID).innerHTML = html;
+            console.log(dataId);
+        }
+
+        // Button with onclick event
+
+
+        function addComment(dataId) {
+            // Отримання значення коментаря з текстового поля
+            var commentText = $('#commentInput').val();
+            var parentId = null;
+            if (dataId != null) {
+                commentText = $('#commentInput' + dataId).val();
+                var parentId = dataId;
+            }
+
+
+            // Отримання значення MangaId
+            var mangaId = @Model.Anime.AnimeId; // Наприклад, якщо це фіксоване значення
+
+            // AJAX-запит для додавання нового коментаря
+            $.ajax({
+                url: '/Manga/CreateComment',
+                type: 'POST',
+                contentType: 'application/json',  // Встановіть правильний Content-Type
+                data: JSON.stringify({
+                    CommentText: commentText,
+                    ParentId: parentId,
+                    MangaId: mangaId
+                }),
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+
+                    // Очищення текстового поля
+                    $('#commentInput').val('');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        document.getElementById("commentButton").addEventListener("click", function () {
+            $.ajax({
+                url: '/Manga/GetComments/' + @Model.Anime.AnimeId,
+                type: 'GET',
+                data: { mangaId: mangaId },
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+
         var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
         // Set the initial rating display
         $('.score-rating').text(parseFloat(currentRating));
