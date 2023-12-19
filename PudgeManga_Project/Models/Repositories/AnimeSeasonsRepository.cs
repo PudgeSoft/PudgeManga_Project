@@ -19,7 +19,10 @@ namespace PudgeManga_Project.Models.Repositories
 
             return seasons;
         }
-
+        public async Task<AnimeSeason> GetSeasonById(int seasonId)
+        {
+            return await _context.AnimeSeasons.FindAsync(seasonId);
+        }
         public Task<int> GetTotalAnimeSeasonsAsync(int animeId)
         {
             throw new NotImplementedException();

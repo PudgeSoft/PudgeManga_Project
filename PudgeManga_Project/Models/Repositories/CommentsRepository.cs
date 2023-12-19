@@ -25,6 +25,11 @@ namespace PudgeManga_Project.Models.Repositories
             _context.CommentsForManga.Add(mangaComment);
             await _context.SaveChangesAsync();
         }
+        public async Task AddAnimeSeasonCommentAsync(AnimeSeasonComment animeSeasonComment)
+        {
+            _context.AnimeSeasonComment.Add(animeSeasonComment);
+            await _context.SaveChangesAsync();
+        }
         public async Task<List<Comment>> GetAllAsync()
         {
             return await _context.Comments
