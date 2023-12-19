@@ -18,7 +18,21 @@ namespace PudgeManga_Project.Models.Repositories
         {
             return await _context.Mangas.ToListAsync();
         }
+        public async Task<IEnumerable<Manga>> GetPopularMangaAsync(int count)
+        {
+            return await _context.Mangas
+                .OrderByDescending(m => m.Ratings.Average(r => r.Value))
+                .Take(count)
+                .ToListAsync();
+        }
 
+        public async Task<IEnumerable<Manga>> GetRecentlyUpdatedMangaAsync(int count)
+        {
+            return await _context.Mangas
+                .OrderByDescending(m => m.Chapters.Max(c => c.PublicationDate))
+                .Take(count)
+                .ToListAsync();
+        }
         public async Task<Manga> GetById(int id)
         {
             return await _context.Mangas
