@@ -226,25 +226,21 @@
                 var parentId = dataId;
             }
 
-
-            // Отримання значення MangaId
-            var mangaId = @Model.Anime.AnimeId; // Наприклад, якщо це фіксоване значення
+            var AnimeSeasonId = @Model.Anime.AnimeId;
 
             // AJAX-запит для додавання нового коментаря
             $.ajax({
-                url: '/Manga/CreateComment',
+                url: '/Anime/CreateComment',
                 type: 'POST',
-                contentType: 'application/json',  // Встановіть правильний Content-Type
+                contentType: 'application/json',
                 data: JSON.stringify({
                     CommentText: commentText,
                     ParentId: parentId,
-                    MangaId: mangaId
+                    AnimeSeasonId: AnimeSeasonId
                 }),
                 success: function (response) {
-                    // Оновлення контейнера коментарів з отриманими даними
                     $('#comments-container').html(response);
 
-                    // Очищення текстового поля
                     $('#commentInput').val('');
                 },
                 error: function (error) {
@@ -252,13 +248,14 @@
                 }
             });
         }
-        document.getElementById("commentButton").addEventListener("click", function () {
+        $(document).ready(function () {
+            var seasonId = 1; 
+
             $.ajax({
-                url: '/Manga/GetComments/' + @Model.Anime.AnimeId,
+                url: '/Manga/GetComments/',
                 type: 'GET',
-                data: { mangaId: mangaId },
+                data: { seasonId: seasonId },
                 success: function (response) {
-                    // Оновлення контейнера коментарів з отриманими даними
                     $('#comments-container').html(response);
                 },
                 error: function (error) {
@@ -269,7 +266,7 @@
 
 
         var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
-        // Set the initial rating display
+
         $('.score-rating').text(parseFloat(currentRating));
 
         $('.half, .full').click(function () {

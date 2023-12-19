@@ -27,7 +27,7 @@ namespace PudgeManga_Project.Models.Repositories
         }
         public async Task AddAnimeSeasonCommentAsync(AnimeSeasonComment animeSeasonComment)
         {
-            _context.AnimeSeasonComment.Add(animeSeasonComment);
+            _context.AnimeSeasonComments.Add(animeSeasonComment);
             await _context.SaveChangesAsync();
         }
         public async Task<List<Comment>> GetAllAsync()
@@ -36,18 +36,31 @@ namespace PudgeManga_Project.Models.Repositories
                 .OrderBy(x => x.CommentDate)
                 .ToListAsync();
         }
+
         public async Task<IEnumerable<Comment>> GetCommentsForMangaAsync(int mangaId)
         {
             var mangaComments = await _context.CommentsForManga
                 .Where(mc => mc.MangaId == mangaId)
-                .Include(mc => mc.Comment)  // Включаємо пов'язаний коментар
-                    .ThenInclude(c => c.ParentComment)  // Включаємо батьківський коментар
+                .Include(mc => mc.Comment)
+                    .ThenInclude(c => c.ParentComment)
                 .ToListAsync();
 
-            // Отримання коментарів з колекції MangaComments
             var commentsForManga = mangaComments.Select(mc => mc.Comment);
 
             return commentsForManga;
+        }
+
+        public async Task<IEnumerable<Comment>> GetCommentsForAnimeSeasonAsync(int seasonId)
+        {
+            var animeSeasonComments = await _context.AnimeSeasonComments
+                .Where(asc => asc.AnimeSeasonId == seasonId)
+                .Include(asc => asc.Comment)  
+                    .ThenInclude(c => c.ParentComment)  
+                .ToListAsync();
+
+            var commentsForAnimeSeason = animeSeasonComments.Select(asc => asc.Comment);
+
+            return commentsForAnimeSeason;
         }
 
 

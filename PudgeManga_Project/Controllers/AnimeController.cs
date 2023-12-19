@@ -75,37 +75,37 @@ namespace PudgeManga_Project.Controllers
 
             return View(viewModel);
         }
-        //[HttpPost]
-        //public async Task<IActionResult> CreateComment([FromBody] AnimeSeasonCommentViewModel model)
-        //{
+        [HttpPost]
+        public async Task<IActionResult> CreateComment([FromBody] AnimeSeasonCommentViewModel model)
+        {
+            var comment = new Comment
+            {
+                CommentText = model.CommentText,
+                CommentDate = DateTime.Now,
+                ParentId = model.ParentId,
+            };
 
-        //    var comment = new Comment
-        //    {
-        //        CommentText = model.CommentText,
-        //        CommentDate = DateTime.Now,
-        //        ParentId = model.ParentId,
-        //    };
+            await _commentRepository.AddCommentAsync(comment);
+            var manga = await _seasonsRepository.GetSeasonById(model.AnimeSeasonId);
+            var mangaComment = new AnimeSeasonComment
+            {
+                AnimeSeason = manga,
+                Comment = comment
+            };
+            await _commentRepository.AddAnimeSeasonCommentAsync(mangaComment);
+            var updatedComments = await _commentRepository.GetCommentsForMangaAsync(model.AnimeSeasonId);
 
-        //    await _commentRepository.AddCommentAsync(comment);
-        //    var manga = await _animeRepository.GetAnimeByIdAsync(model.AnimeSeasonId);
-        //    var mangaComment = new Comment
-        //    {
-        //        Manga = manga,
-        //        Comment = comment
-        //    };
-        //    await _commentRepository.AddMangaCommentAsync(mangaComment);
-        //    var updatedComments = await _commentRepository.GetCommentsForMangaAsync(model.AnimeSeasonId);
+            return PartialView("_CommentPartial", updatedComments);
+        }
 
-        //    return PartialView("_CommentPartial", updatedComments);
-        //}
+        [HttpGet]
+        public async Task<IActionResult> GetComments(int seasonId)
+        {
+            var comments = await _commentRepository.GetCommentsForAnimeSeasonAsync(seasonId);
 
-        //[HttpGet]
-        //public async Task<IActionResult> GetComments(int mangaId)
-        //{
-        //    var comments = await _commentRepository.GetCommentsForMangaAsync(mangaId);
+            return PartialView("_CommentPartial", comments);
+        }
 
-        //    return PartialView("_CommentPartial", comments);
-        //}
         [HttpPost]
         public async Task<IActionResult> RateAnime(string userId, int animeId, double value)
         {
