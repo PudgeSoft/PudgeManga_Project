@@ -10,5 +10,6 @@ namespace PudgeManga_Project.Interfaces
         bool Update(User user);
         bool Delete(User user);
         bool Save();
+        Task UpdateProfilePictureLink(string fileLink, string userId);
     }
 }
