@@ -1,0 +1,58 @@
+﻿@model IEnumerable<PudgeManga_Project.Models.Comment>
+
+
+@foreach (var comment in Model)
+{
+    if(comment.ParentId == null){
+    <li class="comment row my-2" data-id="@comment.CommentId">
+        <div class="avatar col-6 col-sm-4 col-lg-2 user-photo">
+            <a href="javascript:void(0);">
+                <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+            </a>
+        </div>
+        <div data-id="@comment.CommentId" class="comment-body col-12 col-sm-8">
+            <a href="javascript:void(0);" class="userlink">USER</a> - <span class="pubdate text-white-50">
+                опубліковано
+                @comment.CommentDate.ToString("dd-MM-yyyy")
+            </span>
+            <p>
+                @comment.CommentText
+            </p>
+            <button class="reply-link btn btn-outline-light" onclick="addHTML('@("elementId" + "*" + comment.CommentId)', '@comment.CommentId')">
+                Reply
+            </button>
+        </div>
+        <div id="elementId*@comment.CommentId"></div>
+
+        <ul>
+            @{
+                var children = Model.Where(x => x.ParentId == comment.CommentId).ToList();
+                foreach (var child in children)
+                {
+                    <li class="comment row my-2 ms-3" data-id="@child.CommentId">
+                        <div class="avatar col-6 col-sm-4 col-lg-2 user-photo">
+                            <a href="javascript:void(0);">
+                                <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                            </a>
+                        </div>
+                        <div data-id="@child.CommentId" class="comment-body col-12 col-sm-8">
+                            <a href="javascript:void(0);" class="userlink">USER</a> - <span class="pubdate text-white-50">
+                                опубліковано
+                                @child.CommentDate.ToString("dd-MM-yyyy")
+                            </span>
+                            <p>
+                                @child.CommentText
+                            </p>
+                        </div>
+                        <div id="elementId*@child.CommentId"></div>
+                    </li>
+                }
+            }
+        </ul>
+    </li>
+    }
+    else{
+
+    }
+}
+
