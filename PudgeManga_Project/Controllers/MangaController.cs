@@ -81,7 +81,7 @@ namespace PudgeManga_Project.Controllers
 
             return View(viewModel);
         }
-
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateComment([FromBody] CommentViewModel model)
         {
@@ -106,7 +106,7 @@ namespace PudgeManga_Project.Controllers
 
             return PartialView("_CommentPartial", updatedComments);
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetComments(int mangaId)
         {
