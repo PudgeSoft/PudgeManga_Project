@@ -58,14 +58,14 @@ namespace PudgeManga_Project.Controllers
             var episodes = await _animeRepository.GetEpisodesBySeasonIdAsync(selectedSeason.AnimeSeasonId);
 
 
-
+            var averageRating = await _ratingForAnimeRepository.GetAnimeAverageRatingAsync(animeId);
             var viewModel = new AnimeDetailsViewModel
             {
                 Anime = anime,
                 Seasons = seasons,
                 SelectedSeason = selectedSeason,
                 Episodes = episodes,
-
+                AverageRating = averageRating,
             };
 
             return View(viewModel);
