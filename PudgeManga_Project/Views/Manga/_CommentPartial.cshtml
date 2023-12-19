@@ -3,10 +3,10 @@
 
 @foreach (var comment in Model)
 {
-    <li class="comment row" data-id="@comment.CommentId">
+    <li class="comment row my-2" data-id="@comment.CommentId">
         <div class="avatar col-6 col-sm-4 col-lg-2 user-photo">
             <a href="javascript:void(0);">
-                <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" width="55" height="55">
+                <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
             </a>
         </div>
         <div data-id="@comment.CommentId" class="comment-body col-12 col-sm-8">
@@ -16,17 +16,42 @@
                 @comment.CommentText
             </p>
 
-            <a class="reply-link btn btn-outline-light" href="@comment.CommentId">Reply</a>
+            <button class="reply-link btn btn-outline-light"
+                onclick="addHTML('@("elementId" + "*" + comment.CommentId)', '@comment.CommentId')">
+                Reply
+            </button>
 
         </div>
-
+        <div id="elementId*@comment.CommentId"></div>
         @{
             var children = Model.Where(x => x.ParentId == comment.CommentId).ToList();
             if (children.Count() > 0)
             {
-                <ul data-parentid="@comment.CommentId" class="replies">
-                    @await Html.PartialAsync("_CommentPartial", children)
-                </ul>
+
+
+
+
+
+
+            <li class="comment row my-2 ms-3" data-id="@comment.CommentId">
+                <div class="avatar col-6 col-sm-4 col-lg-2 user-photo">
+                    <a href="javascript:void(0);">
+                        <img src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                    </a>
+                </div>
+                <div data-id="@comment.CommentId" class="comment-body col-12 col-sm-8">
+                    <a href="javascript:void(0);" class="userlink">USER</a> - <span class="pubdate text-white-50">опубліковано
+                            @comment.CommentDate.ToString("dd-MM-yyyy")</span>
+                    <p>
+                            @comment.CommentText
+                    </p>
+
+                </div>
+                <div id="elementId*@comment.CommentId"></div>
+            </li>
+
+
+
             }
         }
     </li>
