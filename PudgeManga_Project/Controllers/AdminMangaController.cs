@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace PudgeManga_Project.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminMangaController : Controller
     {
         private readonly IAdminMangaRepository<Manga, int> _AdminMangaRepository;
@@ -262,7 +263,7 @@ namespace PudgeManga_Project.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit chapter");
+                ModelState.AddModelError("", "Помилка при редагуванні глави");
                 return View(editChapterViewModel);
             }
 

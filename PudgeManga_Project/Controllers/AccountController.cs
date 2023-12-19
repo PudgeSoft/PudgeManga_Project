@@ -49,10 +49,10 @@ namespace PudgeManga_Project.Controllers
                         return RedirectToAction("Index", "Home");
                     }
                 }
-                TempData["Error"] = "Wrong credentials. Try again";
+                TempData["Error"] = "Невірні дані, спробуйте ще раз";
                 return PartialView(LoginViewModel);
             }
-            TempData["Error"] = "Wrong credentials. Try again";
+            TempData["Error"] = "Невірні дані, спробуйте ще раз";
             return PartialView(LoginViewModel);
         }
 
@@ -76,7 +76,7 @@ namespace PudgeManga_Project.Controllers
             var user = await _userManager.FindByEmailAsync(registerViewModel.EmailAddress);
             if (user != null)
             {
-                TempData["Error"] = "This email address is already in use";
+                TempData["Error"] = "Ця електрона адреса уже використовується!";
                 return PartialView(registerViewModel);
             }
 
