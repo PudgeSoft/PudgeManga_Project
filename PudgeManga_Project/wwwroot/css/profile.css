@@ -1,0 +1,55 @@
+main {
+    font-family: 'Roboto Condensed', sans-serif !important;
+    background-image: url("../src/img/1login-background.png");
+    background-position: left;
+    background-attachment: fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+}
+.main-container{
+    background-color: #161313;
+    border-radius: 5px;
+}
+
+.top-row {
+    background-color: #fffdfd;
+    box-shadow: 1px 3px 26px -4px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 1px 3px 26px -4px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 1px 3px 26px -4px rgba(0, 0, 0, 0.75);
+    z-index: 1;
+    position: relative;
+}
+
+.user-avatar {
+    max-width: 12rem;
+    aspect-ratio: 1/1;
+    border-radius: 100%;
+    box-shadow: 1px 3px 26px -4px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: 1px 3px 26px -4px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: 1px 3px 26px -4px rgba(0, 0, 0, 0.75);
+}
+.user-avatar-block{
+    background-image: url("../src/img/no-photo.png");
+    background-size: cover;
+    max-width: 12rem;
+    border-radius: 100%;
+    aspect-ratio: 1/1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.nickname p{
+    margin-bottom: 0;
+}
+.settings{
+    max-width: 2.5rem;
+}
+.sidebar{
+    background-color: #e2e2e2;
+}
+.buttons .btn-danger{
+    background-color: #9b0101!important;
+    border-radius: 5px;
+    padding: 12px!important;
+}

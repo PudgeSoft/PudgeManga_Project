@@ -81,15 +81,38 @@ namespace PudgeManga_Project.Controllers
 
             return View(viewModel);
         }
-
-        public async Task<IActionResult> Comments(int mangaId)
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> CreateComment([FromBody] CommentViewModel model)
         {
-            var manga = await _mangaRepository.GetById(mangaId);
-            if (manga == null)
+            
+            var comment = new Comment
             {
-                return NotFound();
-            }
-            return View(manga);
+                CommentText = model.CommentText,
+                CommentDate = DateTime.Now,
+                ParentId = model.ParentId,
+                
+            };
+
+            await _commentRepository.AddCommentAsync(comment);
+            var manga = await _mangaRepository.GetById(model.MangaId);
+            var mangaComment = new MangaComment
+            {
+                Manga = manga,
+                Comment = comment
+            };
+            await _commentRepository.AddMangaCommentAsync(mangaComment);
+            var updatedComments = await _commentRepository.GetCommentsForMangaAsync(model.MangaId);
+
+            return PartialView("_CommentPartial", updatedComments);
+        }
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetComments(int mangaId)
+        {
+            var comments = await _commentRepository.GetCommentsForMangaAsync(mangaId);
+
+            return PartialView("_CommentPartial", comments);
         }
 
         [HttpPost]

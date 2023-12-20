@@ -2,15 +2,10 @@
 @inject UserManager<User> UserManager
 @model PudgeManga_Project.ViewModels.MangaViewModels.MangaChaptersViewModel
 
-<!--last version-->
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="~/css/manga.css" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/rating.css" asp-append-version="true">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <title>pudge soft corporation</title> <!--change title-->
-
 </head>
 
 <body>
@@ -18,7 +13,7 @@
     <main class="py-5 main">
         <div class="container py-5">
             <div class="row">
-                <div class="manga-title col-md-4 col-12 d-flex justify-content-center align-items-center flex-column">
+                <div class="manga-title col-md-4 col-12 d-flex align-items-center flex-column">
                     <img src="@Model.Manga.CoverUrl">
                     <h1 class="fs-4 d-block d-md-none pt-2">@Model.Manga.Title</h1>
                     <a class="nav-link" asp-controller="Manga" asp-action="Reading"
@@ -181,7 +176,7 @@
                             <button class="nav-link tablinks" onclick="openTab(event, 'Chapter')">
                                 <div class="text-body-secondary fs-5">Глави</div>
                             </button>
-                            <button class="nav-link tablinks" onclick="openTab(event, 'Comment')">
+                            <button class="nav-link tablinks" id="commentButton" onclick="openTab(event, 'Comment')">
                                 <div class="text-body-secondary fs-5">Коментарі</div>
                             </button>
                         </div>
@@ -212,82 +207,50 @@
                                 </div>
                             }
                         </div>
-
-                        <div class="p-5 tabcontent" id="Comment">
-                            <div class="row">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h3 class="page-title">User Comment</h3>
-                                        </div>
+                        <div class="p-5 pt-3 tabcontent" id="Comment">
+                            <!-- Форма для додавання нового коментаря -->
+                            <div class="row mt-4">
+                                <h3 class="page-title col-12">Додати коментар</h3>
+                                <div class="row">
+                                    <div class="col-6 col-sm-4 col-lg-2 user-photo">
+                                        <img class="" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
                                     </div>
-                                    <div class="row">
-                                        <div class="col-sm-1">
-                                            <div class="thumbnail">
-                                                <img class="img-responsive user-photo"
-                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+                                    <div class="col-12 col-sm-8">
+                                        <div class="panel panel-default">
+                                            <div class="panel-body">
+                                                <textarea class="form-control text-secondary" id="commentInput"
+                                                    cols="15" placeholder="Напишіть ваш коментар"></textarea>
                                             </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <textarea class="form-control" cols="15"
-                                                        id="commentInput"></textarea>
-                                                </div>
-                                                <div class="panel-heading comment-action">
-                                                    <div class="submit-comment">
-                                                        <a href="https://www.blogger.com/null"
-                                                            id="addNewCommentBtn">Submit</a>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="p-5 tabcontent" id="Comment">
-                            <h3 class="page-title">User Comment</h3>
-                            @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments)
+                                            <div class="panel-heading comment-action">
+                                                <div class="submit-comment">
+                                                    @if (User.Identity.IsAuthenticated)
+                                                    {
+                                                        <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
+                                                        <a href="javascript:void(0)" id="addNewCommentBtn"
+                                                            class="btn btn-secondary" onclick="addComment()">Submit</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/Account/Login" id="addNewCommentBtn"
+                                                            class="btn btn-secondary">Submit</a>
+                                                    }
 
-
-                            <div class="row">
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-sm-12">
-                                            <h3 class="page-title">User Comment</h3>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class="col-sm-1">
-                                            <div class="thumbnail">
-                                                <img class="img-responsive user-photo"
-                                                    src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="panel panel-default">
-                                                <div class="panel-body">
-                                                    <textarea class="form-control" cols="15"
-                                                        id="commentInput"></textarea>
-                                                </div>
-                                                <div class="panel-heading comment-action">
-                                                    <div class="submit-comment">
-                                                        <a href="https://www.blogger.com/null"
-                                                            id="addNewCommentBtn">Submit</a>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Контейнер для відображення коментарів -->
+                            <div id="comments-container">
+                                @await Html.PartialAsync("~/Views/Shared/_CommentPartial.cshtml", Model.Comments)
+                            </div>
                         </div>
-                        <div class="p-5 tabcontent" id="Comment">
-                            <h3 class="page-title">User Comment</h3>
-                            @* @await Html.PartialAsync("_CommentPartial.cshtml", Model.Comments) *@
 
-                        </div>
+
+                        <script>
+
+                        </script>
 
                     </div>
                 </div>
@@ -295,104 +258,120 @@
         </div>
     </main>
     <script src="~/js/manga-tabs.js"></script>
+    <script src="~/js/rating.js"></script>
     <script>
-        var starClicked = false;
 
-        var storedRating = localStorage.getItem('rating');
+        // JavaScript function to add HTML
+        function addHTML(elementID, dataId) {
+            var html = `
 
-        // If the rating value is not stored, set a default value
-        var ratingString = '@Model.AverageRating';
-        console.log(ratingString);
-        var defaultRating = parseFloat(ratingString);
-        console.log(defaultRating);
+    <div class="row mt-4 ms-3">
+    <div class="row">
+        <div class="col-6 col-sm-4 col-lg-2 user-photo">
+            <img class="" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" />
+        </div>
+        <div class="col-12 col-sm-8">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <textarea class="form-control text-secondary" id="commentInput${dataId}"
+                        cols="15" placeholder="Напишіть ваш коментар"></textarea>
+                </div>
+                <div class="panel-heading comment-action">
+                    <div class="submit-comment">
+                        <a href="javascript:void(0)" id="addNewCommentBtn"
+                            class="btn btn-secondary" onclick="addComment(${dataId})">Submit</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>`;
+            document.getElementById(elementID).innerHTML = html;
+            console.log(dataId);
+        }
 
-        // Use the stored rating value if available, otherwise use the default value
-        var currentRating = storedRating !== null ? parseFloat(storedRating) : defaultRating;
+        // Button with onclick event
 
+
+        function addComment(dataId) {
+            // Отримання значення коментаря з текстового поля
+            var commentText = $('#commentInput').val();
+            var parentId = null;
+            if (dataId != null) {
+                commentText = $('#commentInput' + dataId).val();
+                var parentId = dataId;
+            }
+
+
+            // Отримання значення MangaId
+            var mangaId = @Model.Manga.MangaId; // Наприклад, якщо це фіксоване значення
+
+            // AJAX-запит для додавання нового коментаря
+            $.ajax({
+                url: '/Manga/CreateComment',
+                type: 'POST',
+                contentType: 'application/json',  // Встановіть правильний Content-Type
+                data: JSON.stringify({
+                    CommentText: commentText,
+                    ParentId: parentId,
+                    MangaId: mangaId
+                }),
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+
+                    // Очищення текстового поля
+                    $('#commentInput').val('');
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+        document.getElementById("commentButton").addEventListener("click", function () {
+            $.ajax({
+                url: '/Manga/GetComments/' + @Model.Manga.MangaId,
+                type: 'GET',
+                data: { mangaId: mangaId },
+                success: function (response) {
+                    // Оновлення контейнера коментарів з отриманими даними
+                    $('#comments-container').html(response);
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        var currentRating = parseFloat(parseFloat('@Model.AverageRating').toFixed(1));
         // Set the initial rating display
         $('.score-rating').text(parseFloat(currentRating));
-
-        $(function () {
-
-            $('.star').click(function () {
-
-                $(this).children('.selected').addClass('is-animated');
-                $(this).children('.selected').addClass('pulse');
-
-                var target = this;
-
-                setTimeout(function () {
-                    $(target).children('.selected').removeClass('is-animated');
-                    $(target).children('.selected').removeClass('pulse');
-                }, 1000);
-                starClicked = true;
-            })
-
-            $('.half, .full').click(function () {
-                if ($(this).hasClass('half')) {
-                    setHalfStarState(this);
-                } else {
-                    setFullStarState(this);
+        $('.half, .full').click(function () {
+            if ($(this).hasClass('half')) {
+                setHalfStarState(this);
+            } else {
+                setFullStarState(this);
+            }
+            var value = $(this).data('value');
+            $('.score-rating').text(value); // Змінено тут
+            $(this).closest('.rating').data('vote', value);
+            // Заміна крапки на кому
+            document.getElementById("valueSubmit").value = value;
+            // AJAX-запит
+            $.ajax({
+                url: '@Url.Action("RateManga", "Manga")', // Замініть "ControllerName" на ім'я вашого контролера
+                type: 'POST',
+                data: {
+                    userId: $('input[name="userId"]').val(),
+                    mangaId: $('input[name="mangaId"]').val(),
+                    value: $('input[name="value"]').val()
+                },
+                success: function (response) {
+                    // Обробіть відповідь тут
                 }
-                var value = $(this).data('value');
-                $('.score-rating').text(value); // Змінено тут
-                $(this).closest('.rating').data('vote', value);
-
-                // Заміна крапки на кому
-                console.log(value + " do vlog Matviya");
-                document.getElementById("valueSubmit").value = value;
-                console.log(value + " pislya vlog Matviya");
-
-                // AJAX-запит
-                $.ajax({
-                    url: '@Url.Action("RateManga", "Manga")', // Замініть "ControllerName" на ім'я вашого контролера
-                    type: 'POST',
-                    data: {
-                        userId: $('input[name="userId"]').val(),
-                        mangaId: $('input[name="mangaId"]').val(),
-                        value: $('input[name="value"]').val()
-                    },
-                    success: function (response) {
-                        // Обробіть відповідь тут
-                    }
-                });
-            })
-
-
-            $('.half').hover(function () {
-                if (starClicked == false) {
-                    setHalfStarState(this)
-                }
-            })
-
-            $('.full').hover(function () {
-                if (starClicked == false) {
-                    setFullStarState(this)
-                }
-            })
+            });
         })
 
-        function updateStarState(target) {
-            $(target).parent().prevAll().addClass('animate');
-            $(target).parent().prevAll().children().addClass('star-colour');
-
-            $(target).parent().nextAll().removeClass('animate');
-            $(target).parent().nextAll().children().removeClass('star-colour');
-        }
-
-        function setHalfStarState(target) {
-            $(target).addClass('star-colour');
-            $(target).siblings('.full').removeClass('star-colour');
-            updateStarState(target)
-        }
-
-        function setFullStarState(target) {
-            $(target).addClass('star-colour');
-            $(target).parent().addClass('animate');
-            $(target).siblings('.half').addClass('star-colour');
-
-            updateStarState(target)
-        }
     </script>
 
 

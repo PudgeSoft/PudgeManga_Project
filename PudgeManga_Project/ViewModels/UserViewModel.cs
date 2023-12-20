@@ -7,6 +7,6 @@ public class UserViewModel
     public string? State { get; set; }
     public string ProfileImageUrl { get; set; }
     public string favorite { get; set; }
-    public int? Age { get; set; }
+    public int Age { get; set; }
     public string Aboutme { get; set; }
 }

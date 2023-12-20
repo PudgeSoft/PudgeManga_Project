@@ -5,7 +5,7 @@ using PudgeManga_Project.ViewModels;
 
 namespace PudgeManga_Project.Models.Repositories
 {
-    public class ChapterRepository:IChapterRepository<Chapter,int>
+    public class ChapterRepository : IChapterRepository<Chapter, int>
     {
         private readonly ApplicationDBContext _context;
         public ChapterRepository(ApplicationDBContext context)
@@ -79,9 +79,9 @@ namespace PudgeManga_Project.Models.Repositories
                             new Chapter()
                             {
                                 Title = "Відсутні глави",
-                                Url = "https://img.championat.com/c/1200x900/news/big/z/e/ign-25-luchshih-anime-v-istorii_1672055411452433690.jpg"
+                                Url = "../src/img/no-photo.png"
                             }
-                        } 
+                        }
                     };
 
                     calendarViewModelList.Add(calendarViewModel);

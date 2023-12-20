@@ -1,4 +1,4 @@
-﻿@model IEnumerable<PudgeManga_Project.Models.Manga>
+﻿@model PudgeManga_Project.ViewModels.MangaViewModels.HomeViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -37,11 +37,12 @@
                     <!--5 cards on big display, 4 on medium and 3 on small-->
 
                     <div class="content_block_body d-flex justify-content-start pb-2 flex-column flex-sm-row flex-wrap">
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.PopularManga)
                         {
 
                             <div class="card border-0">
-                                <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga" asp-action="MangaDetails" asp-route-mangaId="@item.MangaId" >
+                                <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga"
+                                    asp-action="MangaDetails" asp-route-mangaId="@item.MangaId">
                                     <img src="@item.CoverUrl" class="card-img-top" alt="...">
                                     <div class="card-body">
 
@@ -64,48 +65,34 @@
             <div class="row d-flex justify-content-center pb-5 pt-5">
                 <!--row with 5 titles on big display-->
 
-                <div class="col-sm-10 content_block">
+                <div class="col-lg-10 col-12 content_block">
 
 
                     <div class="content_block_head d-flex justify-content-between p-3">
-                        <h5 class="fs-6 text-white">Популярна манга</h5>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=""
-                                aria-controls="" aria-expanded="false" aria-label="Toggle navigation">
+                        <h5 class="fs-6 text-white">Нова манга</h5>
+                        <a class="navbar-toggler" asp-controller="Manga" asp-action="Index">
                             <div class="toggler-icon"></div>
-                        </button>
+                        </a>
                     </div><!--content header, name of category and button to look for more-->
                     <!--5 cards on big display, 4 on medium and 3 on small-->
-                    <div class="content_block_body d-flex justify-content-between pb-2 flex-column flex-sm-row">
-                        <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
+
+                    <div class="content_block_body d-flex justify-content-start pb-2 flex-column flex-sm-row flex-wrap">
+                        @foreach (var item in Model.LasUpdatedManga)
+                        {
+
+                            <div class="card border-0">
+                                <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga"
+                                    asp-action="MangaDetails" asp-route-mangaId="@item.MangaId">
+                                    <img src="@item.CoverUrl" class="card-img-top" alt="...">
+                                    <div class="card-body">
+
+                                        <h6 class="card-title">@item.Title</h6>
+
+                                    </div>
+                                </a>
                             </div>
-                        </div>
-                        <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0 d-none d-md-block" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0 d-none d-lg-block" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
+
+                        }
                     </div>
 
 
@@ -115,57 +102,45 @@
 
 
 
-            <div class="row d-flex justify-content-center pb-5 pt-5">
+           @* <div class="row d-flex justify-content-center pb-5 pt-5">
                 <!--row with 5 titles on big display-->
 
-                <div class="col-sm-10 content_block">
+                <div class="col-lg-10 col-12 content_block">
 
 
                     <div class="content_block_head d-flex justify-content-between p-3">
-                        <h5 class="fs-6 text-white">Популярна манга</h5>
-                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=""
-                                aria-controls="" aria-expanded="false" aria-label="Toggle navigation">
+                        <h5 class="fs-6 text-white">Манга з самим високим рейтингом</h5>
+                        <a class="navbar-toggler" asp-controller="Manga" asp-action="Index">
                             <div class="toggler-icon"></div>
-                        </button>
+                        </a>
                     </div><!--content header, name of category and button to look for more-->
                     <!--5 cards on big display, 4 on medium and 3 on small-->
-                    <div class="content_block_body d-flex justify-content-between pb-2 flex-column flex-sm-row">
-                        <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
+
+                    <div class="content_block_body d-flex justify-content-start pb-2 flex-column flex-sm-row flex-wrap">
+                        @foreach (var item in Model)
+                        {
+
+                            <div class="card border-0">
+                                <a class="nav-link p-0 text-body-secondary d-flex flex-column" asp-controller="Manga"
+                                    asp-action="MangaDetails" asp-route-mangaId="@item.MangaId">
+                                    <img src="@item.CoverUrl" class="card-img-top" alt="...">
+                                    <div class="card-body">
+
+                                        <h6 class="card-title">@item.Title</h6>
+
+                                    </div>
+                                </a>
                             </div>
-                        </div>
-                        <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0 d-none d-md-block" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
-                        <div class="card border-0 d-none d-lg-block" style="width: 16rem;">
-                            <img src="~/src/img/manga_example.jpg" class="card-img-top" alt="...">
-                            <div class="card-body">
-                                <h6 class="card-title">Назва манги</h6>
-                            </div>
-                        </div>
+
+                        }
                     </div>
 
 
                 </div>
 
-            </div>
+            </div>*@
+
+        </div>
 
         </div>
     </main>

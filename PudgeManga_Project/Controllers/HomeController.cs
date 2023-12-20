@@ -2,6 +2,7 @@
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.ViewModels.MangaViewModels;
 using System.Diagnostics;
 
 namespace PudgeManga_Project.Controllers
@@ -9,21 +10,27 @@ namespace PudgeManga_Project.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDBContext _context;
-        private readonly IAdminMangaRepository<Manga, int> _mangaRepository;
-        public HomeController(IAdminMangaRepository<Manga, int> mangaRepository)
+        private readonly IMangaRepository<Manga, int> _mangaRepository;
+        public HomeController(IMangaRepository<Manga, int> mangaRepository)
         {
             _mangaRepository = mangaRepository;
         }
 
-        // GET: Mangas
+
         public async Task<IActionResult> Index()
         {
-            var mangaList = await _mangaRepository.GetAll();
+            var popularManga = await _mangaRepository.GetPopularMangaAsync(5);
+            var recentlyUpdatedManga = await _mangaRepository.GetRecentlyUpdatedMangaAsync(5);
 
-            var model = mangaList.Take(5).ToList();
+            var model = new HomeViewModel
+            {
+                PopularManga = popularManga,
+                LasUpdatedManga = recentlyUpdatedManga
+            };
 
             return View(model);
         }
+
 
 
         public IActionResult TermsOfUse()

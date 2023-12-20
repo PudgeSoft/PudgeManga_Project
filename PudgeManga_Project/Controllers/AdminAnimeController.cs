@@ -1,4 +1,5 @@
 ﻿using FluentAssertions.Execution;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using PudgeManga_Project.Interfaces;
@@ -8,9 +9,11 @@ using PudgeManga_Project.ViewModels.AdminAnimeViewModels;
 using PudgeManga_Project.ViewModels.AdminAnimeViewModels.AdminSeasonsViewModels;
 using PudgeManga_Project.ViewModels.AdminMangaViewModels;
 using PudgeManga_Project.ViewModels.AdminMangaViewModels.AdminChaptersViewModels;
+using System.Data;
 
 namespace PudgeManga_Project.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminAnimeController : Controller
     {
         private readonly IAdminAnimeRepository<Anime, int> _adminAnimeRepository;
@@ -226,7 +229,7 @@ namespace PudgeManga_Project.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("", "Failed to edit season");
+                ModelState.AddModelError("", "Помилка при редагуванні сезону");
                 return View(editSeasonViewModel);
             }
 

@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.Models;
+using PudgeManga_Project.Models.Repositories;
 using PudgeManga_Project.ViewModels;
+using RunGroopWebApp.Repository;
 
 namespace PudgeManga_Project.Controllers
 {
@@ -11,13 +13,16 @@ namespace PudgeManga_Project.Controllers
     {
         private readonly IUserRepository _userRepository;
         private readonly UserManager<User> _userManager;
+        private readonly IGoogleDriveAPIRepository<IFormFile> _googleDriveAPIRepository;
 
 
-        public UserController(IUserRepository userRepository, UserManager<User> userManager)
+        public UserController(IUserRepository userRepository,
+            UserManager<User> userManager,
+            IGoogleDriveAPIRepository<IFormFile> googleDriveAPIRepository)
         {
             _userRepository = userRepository;
             _userManager = userManager;
-
+            _googleDriveAPIRepository = googleDriveAPIRepository;
         }
 
         [HttpGet("users")]
@@ -31,7 +36,7 @@ namespace PudgeManga_Project.Controllers
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    //ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
+                    ProfileImageUrl = user.Image,
                 };
                 result.Add(userViewModel);
             }
@@ -54,7 +59,7 @@ namespace PudgeManga_Project.Controllers
                 UserName = user.UserName,
                 Age = user.Age,
                 Aboutme = user.Aboutme,
-                //ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
+                ProfileImageUrl = user.Image,
             };
             return View(userDetailViewModel);
         }
@@ -72,8 +77,10 @@ namespace PudgeManga_Project.Controllers
 
             var editMV = new EditProfileViewModel()
             {
-                  //City = User.City,
-            //    ProfileImageUrl = user.ProfileImageUrl,
+                //City = User.City,
+                //    ProfileImageUrl = user.ProfileImageUrl,
+                Age = user.Age,
+                Aboutme = user.Aboutme
             };
 
             return View(editMV);
@@ -111,8 +118,8 @@ namespace PudgeManga_Project.Controllers
             //        _ = _photoService.DeletePhotoAsync(user.ProfileImageUrl);
             //    }
 
-               // user.ProfileImageUrl = photoResult.Url.ToString();
-               //editVM.ProfileImageUrl = user.ProfileImageUrl;
+            // user.ProfileImageUrl = photoResult.Url.ToString();
+            //editVM.ProfileImageUrl = user.ProfileImageUrl;
 
             //    await _userManager.UpdateAsync(user);
 
@@ -128,5 +135,35 @@ namespace PudgeManga_Project.Controllers
 
             return RedirectToAction("Detail", "User", new { user.Id });
         }
+
+        [HttpPost, ActionName("UploadProfilePicture")]
+        public async Task<IActionResult> UploadProfilePicture(IFormFile file, string userId)
+        {
+            try
+            {
+                var user = await _userRepository.GetUserById(userId);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                string folderName = $"User_{userId}_ProfilePictures";
+                string folderId = _googleDriveAPIRepository.GetOrCreateFolder(folderName);
+                _googleDriveAPIRepository.UploadFileToGoogleDrive(file, folderId);
+
+                var fileLink = _googleDriveAPIRepository.GetModifiedFileLinks(folderId);
+                await _userRepository.UpdateProfilePictureLink(fileLink[0], userId);
+
+                return RedirectToAction("Profile", new { id = userId });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Помилка при завантаженні фотографії профілю на Google Drive: {ex.Message}");
+                return RedirectToAction("Index");
+            }
+        }
+
+
+
     }
 }

@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Google.Apis.Drive.v3.Data;
+using Microsoft.EntityFrameworkCore;
 using PudgeManga_Project.Data;
 using PudgeManga_Project.Interfaces;
 using PudgeManga_Project.ViewModels;
+using System.Runtime.CompilerServices;
 
 namespace PudgeManga_Project.Models.Repositories
 {
@@ -12,34 +14,38 @@ namespace PudgeManga_Project.Models.Repositories
         {
             _context = context;
         }
-        public IQueryable<Comment> GetAll()
+        public async Task<Comment> AddCommentAsync(Comment comment)
         {
-            return _context.Comments.OrderBy(x => x.CommentDate);
+            _context.Comments.Add(comment);
+            await _context.SaveChangesAsync();
+            return comment;
+        }
+        public async Task AddMangaCommentAsync(MangaComment mangaComment)
+        {
+            _context.CommentsForManga.Add(mangaComment);
+            await _context.SaveChangesAsync();
+        }
+        public async Task<List<Comment>> GetAllAsync()
+        {
+            return await _context.Comments
+                .OrderBy(x => x.CommentDate)
+                .ToListAsync();
+        }
+        public async Task<IEnumerable<Comment>> GetCommentsForMangaAsync(int mangaId)
+        {
+            var mangaComments = await _context.CommentsForManga
+                .Where(mc => mc.MangaId == mangaId)
+                .Include(mc => mc.Comment)  // Включаємо пов'язаний коментар
+                    .ThenInclude(c => c.ParentComment)  // Включаємо батьківський коментар
+                .ToListAsync();
+
+            // Отримання коментарів з колекції MangaComments
+            var commentsForManga = mangaComments.Select(mc => mc.Comment);
+
+            return commentsForManga;
         }
 
-        public CommentViewModel AddComment(CommentViewModel comment)
-        {
-            var _comment = new Comment()
-            {
-                ParentId = comment.ParentId,
-                CommentText = comment.CommentText,
-                CommentDate = DateTime.Now
-                
-            };
 
-            _context.Comments.Add(_comment);
-            _context.SaveChanges();
-
-            return _context.Comments.Where(x => x.CommentId == _comment.CommentId)
-                    .Select(x => new CommentViewModel
-                    {
-                        CommentId = x.CommentId,
-                        CommentText = x.CommentText,
-                        ParentId = x.ParentId,
-                        CommentDate = x.CommentDate
-
-                    }).FirstOrDefault();
-        }
         public async Task<IEnumerable<Comment>> GetCommentsByMangaId(int mangaId)
         {
             try
