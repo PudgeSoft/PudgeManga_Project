@@ -16,7 +16,7 @@ namespace PudgeManga_Project.Controllers
         private readonly IGoogleDriveAPIRepository<IFormFile> _googleDriveAPIRepository;
 
 
-        public UserController(IUserRepository userRepository, 
+        public UserController(IUserRepository userRepository,
             UserManager<User> userManager,
             IGoogleDriveAPIRepository<IFormFile> googleDriveAPIRepository)
         {
@@ -36,7 +36,7 @@ namespace PudgeManga_Project.Controllers
                 {
                     Id = user.Id,
                     UserName = user.UserName,
-                    //ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
+                    ProfileImageUrl = user.Image,
                 };
                 result.Add(userViewModel);
             }
@@ -59,7 +59,7 @@ namespace PudgeManga_Project.Controllers
                 UserName = user.UserName,
                 Age = user.Age,
                 Aboutme = user.Aboutme,
-                //ProfileImageUrl = user.ProfileImageUrl ?? "/img/avatar-male-4.jpg",
+                ProfileImageUrl = user.Image,
             };
             return View(userDetailViewModel);
         }
@@ -118,8 +118,8 @@ namespace PudgeManga_Project.Controllers
             //        _ = _photoService.DeletePhotoAsync(user.ProfileImageUrl);
             //    }
 
-               // user.ProfileImageUrl = photoResult.Url.ToString();
-               //editVM.ProfileImageUrl = user.ProfileImageUrl;
+            // user.ProfileImageUrl = photoResult.Url.ToString();
+            //editVM.ProfileImageUrl = user.ProfileImageUrl;
 
             //    await _userManager.UpdateAsync(user);
 

@@ -223,9 +223,18 @@
                                             </div>
                                             <div class="panel-heading comment-action">
                                                 <div class="submit-comment">
-                                                    <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
-                                                    <a href="javascript:void(0)" id="addNewCommentBtn"
-                                                        class="btn btn-secondary" onclick="addComment()">Submit</a>
+                                                    @if (User.Identity.IsAuthenticated)
+                                                    {
+                                                        <!-- Кнопка для відправлення коментаря і запуску AJAX-запиту -->
+                                                        <a href="javascript:void(0)" id="addNewCommentBtn"
+                                                            class="btn btn-secondary" onclick="addComment()">Submit</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a href="/Account/Login" id="addNewCommentBtn"
+                                                            class="btn btn-secondary">Submit</a>
+                                                    }
+
                                                 </div>
                                             </div>
                                         </div>
